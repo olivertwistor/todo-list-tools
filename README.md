@@ -25,6 +25,7 @@ following ways:
 example 8 hours for a workday
 
 ## Stakeholders
-The primary stakeholders in this project is people who already make extensive use of Remember the Milk.
+The primary stakeholders in this project is people who already make extensive 
+use of Remember the Milk.
 
 [1]: https://www.rememberthemilk.com
