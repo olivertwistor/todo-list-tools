@@ -12,14 +12,14 @@ have for the service, it lacks some features. That is where this project comes
 in.
 
 ## Purpose
-The purpose of this project is to provide extended features to the Remember the 
-Milk service, for example metadata about lists such as the number of tasks per 
-priority.
+The purpose of this project is to provide extended features to the Remember 
+the Milk service, for example metadata about lists such as the number of tasks 
+per priority.
 
 ## Goal
 The goal of this project is to extend the Remember the Milk service in the 
 following ways:
-* calculate the number of tasks per priority of each list
+* calculate the number of tasks per priority in each list
 * calculate the total estimated time per priority of each list
 * get a sublist from a list that is limited by a certain amount of time, for 
 example 8 hours for a workday
