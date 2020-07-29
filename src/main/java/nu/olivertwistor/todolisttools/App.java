@@ -7,11 +7,12 @@ public class App
         System.out.println("Todo List Tool");
         System.out.println("==============");
         System.out.println();
-        System.out.println("This app is collecting data from your Remember " +
-                "the Milk account, in order to present aggregations and " +
-                "calculations on lists and smartlists. For more " +
-                "information, please read the file \"privacy-policy.md\" " +
-                "located in the root folder.");
+        System.out.println("This app is collecting data from your Remember ");
+        System.out.println("the Milk account, in order to present ");
+        System.out.println("aggregations and calculations on lists and ");
+        System.out.println("smartlists. For more information, please read ");
+        System.out.println("the file \"privacy-policy.md\" located in the ");
+        System.out.println("root folder.");
         System.out.println();
     }
 
