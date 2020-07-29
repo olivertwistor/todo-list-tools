@@ -4,7 +4,15 @@ public class App
 {
     public App(final String configFilePath)
     {
-        System.out.println("Config file: " + configFilePath);
+        System.out.println("Todo List Tool");
+        System.out.println("==============");
+        System.out.println();
+        System.out.println("This app is collecting data from your Remember " +
+                "the Milk account, in order to present aggregations and " +
+                "calculations on lists and smartlists. For more " +
+                "information, please read the file \"privacy-policy.md\" " +
+                "located in the root folder.");
+        System.out.println();
     }
 
     public static void main(final String[] args)

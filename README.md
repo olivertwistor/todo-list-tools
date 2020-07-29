@@ -3,6 +3,8 @@
 * [Purpose](#purpose)
 * [Goal](#goal)
 * [Stakeholders](#stakeholders)
+* [Privacy policy](#privacy-policy)
+* [Licenses](#licenses)
 
 ## Background
 [Remember the Milk][1] is a service for creating to-do lists. It provides 
@@ -28,4 +30,15 @@ example 8 hours for a workday
 The primary stakeholders in this project is people who already make extensive 
 use of Remember the Milk.
 
+## Privacy policy
+The Todo List Tools collects and processes data from the user's Remember the 
+Milk account. Please read the [privacy policy][2] for more information.
+
+## Licenses
+This project is licensed under an MIT License. For detailed terms, please read 
+[LICENSE][3]. 
+
+
 [1]: https://www.rememberthemilk.com
+[2]: privacy-policy.md
+[3]: LICENSE
