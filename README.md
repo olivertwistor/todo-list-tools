@@ -1,4 +1,4 @@
-# RTM Tools
+# Todo List Tools
 * [Background](#background)
 * [Purpose](#purpose)
 * [Goal](#goal)
@@ -7,7 +7,7 @@
 ## Background
 [Remember the Milk][1] is a service for creating to-do lists. It provides 
 advanced ways to filter and sort items on those to-do lists. I have used the 
-service for many years and I can highly recommend it. Despite all the praise I 
+service for many years, and I can highly recommend it. Despite all the praise I 
 have for the service, it lacks some features. That is where this project comes 
 in.
 
