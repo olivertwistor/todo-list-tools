@@ -35,7 +35,8 @@ The Todo List Tools collects and processes data from the user's Remember the
 Milk account. Please read the [privacy policy][2] for more information.
 
 ## Licenses
-This project is licensed under an MIT License. For detailed terms, please read [LICENSE][3]. 
+This project is licensed under an MIT License. For detailed terms, please read 
+[LICENSE][3]. 
 
 
 [1]: https://www.rememberthemilk.com
