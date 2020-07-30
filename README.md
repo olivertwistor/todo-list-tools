@@ -38,7 +38,11 @@ Milk account. Please read the [privacy policy][2] for more information.
 This project is licensed under an MIT License. For detailed terms, please read 
 [LICENSE][3]. 
 
+The library Pair is made by [Christoffer Fink][4] and is licensed under an MIT 
+License.
+
 
 [1]: https://www.rememberthemilk.com
 [2]: privacy-policy.md
 [3]: LICENSE
+[4]: https://github.com/finkn

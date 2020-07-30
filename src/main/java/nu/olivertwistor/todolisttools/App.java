@@ -1,24 +1,55 @@
 package nu.olivertwistor.todolisttools;
 
+/**
+ * Main class for this app. Contains the main method.
+ *
+ * @author Johan Nilsson
+ * @since  v0.1.0
+ */
 public class App
 {
+    /**
+     * Prints a short privacy policy and then creates the main menu. Loops
+     * indefinitely. Thereby, it's very important that at least one of the main
+     * menu items calls {@link System#exit(int)}.
+     *
+     * @param configFilePath path to config file
+     *
+     * @since v0.1.0
+     */
+    @SuppressWarnings("InfiniteLoopStatement")
     public App(final String configFilePath)
     {
         System.out.println("Todo List Tool");
         System.out.println("==============");
         System.out.println();
-        System.out.println("This app is collecting data from your Remember ");
-        System.out.println("the Milk account, in order to present ");
-        System.out.println("aggregations and calculations on lists and ");
-        System.out.println("smartlists. For more information, please read ");
-        System.out.println("the file \"privacy-policy.md\" located in the ");
-        System.out.println("root folder.");
-        System.out.println();
+        String privacyPolicy = String.join(System.lineSeparator(),
+                "This app is collecting data from your Remember the Milk ",
+                "account, in order to present aggregations and calculations ",
+                "on lists and smartlists. For more information, please read ",
+                "the file \"privacy-policy.md\" located in the root folder.");
+        System.out.println(privacyPolicy);
+
+        final MainMenu mainMenu = new MainMenu();
+        do
+        {
+            mainMenu.show();
+            mainMenu.act();
+        }
+        while (true);
     }
 
+    /**
+     * If the program starts with the correct number of arguments, an instance
+     * of this class is created.
+     *
+     * @param args program arguments; should contain a path to a config file
+     *
+     * @since v0.1.0
+     */
+    @SuppressWarnings("InstantiationOfUtilityClass")
     public static void main(final String[] args)
     {
-        // Read program arguments.
         if (args.length < 1)
         {
             System.err.println("Too few arguments.");
