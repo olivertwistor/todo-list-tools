@@ -5,6 +5,7 @@
 * [Stakeholders](#stakeholders)
 * [Privacy policy](#privacy-policy)
 * [Licenses](#licenses)
+* [Disclaimer](#disclaimer)
 
 ## Background
 [Remember the Milk][1] is a service for creating to-do lists. It provides 
@@ -40,6 +41,10 @@ This project is licensed under an MIT License. For detailed terms, please read
 
 The library Pair is made by [Christoffer Fink][4] and is licensed under an MIT 
 License.
+
+## Disclaimer
+This product uses the Remember The Milk API but is not endorsed or certified by 
+Remember The Milk.
 
 
 [1]: https://www.rememberthemilk.com

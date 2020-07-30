@@ -23,12 +23,18 @@ public class App
         System.out.println("Todo List Tool");
         System.out.println("==============");
         System.out.println();
-        String privacyPolicy = String.join(System.lineSeparator(),
+        final String privacyPolicy = String.join(System.lineSeparator(),
                 "This app is collecting data from your Remember the Milk ",
                 "account, in order to present aggregations and calculations ",
                 "on lists and smartlists. For more information, please read ",
                 "the file \"privacy-policy.md\" located in the root folder.");
         System.out.println(privacyPolicy);
+        System.out.println();
+        final String disclaimer = String.join(System.lineSeparator(),
+                "This product uses the Remember The Milk API but is not ",
+                "endorsed or certified by Remember The Milk.");
+        System.out.println(disclaimer);
+        System.out.println();
 
         final MainMenu mainMenu = new MainMenu();
         do
