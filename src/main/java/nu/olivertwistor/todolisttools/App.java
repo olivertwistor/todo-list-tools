@@ -4,7 +4,7 @@ package nu.olivertwistor.todolisttools;
  * Main class for this app. Contains the main method.
  *
  * @author Johan Nilsson
- * @since  v0.1.0
+ * @since  0.1.0
  */
 public class App
 {
@@ -15,7 +15,7 @@ public class App
      *
      * @param configFilePath path to config file
      *
-     * @since v0.1.0
+     * @since 0.1.0
      */
     @SuppressWarnings("InfiniteLoopStatement")
     public App(final String configFilePath)
@@ -51,7 +51,7 @@ public class App
      *
      * @param args program arguments; should contain a path to a config file
      *
-     * @since v0.1.0
+     * @since 0.1.0
      */
     @SuppressWarnings("InstantiationOfUtilityClass")
     public static void main(final String[] args)

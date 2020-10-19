@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * ask for user input and do different things depending on the chosen menu item.
  *
  * @author Johan Nilsson
- * @since  v0.1.0
+ * @since  0.1.0
  */
 public class MainMenu
 {
@@ -32,7 +32,7 @@ public class MainMenu
      *     <li>function name for the action; called in {@link #act()}</li>
      * </ul>
      *
-     * @since v0.1.0
+     * @since 0.1.0
      */
     public MainMenu()
     {
@@ -43,7 +43,7 @@ public class MainMenu
     /**
      * Prints out the main menu to stdout.
      *
-     * @since v0.1.0
+     * @since 0.1.0
      */
     public void show()
     {
@@ -60,7 +60,7 @@ public class MainMenu
      * Reads a line from user input and calls the corresponding function from
      * the menu items Map.
      *
-     * @since v0.1.0
+     * @since 0.1.0
      */
     public void act()
     {
@@ -95,7 +95,7 @@ public class MainMenu
      *
      * @param str unused
      *
-     * @since v0.1.0
+     * @since 0.1.0
      */
     private void quit(final String str)
     {
