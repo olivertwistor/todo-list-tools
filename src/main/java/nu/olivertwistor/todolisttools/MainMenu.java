@@ -5,6 +5,7 @@ import ch.rfin.util.Pair;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -37,7 +38,7 @@ public class MainMenu
     public MainMenu()
     {
         this.menuItems = new HashMap<>();
-        this.menuItems.put("q", Pair.of("[Q]uit", this::quit));
+        this.menuItems.put("q", Pair.of("[Q]uit", str -> this.quit(str)));
     }
 
     /**
@@ -49,7 +50,8 @@ public class MainMenu
     {
         System.out.println("Main menu");
         System.out.println("---------");
-        for (final var pair : this.menuItems.values())
+        for (final Pair<String, Consumer<String>> pair :
+                this.menuItems.values())
         {
             System.out.println(pair.get_1());
         }
@@ -64,8 +66,8 @@ public class MainMenu
      */
     public void act()
     {
-        try (final BufferedReader br =
-                     new BufferedReader(new InputStreamReader(System.in)))
+        try (final BufferedReader br = new BufferedReader(
+                new InputStreamReader(System.in, StandardCharsets.UTF_8)))
         {
             boolean validItem = false;
 
@@ -76,7 +78,7 @@ public class MainMenu
                 final String input = br.readLine();
 
                 // Call the appropriate method.
-                Consumer<String> item = this.menuItems.get(input).get_2();
+                final Consumer<String> item = this.menuItems.get(input).get_2();
                 if (item != null)
                 {
                     validItem = true;
