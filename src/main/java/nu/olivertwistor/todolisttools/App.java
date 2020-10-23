@@ -1,5 +1,7 @@
 package nu.olivertwistor.todolisttools;
 
+import nu.olivertwistor.todolisttools.util.Config;
+
 /**
  * Main class for this app. Contains the main method.
  *

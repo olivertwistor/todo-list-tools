@@ -30,11 +30,12 @@ More information will be available as soon as the first version is released.
 More information will be available as soon as the first version is released.
 
 ## Licenses
-This project is licensed under an MIT License. For detailed terms, please read 
-[LICENSE][3]. 
+This project is licensed under an Apache License 2.0. For detailed terms, 
+please read [LICENSE][3]. 
 
-The library Pair is made by [Christoffer Fink][4] and is licensed under an MIT 
-License.
+* Ini4j is made by Ivan Szkiba and is licensed under an [Apache License 
+2.0][6].
+* Pair is made by [Christoffer Fink][4] and is licensed under an MIT License.
 
 
 [1]: https://www.rememberthemilk.com
@@ -42,3 +43,4 @@ License.
 [3]: LICENSE
 [4]: https://github.com/finkn
 [5]: https://www.rememberthemilk.com/services/api/
+[6]: lib/ini4j/LICENSE.txt
