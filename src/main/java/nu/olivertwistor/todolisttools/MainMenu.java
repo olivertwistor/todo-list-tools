@@ -38,7 +38,7 @@ public class MainMenu
     public MainMenu()
     {
         this.menuItems = new HashMap<>();
-        this.menuItems.put("q", Pair.of("[Q]uit", str -> this.quit(str)));
+        this.menuItems.put("q", Pair.of("[Q]uit", str -> quit(str)));
     }
 
     /**
@@ -86,7 +86,7 @@ public class MainMenu
                 }
             }
         }
-        catch (IOException e)
+        catch (final IOException e)
         {
             e.printStackTrace();
         }
@@ -99,7 +99,7 @@ public class MainMenu
      *
      * @since 0.1.0
      */
-    private void quit(final String str)
+    private static void quit(final String str)
     {
         System.out.println("Goodbye!");
         System.exit(0);
