@@ -108,4 +108,10 @@ public class MainMenu
         System.out.println("Goodbye!");
         System.exit(0);
     }
+
+    @Override
+    public String toString()
+    {
+        return "MainMenu{menuItems=" + this.menuItems.toString() + "}";
+    }
 }
