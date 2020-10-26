@@ -62,6 +62,8 @@ public class MainMenu
      * Reads a line from user input and calls the corresponding function from
      * the menu items Map.
      *
+     * If any error occurs in reading user input, the program is terminated.
+     *
      * @since 0.1.0
      */
     public void act()
@@ -88,7 +90,9 @@ public class MainMenu
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
+            System.err.println("Failed to read user input. This program " +
+                    "cannot continue. Exiting...");
+            System.exit(1);
         }
     }
 
