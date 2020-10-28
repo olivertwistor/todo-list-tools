@@ -1,48 +1,41 @@
-package nu.olivertwistor.todolisttools;
+package nu.olivertwistor.todolisttools.rtmapi;
+
+import nu.olivertwistor.todolisttools.util.Config;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
-import java.util.SortedMap;
 
 /**
- * This class contains methods for communication with the Remember The Milk
- * API.
- *
- * @author Johan Nilsson
- * @since  0.1.0
+ * This is the base class for a REST request to the Remember the Milk API.
  */
-public final class RtmApi
+public class RestRequest
 {
-    /**
-     * Empty constructor to prevent instantiation.
-     *
-     * @since 0.1.0
-     */
-    private RtmApi() { }
+    private final Config config;
+    private final String method;
+    private final String apiKey;
+    private final String responseFormat;
+    private final String apiVersion;
 
-    /**
-     * Takes a sorted map of URL parameters and concatenates all keys and
-     * values.
-     *
-     * @param parameters map of key/value pairs; for example
-     *                   [["api_key", "abc123"], ["perm", "delete"]]
-     *
-     * @return A concatenated string of all parameters, sorted
-     *         alphanumerically; for example "api_keyabc123permdelete".
-     */
-    @SuppressWarnings("TypeMayBeWeakened")
-    public static String prepareParameters(
-            final SortedMap<String, String> parameters)
+    public RestRequest(final Config config,
+                       final String method,
+                       final String apiKey,
+                       final String responseFormat,
+                       final String apiVersion)
     {
-        final StringBuilder concatenatedString = new StringBuilder();
+        this.config = config;
+        this.method = method;
+        this.apiKey = apiKey;
+        this.responseFormat = responseFormat;
+        this.apiVersion = apiVersion;
+    }
 
-        parameters.forEach(
-                (key, value) -> concatenatedString.append(key).append(value));
-
-        return concatenatedString.toString();
+    public RestRequest(final Config config,
+                       final String method,
+                       final String apiKey)
+    {
+        this(config, method, apiKey, null, null);
     }
 
     /**
@@ -61,8 +54,8 @@ public final class RtmApi
      * @since 0.1.0
      */
     public static String hash(final String message,
-                               final Charset charset,
-                               final String algorithm)
+                              final Charset charset,
+                              final String algorithm)
             throws NoSuchAlgorithmException
     {
         final MessageDigest md = MessageDigest.getInstance(algorithm);

@@ -1,14 +1,12 @@
 package nu.olivertwistor.todolisttools;
 
-import nu.olivertwistor.todolisttools.util.Config;
-
 /**
  * Main class for this app. Contains the main method.
  *
  * @author Johan Nilsson
  * @since  0.1.0
  */
-public class App
+public final class App
 {
     /**
      * Prints a short privacy policy and then creates the main menu. Loops
@@ -20,7 +18,7 @@ public class App
      * @since 0.1.0
      */
     @SuppressWarnings("InfiniteLoopStatement")
-    public App(final String configFilePath)
+    private App(final String configFilePath)
     {
         System.out.println("Todo List Tool");
         System.out.println("==============");
@@ -55,13 +53,12 @@ public class App
      *
      * @since 0.1.0
      */
-    @SuppressWarnings("InstantiationOfUtilityClass")
     public static void main(final String[] args)
     {
         if (args.length < 1)
         {
             System.err.println("Too few arguments.");
-            System.out.println("Usage: java -jar todo-list-tools.jar [path " +
+            System.err.println("Usage: java -jar todo-list-tools.jar [path " +
                     "to config file]");
             System.exit(1);
         }

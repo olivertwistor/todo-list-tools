@@ -12,7 +12,6 @@ import java.io.IOException;
  * @author Johan Nilsson
  * @since  0.1.0
  */
-@SuppressWarnings("ClassHasNoToStringMethod")
 public class Config
 {
     private final Wini ini;
@@ -58,5 +57,36 @@ public class Config
     public String getSharedSecret()
     {
         return this.ini.get("api", "shared-secret");
+    }
+
+    public String getRestEndPoint()
+    {
+        return this.ini.get("rest", "endpoint");
+    }
+
+    public String getRestParamApiKey()
+    {
+        return this.ini.get("rest", "param-api-key");
+    }
+
+    public String getRestParamResponseFormat()
+    {
+        return this.ini.get("rest", "param-response-format");
+    }
+
+    public String getRestParamApiVersion()
+    {
+        return this.ini.get("rest", "param-api-version");
+    }
+
+    public String getRestParamMethod()
+    {
+        return this.ini.get("rest", "param-method");
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Config{ini=" + this.ini + "}";
     }
 }

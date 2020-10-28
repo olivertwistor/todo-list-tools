@@ -78,6 +78,7 @@ public class MainMenu
                 // Read user input.
                 System.out.print("? ");
                 final String input = br.readLine();
+                System.out.println();
 
                 // Call the appropriate method.
                 final Consumer<String> item = this.menuItems.get(input).get_2();
@@ -90,8 +91,8 @@ public class MainMenu
         }
         catch (final IOException e)
         {
-            System.err.println("Failed to read user input. This program " +
-                    "cannot continue. Exiting...");
+            System.err.println("Failed to read user input.");
+            System.err.println("This program cannot continue. Exiting...");
             System.exit(1);
         }
     }
@@ -112,6 +113,6 @@ public class MainMenu
     @Override
     public String toString()
     {
-        return "MainMenu{menuItems=" + this.menuItems.toString() + "}";
+        return "MainMenu{menuItems=" + this.menuItems + "}";
     }
 }
