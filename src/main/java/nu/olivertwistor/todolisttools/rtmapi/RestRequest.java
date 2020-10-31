@@ -4,38 +4,86 @@ import nu.olivertwistor.todolisttools.util.Config;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.SortedMap;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.TreeMap;
 
 /**
  * This is the base class for a REST request to the Remember the Milk API.
+ *
+ * A RestRequest consists of parameters represented by key/value pairs stored
+ * in a {@link SortedMap}. When all desired parameters have been added, call
+ * {@link #toUrl()} to construct the REST request as a URL string.
+ *
+ * @author Johan Nilsson
+ * @since  0.1.0
  */
 public class RestRequest
 {
-    private final Config config;
-    private final String method;
-    private final String apiKey;
-    private final String responseFormat;
-    private final String apiVersion;
+    private final String endpoint;
+    private final SortedMap<String, String> parameters;
 
-    public RestRequest(final Config config,
-                       final String method,
-                       final String apiKey,
-                       final String responseFormat,
-                       final String apiVersion)
+    /**
+     * Creates a REST request.
+     *
+     * @param endpoint   the endpoint URL for REST requests
+     * @param parameters a sorted map of parameters
+     *
+     * @since 0.1.0
+     */
+    public RestRequest(final String endpoint,
+                       final SortedMap<String, String> parameters)
     {
-        this.config = config;
-        this.method = method;
-        this.apiKey = apiKey;
-        this.responseFormat = responseFormat;
-        this.apiVersion = apiVersion;
+        this.endpoint = endpoint;
+        this.parameters = new TreeMap<>(parameters);
     }
 
-    public RestRequest(final Config config,
-                       final String method,
-                       final String apiKey)
+    /**
+     * Creates a REST request object.
+     *
+     * @param endpoint the endpoint URL for REST requests
+     *
+     * @since 0.1.0
+     */
+    public RestRequest(final String endpoint)
     {
-        this(config, method, apiKey, null, null);
+        this(endpoint, new TreeMap<>());
+    }
+
+    /**
+     * Adds a REST parameter.
+     *
+     * @param key   the parameter key
+     * @param value the parameter value
+     *
+     * @since 0.1.0
+     */
+    public void addParameter(final String key, final String value)
+    {
+        this.parameters.put(key, value);
+    }
+
+    /**
+     * Creates a URL string based on the REST endpoint and added parameters.
+     *
+     * @return The complete URL string needed for making the REST request.
+     *
+     * @since 0.1.0
+     */
+    public String toUrl()
+    {
+        String url;
+
+        final StringBuilder sb = new StringBuilder(this.endpoint).append("?");
+        this.parameters.forEach((key, value) ->
+                        sb.append(key).append("=").append(value).append("&"));
+
+        // Strip out the last ampersand.
+        url = sb.toString();
+        url = url.substring(0, url.length() - 1);
+
+        return url;
     }
 
     /**
@@ -81,5 +129,12 @@ public class RestRequest
             throws NoSuchAlgorithmException
     {
         return hash(message, StandardCharsets.UTF_8, "MD5");
+    }
+
+    @Override
+    public String toString()
+    {
+        return "RestRequest{endpoint=" + this.endpoint +
+                ", parameters=" + this.parameters + "}";
     }
 }
