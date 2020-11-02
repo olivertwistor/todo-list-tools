@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RestRequestTest
@@ -34,16 +36,21 @@ public class RestRequestTest
     @Test
     public void When_AddingParameters_Then_UrlWillShowThemInOrder()
     {
-        final RestRequest request = new RestRequest(
-                "https://api.rememberthemilk.com/services/rest/");
+        final RestRequest request = new RestRequest(config);
         request.addParameter("api_key", "abc123");
         request.addParameter("method", "rtm.test");
         request.addParameter("contacts", "true");
-        final String url = request.toUrl();
+        try
+        {
+            assertEquals(
+                    request.toUri().toString(),
+                    "https://api.rememberthemilk.com/services/rest/" +
+                            "?api_key=abc123&contacts=true&method=rtm.test");
 
-        assertEquals(
-                url,
-                "https://api.rememberthemilk.com/services/rest/" +
-                        "?api_key=abc123&contacts=true&method=rtm.test");
+        }
+        catch (final URISyntaxException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

@@ -37,6 +37,7 @@ please read [LICENSE][3].
 ### Third-party
 | Library | Author(s) | License
 | :-- | :-- | :--
+| Apache HttpComponent | The Apache Software Foundation | [APL 2.0][7]
 * Ini4j | Ivan Szkiba | [APL 2.0][6]
 * Pair | [Christoffer Fink][4] | MIT
 
@@ -47,3 +48,4 @@ please read [LICENSE][3].
 [4]: https://github.com/finkn
 [5]: https://www.rememberthemilk.com/services/api/
 [6]: lib/ini4j/NOTICE.txt
+[7]: lib/apache-httpcomponent/NOTICE.txt
