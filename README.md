@@ -10,6 +10,7 @@ comes in.
 * [Installation](#installation)
 * [Usage](#usage)
 * [Licensing](#licensing)
+    * [Third-party](#third-party)
 
 ## Disclaimer
 This product uses the [Remember The Milk API][5] but it's not endorsed or 
@@ -33,9 +34,11 @@ More information will be available as soon as the first version is released.
 This project is licensed under an Apache License 2.0. For detailed terms, 
 please read [LICENSE][3]. 
 
-* Ini4j is made by Ivan Szkiba and is licensed under an [Apache License 
-2.0][6].
-* Pair is made by [Christoffer Fink][4] and is licensed under an MIT License.
+### Third-party
+| Library | Author(s) | License
+| :-- | :-- | :--
+* Ini4j | Ivan Szkiba | [APL 2.0][6]
+* Pair | [Christoffer Fink][4] | MIT
 
 
 [1]: https://www.rememberthemilk.com
@@ -43,4 +46,4 @@ please read [LICENSE][3].
 [3]: LICENSE
 [4]: https://github.com/finkn
 [5]: https://www.rememberthemilk.com/services/api/
-[6]: lib/ini4j/LICENSE.txt
+[6]: lib/ini4j/NOTICE.txt
