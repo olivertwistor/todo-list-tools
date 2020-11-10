@@ -37,9 +37,12 @@ please read [LICENSE][3].
 ### Third-party
 | Library | Author(s) | License
 | :-- | :-- | :--
-| Apache HttpComponent | The Apache Software Foundation | [APL 2.0][7]
-* Ini4j | Ivan Szkiba | [APL 2.0][6]
+* [Dom4j][7] | MetaStuff Ltd. and Dom4j contributors | Custom
+* [Ini4j][8] | Ivan Szkiba | APL 2.0
+* [JUnit 4][9] | | EPL 1.0
 * Pair | [Christoffer Fink][4] | MIT
+
+For all third-party licenses, please refer to [3rd-party-licenses.txt][6] for full license terms.
 
 
 [1]: https://www.rememberthemilk.com
@@ -47,5 +50,7 @@ please read [LICENSE][3].
 [3]: LICENSE
 [4]: https://github.com/finkn
 [5]: https://www.rememberthemilk.com/services/api/
-[6]: lib/ini4j/NOTICE.txt
-[7]: lib/apache-httpcomponent/NOTICE.txt
+[6]: 3rd-party-licenses.txt
+[7]: https://dom4j.github.io/
+[8]: http://ini4j.sourceforge.net/index.html
+[9]: https://junit.org/junit4/
