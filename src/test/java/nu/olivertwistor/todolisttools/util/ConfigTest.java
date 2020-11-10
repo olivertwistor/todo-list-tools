@@ -1,29 +1,26 @@
 package nu.olivertwistor.todolisttools.util;
 
 import org.ini4j.InvalidFileFormatException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.IOException;
+
+import static org.hamcrest.core.Is.is;
 
 class ConfigTest
 {
     @Test
-    void getApiKey()
+    public void getApiKey()
     {
         try
         {
             final Config config = new Config("config.ini");
             final String apiKey = config.getApiKey();
 
-            Assertions.assertEquals("xxx", apiKey);
+            Assert.assertThat(apiKey, is("xxx"));
         }
-        catch (InvalidFileFormatException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
+        catch (final InvalidFileFormatException | IOException e)
         {
             e.printStackTrace();
         }

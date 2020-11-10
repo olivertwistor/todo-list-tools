@@ -1,7 +1,7 @@
 package nu.olivertwistor.todolisttools.rtmapi;
 
 import nu.olivertwistor.todolisttools.util.Config;
-import org.apache.hc.core5.net.URIBuilder;
+import nu.olivertwistor.todolisttools.util.Constants;
 
 import java.net.URI;
 import java.net.URISyntaxException;

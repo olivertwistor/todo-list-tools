@@ -9,6 +9,6 @@ public final class GetFrob extends RestRequest
     {
         super(config);
 
-        this.addParameter("api_key", config.getApiKey());
+        this.addParameter(Constants.API_KEY_PARAM, config.getApiKey());
     }
 }

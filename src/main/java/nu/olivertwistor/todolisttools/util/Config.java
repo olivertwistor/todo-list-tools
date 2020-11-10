@@ -59,31 +59,6 @@ public class Config
         return this.ini.get("api", "shared-secret");
     }
 
-    public String getRestEndPoint()
-    {
-        return this.ini.get("rest", "endpoint");
-    }
-
-    public String getRestParamApiKey()
-    {
-        return this.ini.get("rest", "param-api-key");
-    }
-
-    public String getRestParamResponseFormat()
-    {
-        return this.ini.get("rest", "param-response-format");
-    }
-
-    public String getRestParamApiVersion()
-    {
-        return this.ini.get("rest", "param-api-version");
-    }
-
-    public String getRestParamMethod()
-    {
-        return this.ini.get("rest", "param-method");
-    }
-
     @Override
     public String toString()
     {
