@@ -2,14 +2,19 @@ package nu.olivertwistor.todolisttools.rtmapi;
 
 import nu.olivertwistor.todolisttools.util.Config;
 import nu.olivertwistor.todolisttools.util.Constants;
+import org.apache.http.client.utils.URIBuilder;
 
+import javax.xml.bind.DatatypeConverter;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.SortedMap;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
@@ -18,6 +23,10 @@ import java.util.TreeMap;
  * A RestRequest consists of parameters represented by key/value pairs stored
  * in a {@link SortedMap}. When all desired parameters have been added, call
  * {@link #toUri()} to construct the REST request as a URL string.
+ *
+ * Different API methods could be inheriting from this class in order to
+ * simplify calls, for example by adding known parameters in their constructors
+ * so the client doesn't have to manually add them later.
  *
  * @author Johan Nilsson
  * @since  0.1.0
@@ -31,27 +40,43 @@ public class RestRequest
      * Creates a REST request.
      *
      * @param config     Config object for access to API key etc.
-     * @param parameters a sorted map of parameters
+     * @param methodName name of the method to call
+     * @param parameters a sorted map of additional parameters
      *
      * @since 0.1.0
      */
     public RestRequest(final Config config,
+                       final String methodName,
                        final SortedMap<String, String> parameters)
     {
         this.config = config;
         this.parameters = new TreeMap<>(parameters);
+        this.parameters.put(Constants.METHOD_PARAM, methodName);
     }
 
     /**
      * Creates a REST request object.
      *
-     * @param config Config object for access to API key etc.
+     * @param config     Config object for access to API key etc.
+     * @param methodName name of the method to call
      *
      * @since 0.1.0
      */
-    public RestRequest(final Config config)
+    public RestRequest(final Config config, final String methodName)
     {
-        this(config, new TreeMap<>());
+        this(config, methodName, new TreeMap<>());
+    }
+
+    public String generateSignature() throws NoSuchAlgorithmException
+    {
+        final StringBuilder beforeHash = new StringBuilder(
+                this.config.getSharedSecret());
+        this.parameters.forEach(
+                (key, value) -> beforeHash.append(key).append(value));
+
+        System.out.println(beforeHash);
+
+        return hash(beforeHash.toString());
     }
 
     /**
@@ -76,14 +101,35 @@ public class RestRequest
      *
      * @since 0.1.0
      */
-    public URI toUri() throws URISyntaxException
+    public URI toUri() throws URISyntaxException, NoSuchAlgorithmException
     {
-        final URIBuilder builder = new URIBuilder(
-                this.config.getRestEndPoint());
+        final URIBuilder builder = new URIBuilder(Constants.ENDPOINT);
         this.parameters.forEach(
                 (key, value) -> builder.addParameter(key, value));
+        builder.addParameter(Constants.API_SIG_PARAM, this.generateSignature());
 
         return builder.build();
+    }
+
+    /**
+     * Creates a URL object based on the REST endpoint and added parameters.
+     *
+     * @return URL object needed for making the REST request.
+     *
+     * @throws MalformedURLException if the resulting URL is malformed.
+     *
+     * @since 0.1.0
+     */
+    public URL toUrl() throws MalformedURLException, NoSuchAlgorithmException
+    {
+        try
+        {
+            return this.toUri().toURL();
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new MalformedURLException(e.getMessage());
+        }
     }
 
     /**
@@ -98,8 +144,7 @@ public class RestRequest
      *
      * @since 0.1.0
      */
-    public static String hash(final String message)
-            throws NoSuchAlgorithmException
+    static String hash(final String message) throws NoSuchAlgorithmException
     {
         final Charset charset = StandardCharsets.UTF_8;
 
@@ -107,7 +152,8 @@ public class RestRequest
         md.update(message.getBytes(charset));
         final byte[] digest = md.digest();
 
-        return new String(digest, charset);
+        return DatatypeConverter.printHexBinary(digest)
+                .toLowerCase(Locale.ENGLISH);
     }
 
     @Override

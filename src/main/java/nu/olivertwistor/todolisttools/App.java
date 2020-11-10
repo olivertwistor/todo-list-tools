@@ -17,7 +17,6 @@ public final class App
      *
      * @since 0.1.0
      */
-    @SuppressWarnings("InfiniteLoopStatement")
     private App(final String configFilePath)
     {
         System.out.println("Todo List Tool");
