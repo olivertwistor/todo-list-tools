@@ -20,7 +20,7 @@ class ConfigTest
 
             Assert.assertThat(apiKey, is("xxx"));
         }
-        catch (final InvalidFileFormatException | IOException e)
+        catch (final IOException e)
         {
             e.printStackTrace();
         }

@@ -42,7 +42,8 @@ please read [LICENSE][3].
 * [JUnit 4][9] | | EPL 1.0
 * Pair | [Christoffer Fink][4] | MIT
 
-For all third-party licenses, please refer to [3rd-party-licenses.txt][6] for full license terms.
+For all third-party licenses, please refer to [3rd-party-licenses.txt][6] 
+for full license terms.
 
 
 [1]: https://www.rememberthemilk.com

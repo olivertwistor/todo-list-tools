@@ -38,9 +38,9 @@ public class RestRequestTest
         try
         {
             Assert.assertThat(
-                    "https://api.rememberthemilk.com/services/rest/" +
-                    "?api_key=abc123&contacts=true&method=rtm.test",
-                    is(request.toUri().toString()));
+                    request.toUri().toString(),
+                    is("https://api.rememberthemilk.com/services/rest/" +
+                    "?api_key=abc123&contacts=true&method=rtm.test"));
 
         }
         catch (final URISyntaxException | NoSuchAlgorithmException e)

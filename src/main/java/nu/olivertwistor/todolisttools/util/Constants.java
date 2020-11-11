@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NonNls;
 public final class Constants
 {
     /**
-     * Endpoint URL to the Remember The Milk API.
+     * Endpoint URL to the Remember The Milk REST API.
      *
      * @since 0.1.0
      */
