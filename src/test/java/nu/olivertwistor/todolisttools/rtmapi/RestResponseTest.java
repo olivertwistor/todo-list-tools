@@ -1,7 +1,7 @@
 package nu.olivertwistor.todolisttools.rtmapi;
 
-import nu.olivertwistor.todolisttools.rtmapi.requests.GetFrob;
 import nu.olivertwistor.todolisttools.util.Config;
+import nu.olivertwistor.todolisttools.util.Constants;
 import org.dom4j.DocumentException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,7 +20,8 @@ public class RestResponseTest
         try
         {
             final Config config = new Config("dev-config.ini");
-            final GetFrob getFrob = new GetFrob(config);
+            final RestRequest getFrob =
+                    new RestRequest(config, Constants.GET_FROB_METHOD);
             System.out.println(getFrob.toUrl());
             final RestResponse response = new RestResponse(getFrob);
             System.out.println(response);

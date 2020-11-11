@@ -134,6 +134,11 @@ public class RestResponse
         return errorMessage.toString();
     }
 
+    public Element getElement(final String xmlAttribute)
+    {
+        return this.elements.get(xmlAttribute);
+    }
+
     @Override
     public String toString()
     {
