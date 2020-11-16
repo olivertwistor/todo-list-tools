@@ -59,11 +59,26 @@ public class Config
         return this.ini.get("api", "shared-secret");
     }
 
+    /**
+     * Gets the authentication token from the config file.
+     *
+     * @return The authentication token; or null if the config file key
+     *         couldn't be found.
+     *
+     * @since 0.1.0
+     */
     public String getToken()
     {
         return this.ini.get("api", "auth-token");
     }
 
+    /**
+     * Sets the authentication token and writes it to the config file.
+     *
+     * @throws IOException if the config file couldn't be written to
+     *
+     * @since 0.1.0
+     */
     public void setToken(final String token) throws IOException
     {
         this.ini.put("api", "auth-token", token);

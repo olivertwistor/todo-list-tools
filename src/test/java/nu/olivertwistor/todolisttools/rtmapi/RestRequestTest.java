@@ -16,7 +16,6 @@ public class RestRequestTest
 {
     private static Config config;
 
-    @SuppressWarnings("OverlyBroadCatchBlock")
     @BeforeClass
     public static void setup()
     {

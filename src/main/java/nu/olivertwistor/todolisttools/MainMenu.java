@@ -29,6 +29,8 @@ import java.util.function.Consumer;
  */
 public class MainMenu
 {
+    private static final String val_read_permissions = "read";
+
     private final Config config;
     private final SortedMap<String, Pair<String, Consumer<String>>> menuItems;
 
@@ -130,6 +132,7 @@ public class MainMenu
         }
     }
 
+    @SuppressWarnings({"OverlyLongMethod", "CallToPrintStackTrace"})
     private void obtainAuthentication(final String str)
     {
         System.out.println(String.join(System.lineSeparator(),
@@ -144,7 +147,7 @@ public class MainMenu
         try
         {
             final URL authUrl = authentication.generateAuthRequest(
-                    this.config, Authentication.VAL_READ_PERMISSIONS);
+                    this.config, val_read_permissions);
             System.out.println(authUrl.toExternalForm());
         }
         catch (final NoSuchElementException e)
@@ -188,7 +191,7 @@ public class MainMenu
         // Now when we have obtained authentication and the user have confirmed
         // that, we can retrieve the token we will use for any subsequent calls
         // to the API.
-        String token = null;
+        final String token;
         try
         {
             token = authentication.obtainToken(this.config);

@@ -7,8 +7,21 @@ import java.io.IOException;
 
 import static org.hamcrest.core.Is.is;
 
+/**
+ * Unit tests of the Config class.
+ *
+ * @author Johan Nilsson
+ * @since  0.1.0
+ */
+@SuppressWarnings("MethodMayBeStatic")
 class ConfigTest
 {
+    /**
+     * Tests whether an instantiated Config class can read the API key
+     * property.
+     *
+     * @since 0.1.0
+     */
     @Test
     public void getApiKey()
     {

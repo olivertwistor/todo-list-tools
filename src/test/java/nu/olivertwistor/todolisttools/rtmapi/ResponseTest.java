@@ -14,7 +14,6 @@ import static org.hamcrest.core.Is.is;
 public class ResponseTest
 {
     @Test
-    @SuppressWarnings("OverlyBroadCatchBlock")
     public void Given_GetFrobRequest_Then_ResponseStatusIsOk()
     {
         try

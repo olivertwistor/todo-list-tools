@@ -6,22 +6,16 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.jetbrains.annotations.NonNls;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 /**
  * A REST response takes a {@link Request} and reads the XML response, storing
- * the {@link Element root element} for later use. From that, the caller can
- * {@link #getElement(String) get elements} and
- * {@link #getAttribute(String, String) get attributes} as needed.
+ * the {@link Element root element} for later use.
  *
  * @author Johan Nilsson
  * @since  0.1.0
