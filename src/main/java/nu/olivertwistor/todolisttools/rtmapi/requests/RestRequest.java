@@ -1,14 +1,15 @@
-package nu.olivertwistor.todolisttools.rtmapi;
+package nu.olivertwistor.todolisttools.rtmapi.requests;
 
+import ch.rfin.util.Pair;
+import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.util.Config;
-import nu.olivertwistor.todolisttools.util.Constants;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This is a specialized version of {@link Request} for requests to Remember
@@ -19,21 +20,25 @@ import java.util.TreeMap;
  */
 public class RestRequest extends Request
 {
+    private static final String endpoint_rest =
+            "https://api.rememberthemilk.com/services/rest/";
+    private static final String param_method = "method";
+
     /**
      * Creates a REST request.
      *
      * @param config     Config object for access to API key etc.
      * @param methodName name of the method to call
-     * @param parameters a sorted map of additional parameters
+     * @param parameters a list of additional parameters
      *
      * @since 0.1.0
      */
     public RestRequest(final Config config,
                        final String methodName,
-                       final SortedMap<String, String> parameters)
+                       final List<Pair<String, String>> parameters)
     {
         super(config, parameters);
-        this.parameters.put(Constants.METHOD_PARAM, methodName);
+        this.parameters.add(Pair.of(param_method, methodName));
     }
 
     /**
@@ -46,12 +51,12 @@ public class RestRequest extends Request
      */
     public RestRequest(final Config config, final String methodName)
     {
-        this(config, methodName, new TreeMap<>());
+        this(config, methodName, new LinkedList<>());
     }
 
     /**
      * Creates a URI object based on the REST endpoint, added parameters and a
-     * hashed api_sig parameter using {@link #hash(String)}.
+     * hashed API signature parameter.
      *
      * @return URI object needed for making the request.
      *
@@ -64,10 +69,10 @@ public class RestRequest extends Request
     @Override
     public URI toUri() throws URISyntaxException, NoSuchAlgorithmException
     {
-        final URIBuilder builder = new URIBuilder(Constants.REST_ENDPOINT);
+        final URIBuilder builder = new URIBuilder(endpoint_rest);
         this.parameters.forEach(
-                (key, value) -> builder.addParameter(key, value));
-        builder.addParameter(Constants.API_SIG_PARAM, this.generateSignature());
+                (item) -> builder.addParameter(item._1, item._2));
+        builder.addParameter(PARAM_API_SIGNATURE, this.generateSignature());
 
         return builder.build();
     }

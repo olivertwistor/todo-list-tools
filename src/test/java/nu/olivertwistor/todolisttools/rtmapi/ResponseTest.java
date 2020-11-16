@@ -1,7 +1,7 @@
 package nu.olivertwistor.todolisttools.rtmapi;
 
+import nu.olivertwistor.todolisttools.rtmapi.requests.GetFrobRequest;
 import nu.olivertwistor.todolisttools.util.Config;
-import nu.olivertwistor.todolisttools.util.Constants;
 import org.dom4j.DocumentException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 
 import static org.hamcrest.core.Is.is;
 
-public class RestResponseTest
+public class ResponseTest
 {
     @Test
     @SuppressWarnings("OverlyBroadCatchBlock")
@@ -20,15 +20,14 @@ public class RestResponseTest
         try
         {
             final Config config = new Config("dev-config.ini");
-            final RestRequest getFrob =
-                    new RestRequest(config, Constants.GET_FROB_METHOD);
+            final GetFrobRequest getFrob = new GetFrobRequest(config);
             System.out.println(getFrob.toUrl());
-            final RestResponse response = new RestResponse(getFrob);
+            final Response response = new Response(getFrob);
             System.out.println(response);
-            Assert.assertThat(
-                    response.getStatus(), is(RestResponse.success_status));
+            Assert.assertThat(response.isResponseSuccess(), is(true));
         }
-        catch (final IOException | DocumentException | NoSuchAlgorithmException e)
+        catch (final IOException | DocumentException |
+                NoSuchAlgorithmException e)
         {
             System.err.println(e.getLocalizedMessage());
         }

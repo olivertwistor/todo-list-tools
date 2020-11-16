@@ -1,13 +1,22 @@
 package nu.olivertwistor.todolisttools;
 
 import ch.rfin.util.Pair;
+import nu.olivertwistor.java.tui.Terminal;
+import nu.olivertwistor.java.tui.UnclosableInputStream;
+import nu.olivertwistor.todolisttools.rtmapi.Authentication;
+import nu.olivertwistor.todolisttools.util.Config;
+import org.dom4j.DocumentException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 /**
@@ -20,7 +29,8 @@ import java.util.function.Consumer;
  */
 public class MainMenu
 {
-    private final Map<String, Pair<String, Consumer<String>>> menuItems;
+    private final Config config;
+    private final SortedMap<String, Pair<String, Consumer<String>>> menuItems;
 
     /**
      * Creates a new HashMap for the menu items and adds the menu items.
@@ -33,12 +43,18 @@ public class MainMenu
      *     <li>function name for the action; called in {@link #act()}</li>
      * </ul>
      *
+     * @param config Config object to use throughout this app
+     *
      * @since 0.1.0
      */
-    public MainMenu()
+    public MainMenu(final Config config)
     {
-        this.menuItems = new HashMap<>();
-        this.menuItems.put("q", Pair.of("[Q]uit", str -> quit(str)));
+        this.config = config;
+        this.menuItems = new TreeMap<>();
+        this.menuItems.put("o", Pair.of("[O]btain authentication",
+                str -> this.obtainAuthentication(str)));
+        this.menuItems.put("q", Pair.of("[Q]uit",
+                str -> quit(str)));
     }
 
     /**
@@ -68,6 +84,10 @@ public class MainMenu
      */
     public void act()
     {
+        // Temporarily set the system InputStream to our own InputStream that
+        // doesn't close.
+        System.setIn(new UnclosableInputStream(System.in));
+
         try (final BufferedReader br = new BufferedReader(
                 new InputStreamReader(System.in, StandardCharsets.UTF_8)))
         {
@@ -77,22 +97,122 @@ public class MainMenu
             {
                 // Read user input.
                 System.out.print("? ");
-                final String input = br.readLine();
-                System.out.println();
+                final String input = br.readLine().toLowerCase(Locale.ENGLISH);
 
                 // Call the appropriate method.
-                final Consumer<String> item = this.menuItems.get(input).get_2();
-                if (item != null)
+                final Pair<String, Consumer<String>> pair =
+                        this.menuItems.get(input);
+                if (pair != null)
                 {
-                    validItem = true;
-                    item.accept(input);
+                    final Consumer<String> item = pair.get_2();
+                    if (item != null)
+                    {
+                        validItem = true;
+                        item.accept(input);
+                    }
+                }
+                else
+                {
+                    System.out.println("That menu item doesn't exist.");
                 }
             }
+            System.out.println();
+        }
+        catch (final IOException e)
+        {
+            System.err.println(
+                    "Failed to read user input: " + e.getLocalizedMessage());
+        }
+        finally
+        {
+            // Reset the system InputStream to System.in.
+            System.setIn(System.in);
+        }
+    }
+
+    private void obtainAuthentication(final String str)
+    {
+        System.out.println(String.join(System.lineSeparator(),
+                "In order to use this program, first you have to go to the ",
+                "Remember The Milk website and give it this program ",
+                "permission to access your account. Please enter the ",
+                "following URL in a web browser and follow the instructions. ",
+                "Afterwards, return to this program."));
+        System.out.println();
+
+        final Authentication authentication = new Authentication();
+        try
+        {
+            final URL authUrl = authentication.generateAuthRequest(
+                    this.config, Authentication.VAL_READ_PERMISSIONS);
+            System.out.println(authUrl.toExternalForm());
+        }
+        catch (final NoSuchElementException e)
+        {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (final DocumentException e)
+        {
+            System.err.println("Failed to read authentication response.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (final NoSuchAlgorithmException e)
+        {
+            System.err.println(
+                    "Failed to create hash for communication with the API.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (final IOException e)
+        {
+            System.err.println("I/O error.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        System.out.println("When you are done giving this program the " +
+                "required permissions, press ENTER.");
+        try
+        {
+            Terminal.readString();
         }
         catch (final IOException e)
         {
             System.err.println("Failed to read user input.");
-            System.err.println("This program cannot continue. Exiting...");
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // Now when we have obtained authentication and the user have confirmed
+        // that, we can retrieve the token we will use for any subsequent calls
+        // to the API.
+        String token = null;
+        try
+        {
+            token = authentication.obtainToken(this.config);
+
+            // Store the retrieved token to the config file.
+            this.config.setToken(token);
+        }
+        catch (final DocumentException e)
+        {
+            System.err.println("Failed to read authentication response.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (final NoSuchAlgorithmException e)
+        {
+            System.err.println(
+                    "Failed to create hash for communication with the API.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (final IOException e)
+        {
+            System.err.println("I/O error.");
+            e.printStackTrace();
             System.exit(1);
         }
     }
@@ -113,6 +233,7 @@ public class MainMenu
     @Override
     public String toString()
     {
-        return "MainMenu{menuItems=" + this.menuItems + "}";
+        return "MainMenu{config=" + this.config + ", " +
+                "menuItems=" + this.menuItems + "}";
     }
 }

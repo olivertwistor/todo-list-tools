@@ -59,6 +59,17 @@ public class Config
         return this.ini.get("api", "shared-secret");
     }
 
+    public String getToken()
+    {
+        return this.ini.get("api", "auth-token");
+    }
+
+    public void setToken(final String token) throws IOException
+    {
+        this.ini.put("api", "auth-token", token);
+        this.ini.store();
+    }
+
     @Override
     public String toString()
     {

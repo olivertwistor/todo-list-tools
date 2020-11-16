@@ -1,5 +1,6 @@
 package nu.olivertwistor.todolisttools.rtmapi;
 
+import nu.olivertwistor.todolisttools.rtmapi.requests.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -37,10 +38,11 @@ public class RestRequestTest
         request.addParameter("contacts", "true");
         try
         {
-            Assert.assertThat(
-                    request.toUri().toString(),
-                    is("https://api.rememberthemilk.com/services/rest/" +
-                    "?api_key=abc123&contacts=true&method=rtm.test"));
+            Assert.assertThat(request.toUri().toString(), is(
+                    "https://api.rememberthemilk.com/services/rest/" +
+                            "?api_key=abc123&contacts=true" +
+                            "&method=rtm.test" +
+                            "&api_sig=974f8b7b6cfe60b1b14f71501573fb90"));
 
         }
         catch (final URISyntaxException | NoSuchAlgorithmException e)
@@ -55,7 +57,7 @@ public class RestRequestTest
         try
         {
             Assert.assertThat(
-                    RestRequest.hash("hello.world"),
+                    Request.hash("hello.world"),
                     is("18aa7764566d19e9a9afb6ea0bf1fa81"));
         }
         catch (final NoSuchAlgorithmException e)

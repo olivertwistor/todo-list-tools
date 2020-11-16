@@ -1,6 +1,5 @@
 package nu.olivertwistor.todolisttools.util;
 
-import org.ini4j.InvalidFileFormatException;
 import org.junit.Assert;
 import org.junit.Test;
 

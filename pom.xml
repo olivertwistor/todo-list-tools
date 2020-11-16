@@ -31,6 +31,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>nu.olivertwistor.java</groupId>
+            <artifactId>tui</artifactId>
+            <version>0.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.ini4j</groupId>
             <artifactId>ini4j</artifactId>
             <version>0.5.4</version>
@@ -78,6 +84,24 @@
                             <artifactId>pair</artifactId>
                             <version>0.1</version>
                             <file>${project.basedir}/lib/pair-0.1.jar</file>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>install-java-tui</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <repositoryLayout>default</repositoryLayout>
+                            <groupId>nu.olivertwistor.java</groupId>
+                            <artifactId>tui</artifactId>
+                            <version>0.1.0</version>
+                            <file>
+                                ${project.basedir}/lib/java-tui-0.1.0.jar
+                            </file>
                             <packaging>jar</packaging>
                             <generatePom>true</generatePom>
                         </configuration>

@@ -1,5 +1,10 @@
 package nu.olivertwistor.todolisttools;
 
+import nu.olivertwistor.todolisttools.util.Config;
+import org.ini4j.InvalidFileFormatException;
+
+import java.io.IOException;
+
 /**
  * Main class for this app. Contains the main method.
  *
@@ -19,6 +24,24 @@ public final class App
      */
     private App(final String configFilePath)
     {
+        // We must first see whether we can load the config.
+        Config config = null;
+        try
+        {
+            config = new Config(configFilePath);
+        }
+        catch (final InvalidFileFormatException e)
+        {
+            System.err.println(
+                    "The given config file hasn't got the correct format:");
+            System.exit(1);
+        }
+        catch (final IOException e)
+        {
+            System.err.println("The given config file couldn't be opened.");
+            System.exit(1);
+        }
+
         System.out.println("Todo List Tool");
         System.out.println("==============");
         System.out.println();
@@ -33,7 +56,7 @@ public final class App
                 "endorsed or certified by Remember The Milk."));
         System.out.println();
 
-        final MainMenu mainMenu = new MainMenu();
+        final MainMenu mainMenu = new MainMenu(config);
         do
         {
             mainMenu.show();

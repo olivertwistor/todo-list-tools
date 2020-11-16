@@ -1,14 +1,15 @@
-package nu.olivertwistor.todolisttools.rtmapi;
+package nu.olivertwistor.todolisttools.rtmapi.requests;
 
+import ch.rfin.util.Pair;
+import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.util.Config;
-import nu.olivertwistor.todolisttools.util.Constants;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This is a specialized version of {@link Request} for requests to Remember
@@ -20,14 +21,15 @@ import java.util.TreeMap;
  */
 public class AuthRequest extends Request
 {
-    private final String frob;
+    private static final String endpoint_auth =
+            "https://www.rememberthemilk.com/services/auth/";
+    private static final String param_permissions = "perms";
 
     /**
      * Creates an authentication request.
      *
      * @param config      Config object for access to API key etc.
-     * @param permissions which permissions this app should get; choose between
-     *                    "read", "write" and "delete"
+     * @param permissions which permissions this app should get
      * @param frob        FROB used for this authentication
      * @param parameters  a sorted map of additional parameters
      *
@@ -36,19 +38,19 @@ public class AuthRequest extends Request
     public AuthRequest(final Config config,
                        final String permissions,
                        final String frob,
-                       final SortedMap<String, String> parameters)
+                       final List<Pair<String, String>> parameters)
     {
         super(config, parameters);
-        this.frob = frob;
-        this.parameters.put(Constants.PERMISSIONS_PARAM, permissions);
+        this.parameters.add(Pair.of(PARAM_API_KEY, config.getApiKey()));
+        this.parameters.add(Pair.of(param_permissions, permissions));
+        this.parameters.add(Pair.of(PARAM_FROB, frob));
     }
 
     /**
      * Creates an authentication request.
      *
      * @param config      Config object for access to API key etc.
-     * @param permissions which permissions this app should get; choose between
-     *                    "read", "write" and "delete"
+     * @param permissions which permissions this app should get
      * @param frob        FROB used for this authentication
      *
      * @since 0.1.0
@@ -57,12 +59,12 @@ public class AuthRequest extends Request
                        final String permissions,
                        final String frob)
     {
-        this(config, permissions, frob, new TreeMap<>());
+        this(config, permissions, frob, new LinkedList<>());
     }
 
     /**
      * Creates a URI object based on the authentication endpoint, added
-     * parameters and a hashed api_sig parameter using {@link #hash(String)}.
+     * parameters and a hashed API signature parameter.
      *
      * @return URI object needed for making the request.
      *
@@ -75,11 +77,10 @@ public class AuthRequest extends Request
     @Override
     public URI toUri() throws URISyntaxException, NoSuchAlgorithmException
     {
-        final URIBuilder builder = new URIBuilder(Constants.AUTH_ENDPOINT);
+        final URIBuilder builder = new URIBuilder(endpoint_auth);
         this.parameters.forEach(
-                (key, value) -> builder.addParameter(key, value));
-        builder.addParameter(Constants.FROB_PARAM, this.frob);
-        builder.addParameter(Constants.API_SIG_PARAM, this.generateSignature());
+                (item) -> builder.addParameter(item._1, item._2));
+        builder.addParameter(PARAM_API_SIGNATURE, this.generateSignature());
 
         return builder.build();
     }
@@ -87,7 +88,6 @@ public class AuthRequest extends Request
     @Override
     public String toString()
     {
-        return "AuthRequest{super=" + super.toString() + ", " +
-                "frob=" + this.frob + "}";
+        return "AuthRequest{super=" + super.toString() + "}";
     }
 }
