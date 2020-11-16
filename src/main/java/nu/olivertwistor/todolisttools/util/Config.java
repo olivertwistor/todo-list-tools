@@ -75,6 +75,8 @@ public class Config
     /**
      * Sets the authentication token and writes it to the config file.
      *
+     * @param token the authentication token
+     *
      * @throws IOException if the config file couldn't be written to
      *
      * @since 0.1.0

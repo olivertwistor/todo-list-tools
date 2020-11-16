@@ -52,7 +52,7 @@ public class RestRequest extends Request
     public RestRequest(final Config config, final String methodName)
     {
         this(config, methodName, new LinkedList<>());
-    }
+        }
 
     /**
      * Creates a URI object based on the REST endpoint, added parameters and a
