@@ -30,9 +30,11 @@ public class GetFrobResponse extends Response
      * @throws IOException       if there were any problem with reading either
      *                           the request or the response
      * @throws DocumentException if the response couldn't be parsed into XML
+     * @throws MalformedURLException
      *
      * @since 0.1.0
      */
+    @SuppressWarnings("JavaDoc")
     public GetFrobResponse(final GetFrobRequest request)
             throws MalformedURLException, NoSuchAlgorithmException,
             IOException, DocumentException
@@ -40,6 +42,16 @@ public class GetFrobResponse extends Response
         super(request);
     }
 
+    /**
+     * Gets the FROB string.
+     *
+     * @return The FROB string.
+     *
+     * @throws NoSuchElementException if the FROB couldn't be found in the
+     *                                response.
+     *
+     * @since 0.1.0
+     */
     public String getFrob() throws NoSuchElementException
     {
         final Element frobElement = this.rootElement.element(TAG_FROB);
