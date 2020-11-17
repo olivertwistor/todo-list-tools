@@ -1,12 +1,17 @@
 package nu.olivertwistor.todolisttools;
 
+import nu.olivertwistor.todolisttools.util.Config;
+import org.ini4j.InvalidFileFormatException;
+
+import java.io.IOException;
+
 /**
  * Main class for this app. Contains the main method.
  *
  * @author Johan Nilsson
- * @since  v0.1.0
+ * @since  0.1.0
  */
-public class App
+public final class App
 {
     /**
      * Prints a short privacy policy and then creates the main menu. Loops
@@ -15,28 +20,43 @@ public class App
      *
      * @param configFilePath path to config file
      *
-     * @since v0.1.0
+     * @since 0.1.0
      */
-    @SuppressWarnings("InfiniteLoopStatement")
-    public App(final String configFilePath)
+    private App(final String configFilePath)
     {
+        // We must first see whether we can load the config.
+        Config config = null;
+        try
+        {
+            config = new Config(configFilePath);
+        }
+        catch (final InvalidFileFormatException e)
+        {
+            System.err.println(
+                    "The given config file hasn't got the correct format:");
+            System.exit(1);
+        }
+        catch (final IOException e)
+        {
+            System.err.println("The given config file couldn't be opened.");
+            System.exit(1);
+        }
+
         System.out.println("Todo List Tool");
         System.out.println("==============");
         System.out.println();
-        final String privacyPolicy = String.join(System.lineSeparator(),
-                "This app is collecting data from your Remember the Milk ",
+        System.out.println(String.join(System.lineSeparator(),
+                "This program is collecting data from your Remember the Milk ",
                 "account, in order to present aggregations and calculations ",
                 "on lists and smartlists. For more information, please read ",
-                "the file \"privacy-policy.md\" located in the root folder.");
-        System.out.println(privacyPolicy);
+                "the file \"privacy-policy.md\" located in the root folder."));
         System.out.println();
-        final String disclaimer = String.join(System.lineSeparator(),
+        System.out.println(String.join(System.lineSeparator(),
                 "This product uses the Remember The Milk API but is not ",
-                "endorsed or certified by Remember The Milk.");
-        System.out.println(disclaimer);
+                "endorsed or certified by Remember The Milk."));
         System.out.println();
 
-        final MainMenu mainMenu = new MainMenu();
+        final MainMenu mainMenu = new MainMenu(config);
         do
         {
             mainMenu.show();
@@ -51,15 +71,14 @@ public class App
      *
      * @param args program arguments; should contain a path to a config file
      *
-     * @since v0.1.0
+     * @since 0.1.0
      */
-    @SuppressWarnings("InstantiationOfUtilityClass")
     public static void main(final String[] args)
     {
         if (args.length < 1)
         {
             System.err.println("Too few arguments.");
-            System.out.println("Usage: java -jar todo-list-tools.jar [path " +
+            System.err.println("Usage: java -jar todo-list-tools.jar [path " +
                     "to config file]");
             System.exit(1);
         }

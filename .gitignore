@@ -1,3 +1,6 @@
 .idea/
+lib/pair-0.1*
 out/
+target/
 *.iml
+dev-config.ini
