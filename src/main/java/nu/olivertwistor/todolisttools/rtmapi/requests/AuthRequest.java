@@ -43,7 +43,7 @@ public class AuthRequest extends Request
         super(config, parameters);
         this.parameters.add(Pair.of(PARAM_API_KEY, config.getApiKey()));
         this.parameters.add(Pair.of(param_permissions, permissions));
-        this.parameters.add(Pair.of(PARAM_FROB, frob));
+        this.parameters.add(Pair.of(param_frob, frob));
     }
 
     /**
@@ -80,7 +80,7 @@ public class AuthRequest extends Request
         final URIBuilder builder = new URIBuilder(endpoint_auth);
         this.parameters.forEach(
                 (item) -> builder.addParameter(item._1, item._2));
-        builder.addParameter(PARAM_API_SIGNATURE, this.generateSignature());
+        builder.addParameter(param_api_signature, this.generateSignature());
 
         return builder.build();
     }

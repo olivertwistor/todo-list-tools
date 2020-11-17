@@ -28,6 +28,6 @@ public final class GetTokenRequest extends RestRequest
         super(config, method_get_token);
 
         this.addParameter(PARAM_API_KEY, config.getApiKey());
-        this.addParameter(PARAM_FROB, frob);
+        this.addParameter(param_frob, frob);
     }
 }

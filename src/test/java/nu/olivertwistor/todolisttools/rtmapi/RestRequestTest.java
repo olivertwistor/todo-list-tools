@@ -12,10 +12,22 @@ import java.security.NoSuchAlgorithmException;
 
 import static org.hamcrest.CoreMatchers.*;
 
+/**
+ * Unit tests for the {@link RestRequest} class.
+ *
+ * @author Johan Nilsson
+ * @since  0.1.0
+ */
 public class RestRequestTest
 {
     private static Config config;
 
+    /**
+     * Tries to create a Config object from the file "dev-config.ini" (a
+     * development config file containing a proper API key and shared secret).
+     *
+     * @since 0.1.0
+     */
     @BeforeClass
     public static void setup()
     {
@@ -29,6 +41,12 @@ public class RestRequestTest
         }
     }
 
+    /**
+     * Asserts that the following statement is true: "When adding URL
+     * parameters, the resulting URL will show the parameters in alphanumerical order."
+     *
+     * @since 0.1.0
+     */
     @Test
     public void When_AddingParameters_Then_UrlWillShowThemInOrder()
     {
@@ -50,6 +68,12 @@ public class RestRequestTest
         }
     }
 
+    /**
+     * Asserts that the following statement is true: "Given a known string, its
+     * hash value is the MD5 hash."
+     *
+     * @since 0.1.0
+     */
     @Test
     public void Given_KnownString_Then_ValidHash()
     {

@@ -102,4 +102,11 @@ public final class Authentication
 
         return getTokenResponse.getToken();
     }
+
+    @Override
+    public String toString()
+    {
+        return "Authentication{authRequest=" + this.authRequest +
+                ", frob=" + this.frob + "}";
+    }
 }

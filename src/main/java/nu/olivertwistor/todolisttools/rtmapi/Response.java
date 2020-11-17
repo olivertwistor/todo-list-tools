@@ -28,12 +28,22 @@ public class Response
     @NonNls
     private static final String attrib_error_message = "msg";
 
+    /**
+     * XML attribute name for response status.
+     *
+     * @since 0.1.0
+     */
     @NonNls
     public static final String ATTRIB_STATUS = "stat";
 
     @NonNls
     private static final String tag_error = "err";
 
+    /**
+     * XML tag name for FROB.
+     *
+     * @since 0.1.0
+     */
     @NonNls
     public static final String TAG_FROB = "frob";
 
@@ -46,7 +56,13 @@ public class Response
     @NonNls
     private static final String val_status_success = "ok";
 
+    /**
+     * The root element of the XML response.
+     *
+     * @since 0.1.0
+     */
     protected final Element rootElement;
+
     private final Document document;
 
     /**
@@ -59,9 +75,12 @@ public class Response
      * @throws IOException       if there were any problem with reading either
      *                           the request or the response
      * @throws DocumentException if the response couldn't be parsed into XML
+     * @throws MalformedURLException
+     * @throws NoSuchAlgorithmException
      *
      * @since 0.1.0
      */
+    @SuppressWarnings("JavaDoc")
     public Response(final Request request)
             throws MalformedURLException, NoSuchAlgorithmException,
             IOException, DocumentException
@@ -76,6 +95,16 @@ public class Response
         this.rootElement = this.document.getRootElement();
     }
 
+    /**
+     * Determines whether this Response was successful.
+     *
+     * @return True if successful; false otherwise.
+     *
+     * @throws NoSuchElementException if {@link #ATTRIB_STATUS} couldn't be
+     *                                found in the response
+     *
+     * @since 0.1.0
+     */
     public boolean isResponseSuccess() throws NoSuchElementException
     {
         final String status = this.rootElement.attributeValue(ATTRIB_STATUS);
@@ -88,6 +117,16 @@ public class Response
         return val_status_success.equals(status);
     }
 
+    /**
+     * Determines whether this Response returned a failure code.
+     *
+     * @return True if a failure; false otherwise.
+     *
+     * @throws NoSuchElementException if {@link #ATTRIB_STATUS} couldn't be
+     *                                found in the response
+     *
+     * @since 0.1.0
+     */
     public boolean isResponseFailure() throws NoSuchElementException
     {
         final String status = this.rootElement.attributeValue(ATTRIB_STATUS);
@@ -100,6 +139,13 @@ public class Response
         return val_status_failure.equals(status);
     }
 
+    /**
+     * Returns this response's entire XML tree.
+     *
+     * @return The XML tree as a string.
+     *
+     * @since 0.1.0
+     */
     public String toXmlString()
     {
         return this.document.asXML();

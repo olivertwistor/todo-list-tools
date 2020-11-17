@@ -32,16 +32,42 @@ import java.util.TreeMap;
  */
 public abstract class Request
 {
+    /**
+     * URL parameter name for API key.
+     *
+     * @since 0.1.0
+     */
     @NonNls
     public static final String PARAM_API_KEY = "api_key";
 
+    /**
+     * URL parameter name for API signature.
+     *
+     * @since 0.1.0
+     */
     @NonNls
-    protected static final String PARAM_API_SIGNATURE = "api_sig";
+    protected static final String param_api_signature = "api_sig";
 
+    /**
+     * URL parameter name for FROB.
+     *
+     * @since 0.1.0
+     */
     @NonNls
-    protected static final String PARAM_FROB = "frob";
+    protected static final String param_frob = "frob";
 
+    /**
+     * The Config object containing API key etc.
+     *
+     * @since 0.1.0
+     */
     protected final Config config;
+
+    /**
+     * List of URL parameters in key/value pairs.
+     *
+     * @since 0.1.0
+     */
     protected final List<Pair<String, String>> parameters;
 
     /**

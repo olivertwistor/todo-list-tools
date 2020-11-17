@@ -72,7 +72,7 @@ public class RestRequest extends Request
         final URIBuilder builder = new URIBuilder(endpoint_rest);
         this.parameters.forEach(
                 (item) -> builder.addParameter(item._1, item._2));
-        builder.addParameter(PARAM_API_SIGNATURE, this.generateSignature());
+        builder.addParameter(param_api_signature, this.generateSignature());
 
         return builder.build();
     }

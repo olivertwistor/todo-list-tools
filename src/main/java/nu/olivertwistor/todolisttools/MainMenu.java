@@ -132,6 +132,16 @@ public class MainMenu
         }
     }
 
+    /**
+     * Asks the user to go to the provided URL to give this application the
+     * required permissions. When that is done, an authentication token is
+     * retrieved from the Remember The Milk service and it is stored in the
+     * config file for this application.
+     *
+     * @param str unused
+     *
+     * @since 0.1.0
+     */
     @SuppressWarnings({"OverlyLongMethod", "CallToPrintStackTrace"})
     private void obtainAuthentication(final String str)
     {
