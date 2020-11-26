@@ -3,6 +3,7 @@ package nu.olivertwistor.todolisttools;
 import ch.rfin.util.Pair;
 import nu.olivertwistor.java.tui.Terminal;
 import nu.olivertwistor.java.tui.UnclosableInputStream;
+import nu.olivertwistor.todolisttools.rtmapi.methods.CheckToken;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 
@@ -137,13 +138,44 @@ public class MainMenu
      * retrieved from the Remember The Milk service and it is stored in the
      * config file for this application.
      *
+     * Before all of this, the existence and validity of an authentication
+     * token is determined. If there is an existing and valid authentication
+     * token, this method will return immediately.
+     *
      * @param str unused
      *
      * @since 0.1.0
      */
-    @SuppressWarnings({"OverlyLongMethod", "CallToPrintStackTrace"})
     private void obtainAuthentication(final String str)
     {
+        final String existingToken = this.config.getToken();
+        if (this.config.getToken() != null)
+        {
+            try
+            {
+                final CheckToken checkToken =
+                        new CheckToken(this.config, existingToken);
+                if (checkToken.getResponse().isResponseSuccess())
+                {
+                    return;
+                }
+            }
+            catch (final DocumentException e)
+            {
+                e.printStackTrace();
+            }
+            catch (final NoSuchAlgorithmException e)
+            {
+                e.printStackTrace();
+            }
+            catch (final IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        // We have no valid authentication token, so let's proceed with
+        // obtaining one.
         System.out.println(String.join(System.lineSeparator(),
                 "In order to use this program, first you have to go to the ",
                 "Remember The Milk website and give it this program ",
