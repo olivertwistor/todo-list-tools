@@ -1,10 +1,8 @@
-package nu.olivertwistor.todolisttools.rtmapi;
+package nu.olivertwistor.todolisttools;
 
-import nu.olivertwistor.todolisttools.rtmapi.requests.AuthRequest;
-import nu.olivertwistor.todolisttools.rtmapi.requests.GetFrobRequest;
-import nu.olivertwistor.todolisttools.rtmapi.requests.GetTokenRequest;
-import nu.olivertwistor.todolisttools.rtmapi.responses.GetTokenResponse;
-import nu.olivertwistor.todolisttools.rtmapi.responses.GetFrobResponse;
+import nu.olivertwistor.todolisttools.rtmapi.AuthRequest;
+import nu.olivertwistor.todolisttools.rtmapi.methods.GetFrob;
+import nu.olivertwistor.todolisttools.rtmapi.methods.GetToken;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 
@@ -29,7 +27,7 @@ import java.util.NoSuchElementException;
 public final class Authentication
 {
     private AuthRequest authRequest;
-    private String frob;
+    private String frobString;
 
     /**
      * Generates a URL with which the user may give this application the
@@ -54,13 +52,12 @@ public final class Authentication
             NoSuchAlgorithmException, MalformedURLException, IOException
     {
         // First, retrieve a FROB.
-        final GetFrobRequest frobRequest = new GetFrobRequest(config);
-        final GetFrobResponse frobResponse = new GetFrobResponse(frobRequest);
-        this.frob = frobResponse.getFrob();
+        final GetFrob getFrob = new GetFrob(config);
+        this.frobString = getFrob.getFrob();
 
         // Then, construct an AuthRequest object and store it in this class.
         // Return the URL.
-        this.authRequest = new AuthRequest(config, permission, this.frob);
+        this.authRequest = new AuthRequest(config, permission, this.frobString);
         return this.authRequest.toUrl();
     }
 
@@ -95,18 +92,14 @@ public final class Authentication
                     "before calling this method.");
         }
 
-        final GetTokenRequest getTokenRequest =
-                new GetTokenRequest(config, this.frob);
-        final GetTokenResponse getTokenResponse =
-                new GetTokenResponse(getTokenRequest);
-
-        return getTokenResponse.getToken();
+        final GetToken getToken = new GetToken(config, this.frobString);
+        return getToken.getToken();
     }
 
     @Override
     public String toString()
     {
         return "Authentication{authRequest=" + this.authRequest +
-                ", frob=" + this.frob + "}";
+                ", frobString=" + this.frobString + "}";
     }
 }

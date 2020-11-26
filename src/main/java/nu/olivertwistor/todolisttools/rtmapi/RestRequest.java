@@ -1,7 +1,6 @@
-package nu.olivertwistor.todolisttools.rtmapi.requests;
+package nu.olivertwistor.todolisttools.rtmapi;
 
 import ch.rfin.util.Pair;
-import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.apache.http.client.utils.URIBuilder;
 

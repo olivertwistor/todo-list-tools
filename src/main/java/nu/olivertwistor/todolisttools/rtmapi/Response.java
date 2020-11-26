@@ -39,14 +39,6 @@ public class Response
     @NonNls
     private static final String tag_error = "err";
 
-    /**
-     * XML tag name for FROB.
-     *
-     * @since 0.1.0
-     */
-    @NonNls
-    public static final String TAG_FROB = "frob";
-
     @NonNls
     private static final String tag_response = "rsp";
 
@@ -137,6 +129,51 @@ public class Response
         }
 
         return val_status_failure.equals(status);
+    }
+
+    /**
+     * Returns the element with the specified XML tags in two levels.
+     *
+     * @param tag       the second level XML tag
+     * @param parentTag the first level XML tag
+     *
+     * @return An element.
+     *
+     * @throws NoSuchElementException if the element could not be found.
+     *
+     * @since 0.1.0
+     */
+    public Element getElement(final String tag, final String parentTag)
+            throws NoSuchElementException
+    {
+        Element element = this.rootElement.element(parentTag);
+
+        element = element.element(tag);
+
+        if (element != null)
+        {
+            return element;
+        }
+
+        throw new NoSuchElementException(
+                "Could not find element " + parentTag + "\\" + tag);
+    }
+
+    /**
+     * Returns the element with the specified XML tag directly under the root
+     * node.
+     *
+     * @param tag the XML tag
+     *
+     * @return An element.
+     *
+     * @throws NoSuchElementException if the element could not be found.
+     *
+     * @since 0.1.0
+     */
+    public Element getElement(final String tag) throws NoSuchElementException
+    {
+        return this.getElement(tag, this.rootElement.getName());
     }
 
     /**

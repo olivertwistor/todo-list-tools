@@ -3,7 +3,6 @@ package nu.olivertwistor.todolisttools;
 import ch.rfin.util.Pair;
 import nu.olivertwistor.java.tui.Terminal;
 import nu.olivertwistor.java.tui.UnclosableInputStream;
-import nu.olivertwistor.todolisttools.rtmapi.Authentication;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 
