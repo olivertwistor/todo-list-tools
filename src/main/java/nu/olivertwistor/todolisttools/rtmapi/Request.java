@@ -27,7 +27,6 @@ import java.util.TreeMap;
  * List. When all desired parameters have been added, call {@link #toUri()} or
  * {@link #toUrl()} to construct the request as a URI/URL string.
  *
- * @author Johan Nilsson
  * @since  0.1.0
  */
 public abstract class Request
@@ -54,7 +53,7 @@ public abstract class Request
      * @since 0.1.0
      */
     @NonNls
-    protected static final String param_frob = "frob";
+    public static final String PARAM_FROB = "frob";
 
     /**
      * The Config object containing API key etc.

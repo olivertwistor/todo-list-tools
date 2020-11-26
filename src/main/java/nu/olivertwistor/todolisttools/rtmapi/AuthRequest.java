@@ -1,7 +1,6 @@
-package nu.olivertwistor.todolisttools.rtmapi.requests;
+package nu.olivertwistor.todolisttools.rtmapi;
 
 import ch.rfin.util.Pair;
-import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.apache.http.client.utils.URIBuilder;
 
@@ -43,7 +42,7 @@ public class AuthRequest extends Request
         super(config, parameters);
         this.parameters.add(Pair.of(PARAM_API_KEY, config.getApiKey()));
         this.parameters.add(Pair.of(param_permissions, permissions));
-        this.parameters.add(Pair.of(param_frob, frob));
+        this.parameters.add(Pair.of(Request.PARAM_FROB, frob));
     }
 
     /**

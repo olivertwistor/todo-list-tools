@@ -1,13 +1,11 @@
 package nu.olivertwistor.todolisttools.rtmapi;
 
-import nu.olivertwistor.todolisttools.rtmapi.requests.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -38,33 +36,6 @@ public class RestRequestTest
         catch (final IOException e)
         {
             System.err.println(e.getLocalizedMessage());
-        }
-    }
-
-    /**
-     * Asserts that the following statement is true: "When adding URL
-     * parameters, the resulting URL will show the parameters in alphanumerical order."
-     *
-     * @since 0.1.0
-     */
-    @Test
-    public void When_AddingParameters_Then_UrlWillShowThemInOrder()
-    {
-        final RestRequest request = new RestRequest(config, "rtm.test");
-        request.addParameter("api_key", "abc123");
-        request.addParameter("contacts", "true");
-        try
-        {
-            Assert.assertThat(request.toUri().toString(), is(
-                    "https://api.rememberthemilk.com/services/rest/" +
-                            "?api_key=abc123&contacts=true" +
-                            "&method=rtm.test" +
-                            "&api_sig=974f8b7b6cfe60b1b14f71501573fb90"));
-
-        }
-        catch (final URISyntaxException | NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
         }
     }
 
