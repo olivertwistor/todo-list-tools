@@ -1,14 +1,11 @@
 package nu.olivertwistor.todolisttools.rtmapi.methods;
 
 import nu.olivertwistor.todolisttools.util.Config;
-import org.dom4j.DocumentException;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -24,6 +21,25 @@ public class CheckTokenTest
             config = new Config("dev-config.ini");
         }
         catch (final IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void When_ValidTokenIsGiven_Then_CheckTokenReturnsSuccess()
+    {
+        try
+        {
+            final CheckToken checkToken =
+                    new CheckToken(config, config.getToken());
+
+            final boolean successResponse =
+                    checkToken.getResponse().isResponseSuccess();
+
+            Assert.assertThat(successResponse, is(true));
+        }
+        catch (final Exception e)
         {
             e.printStackTrace();
         }
