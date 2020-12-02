@@ -93,7 +93,7 @@ public final class Authentication
         }
 
         final GetToken getToken = new GetToken(config, this.frobString);
-        return getToken.getToken();
+        return getToken.getResponse().getToken();
     }
 
     @Override
