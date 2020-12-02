@@ -157,6 +157,11 @@ public class MainMenu
                         new CheckToken(this.config, existingToken);
                 if (checkToken.getResponse().isResponseSuccess())
                 {
+                    System.out.println(String.join(System.lineSeparator(),
+                            "You already have authenticated this ",
+                            "application. In order to reauthenticate it, you ",
+                            "have to first delete the config key ",
+                            "\"auth-token\"."));
                     return;
                 }
             }
