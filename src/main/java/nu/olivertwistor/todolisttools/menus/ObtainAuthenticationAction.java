@@ -14,8 +14,8 @@ import java.util.NoSuchElementException;
 /**
  * Asks the user to go to the provided URL to give this application the
  * required permissions. When that is done, an authentication token is
- * retrieved from the Remember The Milk service and it is stored in the
- * config file for this application.
+ * retrieved from the Remember The Milk service and it is stored in the config
+ * file for this application.
  *
  * Before all of this, the existence and validity of an authentication token is
  * determined. If there is an existing and valid authentication token, no
