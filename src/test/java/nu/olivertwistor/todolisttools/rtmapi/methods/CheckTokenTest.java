@@ -9,10 +9,21 @@ import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.*;
 
+/**
+ * Unit tests for the {@link CheckToken} class.
+ *
+ * @since 0.1.0
+ */
 public class CheckTokenTest
 {
     private static Config config;
 
+    /**
+     * Sets up the foundation for all the tests in this class. A config file
+     * containing a valid authentication token is loaded.
+     *
+     * @since 0.1.0
+     */
     @BeforeClass
     public static void setUp()
     {
@@ -26,6 +37,12 @@ public class CheckTokenTest
         }
     }
 
+    /**
+     * Asserts that when a valid authentication is given, {@link CheckToken}
+     * returns success.
+     *
+     * @since 0.1.0
+     */
     @Test
     public void When_ValidTokenIsGiven_Then_CheckTokenReturnsSuccess()
     {
@@ -45,6 +62,12 @@ public class CheckTokenTest
         }
     }
 
+    /**
+     * Asserts that when an invalid authentication is given, {@link CheckToken}
+     * returns failure.
+     *
+     * @since 0.1.0
+     */
     @Test
     public void When_InvalidTokenIsGiven_Then_CheckTokenReturnsFail()
     {

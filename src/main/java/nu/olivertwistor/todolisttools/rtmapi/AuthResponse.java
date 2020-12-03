@@ -12,6 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+/**
+ * This is a specialized version of {@link Response} for responses from
+ * Remember The Milk's authentication service. See the base class for further
+ * information.
+ *
+ * @since  0.1.0
+ */
 public class AuthResponse extends Response
 {
     @NonNls
@@ -35,6 +42,20 @@ public class AuthResponse extends Response
     @NonNls
     private static final String tag_user = "user";
 
+    /**
+     * Creates an authentication response based off of a request. See the
+     * constructor in the base class for more information.
+     *
+     * @param request the {@link Request}, which XML response to parse
+     *
+     * @throws MalformedURLException
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     * @throws DocumentException
+     *
+     * @since 0.1.0
+     */
+    @SuppressWarnings("JavaDoc")
     public AuthResponse(final Request request) throws MalformedURLException,
             NoSuchAlgorithmException, IOException, DocumentException
     {

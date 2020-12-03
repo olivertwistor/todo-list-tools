@@ -10,7 +10,6 @@ import static org.hamcrest.CoreMatchers.is;
 /**
  * Unit tests for the {@link Request} class.
  *
- * @author Johan Nilsson
  * @since  0.1.0
  */
 public class RequestTest

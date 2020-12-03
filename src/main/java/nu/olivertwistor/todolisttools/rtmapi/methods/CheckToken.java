@@ -10,6 +10,12 @@ import org.jetbrains.annotations.NonNls;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * This class handles checking the validity of an authentication token. Also,
+ * handles the response from Remember The Milk.
+ *
+ * @since 0.1.0
+ */
 public class CheckToken
 {
     @NonNls
@@ -21,6 +27,21 @@ public class CheckToken
     private final Request request;
     private final AuthResponse response;
 
+    /**
+     * Creates a fully formed REST request for checking the validity of the
+     * provided authentication token, sends that request to Remember The Milk
+     * and retrieves a response.
+     *
+     * @param config Config object for access to API key etc.
+     * @param token  the authentication token to verify
+     *
+     * @throws DocumentException
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     *
+     * @since 0.1.0
+     */
+    @SuppressWarnings({"OverlyBroadThrowsClause", "JavaDoc"})
     public CheckToken(final Config config, final String token)
             throws DocumentException, NoSuchAlgorithmException, IOException
     {
@@ -34,5 +55,12 @@ public class CheckToken
     public AuthResponse getResponse()
     {
         return this.response;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "CheckToken{super=" + super.toString() + ", request=" +
+                this.request + ", response=" + this.response + "}";
     }
 }
