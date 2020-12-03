@@ -2,7 +2,6 @@ package nu.olivertwistor.todolisttools.rtmapi.methods;
 
 import nu.olivertwistor.todolisttools.rtmapi.AuthResponse;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
-import nu.olivertwistor.todolisttools.rtmapi.Response;
 import nu.olivertwistor.todolisttools.rtmapi.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
@@ -11,14 +10,10 @@ import org.jetbrains.annotations.NonNls;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
-import java.util.NoSuchElementException;
 
 /**
  * This class handles the generation of a request for an authentication token
  * and also handles the response from Remember The Milk.
- *  *
- *  * The caller may then retrieve relevant parts from the response with the
- *  * various getters that exist in this class.
  *
  * @since 0.1.0
  */

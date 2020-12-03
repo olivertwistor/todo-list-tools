@@ -1,5 +1,6 @@
 package nu.olivertwistor.todolisttools;
 
+import nu.olivertwistor.todolisttools.menus.MainMenu;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.ini4j.InvalidFileFormatException;
 

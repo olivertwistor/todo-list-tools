@@ -17,9 +17,6 @@ import java.util.NoSuchElementException;
  * This class handles the generation of a request for a FROB string and also
  * handles the response from Remember The Milk.
  *
- * The caller may then retrieve relevant parts from the response with the
- * various getters that exist in this class.
- *
  * @since 0.1.0
  */
 public class GetFrob

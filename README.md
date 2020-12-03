@@ -21,7 +21,7 @@ The Todo List Tools collects and processes data from the user's Remember the
 Milk account. Please read the [privacy policy][2] for more information.
 
 ## Installation
-First of all, make sure you meet the following requirements:
+First, make sure you meet the following requirements:
 * a Remember The Milk account
 * Java 8 or newer
 
