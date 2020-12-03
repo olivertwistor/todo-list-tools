@@ -72,9 +72,7 @@ public class GetFrob
     @Override
     public String toString()
     {
-        return "GetFrob{" +
-                "request=" + this.request + ", " +
-                "response=" + this.response +
-                "}";
+        return "GetFrob{request=" + this.request + ", response=" +
+                this.response + "}";
     }
 }

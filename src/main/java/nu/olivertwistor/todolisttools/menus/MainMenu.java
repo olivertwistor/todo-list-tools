@@ -23,14 +23,12 @@ import java.util.TreeMap;
  */
 public class MainMenu
 {
-    private static final String val_read_permissions = "read";
-
     private final Config config;
     private final Session session;
     private final SortedMap<String, Pair<String, MenuAction>> menuItems;
 
     /**
-     * Creates a new HashMap for the menu items and adds the menu items.
+     * Creates a new map for the menu items and adds the menu items.
      *
      * Each menu item consists of the following:
      * <ul>
@@ -131,7 +129,7 @@ public class MainMenu
     @Override
     public String toString()
     {
-        return "MainMenu{config=" + this.config + ", " +
-                "menuItems=" + this.menuItems + "}";
+        return "MainMenu{config=" + this.config + ", menuItems=" +
+                this.menuItems + "}";
     }
 }
