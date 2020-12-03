@@ -2,6 +2,7 @@ package nu.olivertwistor.todolisttools.menus;
 
 import ch.rfin.util.Pair;
 import nu.olivertwistor.java.tui.UnclosableInputStream;
+import nu.olivertwistor.todolisttools.Session;
 import nu.olivertwistor.todolisttools.util.Config;
 
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ public class MainMenu
     private static final String val_read_permissions = "read";
 
     private final Config config;
+    private final Session session;
     private final SortedMap<String, Pair<String, MenuAction>> menuItems;
 
     /**
@@ -42,9 +44,12 @@ public class MainMenu
      *
      * @since 0.1.0
      */
-    public MainMenu(final Config config)
+    public MainMenu(final Config config, final Session session)
     {
         this.config = config;
+        this.session = session;
+
+        // Add the menu items.
         this.menuItems = new TreeMap<>();
         this.menuItems.put("o", Pair.of("[O]btain authentication",
                 new ObtainAuthenticationAction(this.config)));

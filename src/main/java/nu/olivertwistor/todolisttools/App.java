@@ -25,11 +25,14 @@ public final class App
      */
     private App(final String configFilePath)
     {
-        // We must first see whether we can load the config.
+        // We must first see whether we can load the config. Also, start a new
+        // session for this run of the application.
         Config config = null;
+        Session session = null;
         try
         {
             config = new Config(configFilePath);
+            session = new Session(config);
         }
         catch (final InvalidFileFormatException e)
         {
@@ -57,7 +60,7 @@ public final class App
                 "endorsed or certified by Remember The Milk."));
         System.out.println();
 
-        final MainMenu mainMenu = new MainMenu(config);
+        final MainMenu mainMenu = new MainMenu(config, session);
         do
         {
             mainMenu.show();
