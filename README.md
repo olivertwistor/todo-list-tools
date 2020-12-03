@@ -30,7 +30,7 @@ More information will be available as soon as the first version is released.
 ## Usage
 More information will be available as soon as the first version is released.
 
-## Licenses
+## Licensing
 This project is licensed under an Apache License 2.0. For detailed terms, 
 please read [LICENSE][3]. 
 
