@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
 public class ObtainAuthenticationAction implements MenuAction
 {
     private static final String val_read_permissions = "read";
+    private static final String val_write_permissions = "write";
 
     private final Config config;
 
@@ -83,7 +84,7 @@ public class ObtainAuthenticationAction implements MenuAction
         try
         {
             final URL authUrl = authentication.generateAuthRequest(
-                    this.config, val_read_permissions);
+                    this.config, val_write_permissions);
             System.out.println(authUrl.toExternalForm());
         }
         catch (final NoSuchElementException e)
