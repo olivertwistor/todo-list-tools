@@ -135,7 +135,8 @@ public class Response
      * Returns the element with the specified XML tags in two levels.
      *
      * @param tag       the second level XML tag
-     * @param parentTag the first level XML tag
+     * @param parentTag the first level XML tag; if null, tag is presumed to be
+     *                  in the first level
      *
      * @return An element.
      *
@@ -146,7 +147,14 @@ public class Response
     public Element getElement(final String tag, final String parentTag)
             throws NoSuchElementException
     {
-        Element element = this.rootElement.element(parentTag);
+        //TODO Make this method a recursive one. This way, we can go down an arbritary number of levels.
+
+        Element element = this.rootElement;
+
+        if (parentTag != null)
+        {
+            element = element.element(parentTag);
+        }
 
         element = element.element(tag);
 
@@ -173,7 +181,7 @@ public class Response
      */
     public Element getElement(final String tag) throws NoSuchElementException
     {
-        return this.getElement(tag, this.rootElement.getName());
+        return this.getElement(tag, null);
     }
 
     /**

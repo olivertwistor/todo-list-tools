@@ -9,8 +9,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,8 +43,8 @@ public class CsvAddTasksAction implements MenuAction
                     "By which character is the columns separated? ");
 
             // Begin the parsing of the file.
-            final Map<String, List<String>> parsedFile =
-                    this.parseCsvFile(csvFileInput, csvDelimiter);
+            /*final Map<String, List<String>> parsedFile =
+                    this.parseCsvFile(csvFileInput, csvDelimiter);*/
         }
         catch (final IOException e)
         {
@@ -49,15 +52,15 @@ public class CsvAddTasksAction implements MenuAction
         }
     }
 
-    Map<String, List<String>> parseCsvFile(final String filename,
+    Map<String, List<String>> parseCsvFile(final File file,
                                            final String delimiter)
-            throws IOException
+            throws IOException, FileNotFoundException, URISyntaxException
     {
         final Map<String, List<String>> out = new HashMap<>();
 
         // Read the file line by line and split each line into columns.
         try (final BufferedReader br = Files.newBufferedReader(
-                new File(filename).toPath(), StandardCharsets.UTF_8))
+                file.toPath(), StandardCharsets.UTF_8))
         {
             // Take a look at the first line because it contains the column
             // titles. Put each of them in the map to return and instantiate a
@@ -66,7 +69,7 @@ public class CsvAddTasksAction implements MenuAction
             String line = br.readLine();
             if (line != null)
             {
-                final String[] columnTitles = line.split(delimiter);
+                final String[] columnTitles = line.split(delimiter, -1);
                 for (final String columnTitle : columnTitles)
                 {
                     out.put(columnTitle, new LinkedList<>());
@@ -75,10 +78,9 @@ public class CsvAddTasksAction implements MenuAction
                 // Now it's time to fill those lists, by looping through all
                 // the other lines in the file and store everything in its
                 // right place.
-                do
+                for (line = br.readLine(); line != null; line = br.readLine())
                 {
-                    line = br.readLine();
-                    final String[] columns = line.split(delimiter);
+                    final String[] columns = line.split(delimiter, -1);
                     final int nColumns = columns.length;
                     for (int i = 0; i < nColumns; i++)
                     {
@@ -95,7 +97,6 @@ public class CsvAddTasksAction implements MenuAction
                         }
                     }
                 }
-                while (line != null);
             }
             else
             {
