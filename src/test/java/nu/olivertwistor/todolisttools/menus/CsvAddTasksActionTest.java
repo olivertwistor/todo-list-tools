@@ -26,8 +26,8 @@ public class CsvAddTasksActionTest
             throws Exception
     {
         final ClassLoader classLoader = this.getClass().getClassLoader();
-        final File file = new File(classLoader.getResource("tasks.csv").getFile());
-        System.out.println(file.getAbsolutePath());
+        final File file = new File(
+                classLoader.getResource("tasks.csv").getFile());
 
         final CsvAddTasksAction csvAddTasksAction = new CsvAddTasksAction();
         final Map<String, List<String>> actualMap =

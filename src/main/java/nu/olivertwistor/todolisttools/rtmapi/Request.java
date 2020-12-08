@@ -141,7 +141,9 @@ public abstract class Request
     {
         try
         {
-            return this.toUri().toURL();
+            final URL url = this.toUri().toURL();
+
+            return url;
         }
         catch (final URISyntaxException e)
         {

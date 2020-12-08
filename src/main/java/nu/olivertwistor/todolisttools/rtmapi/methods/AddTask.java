@@ -38,6 +38,6 @@ public class AddTask
         this.request.addParameter(param_name, smartAdd);
         this.request.addParameter(param_parse, "1");
 
-        this.response = new Response(this.request);
+        this.response = Response.createResponse(this.request);
     }
 }

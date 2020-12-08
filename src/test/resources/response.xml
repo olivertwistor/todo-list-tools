@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok">
+    <frob>101032</frob>
+    <lists smart="1">
+        <list name="Hello">
+            <task>Yellow house</task>
+            <task>Pink house</task>
+        </list>
+        <list name="Good bye" archived="1">
+            <task>Blue house</task>
+            <task>Green house</task>
+        </list>
+    </lists>
+</rsp>

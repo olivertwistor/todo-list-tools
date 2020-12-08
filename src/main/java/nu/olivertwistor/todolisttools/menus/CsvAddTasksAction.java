@@ -2,6 +2,10 @@ package nu.olivertwistor.todolisttools.menus;
 
 import ch.rfin.util.Pair;
 import nu.olivertwistor.java.tui.Terminal;
+import nu.olivertwistor.todolisttools.Session;
+import nu.olivertwistor.todolisttools.rtmapi.methods.AddTask;
+import nu.olivertwistor.todolisttools.util.Config;
+import sun.text.resources.cldr.fo.FormatData_fo;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +17,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,6 +28,15 @@ import java.util.SortedMap;
 
 public class CsvAddTasksAction implements MenuAction
 {
+    private final Config config;
+    private final Session session;
+
+    public CsvAddTasksAction(final Config config, final Session session)
+    {
+        this.config = config;
+        this.session = session;
+    }
+
     @Override
     public void execute()
     {
@@ -35,26 +50,54 @@ public class CsvAddTasksAction implements MenuAction
                 "\"Due\"."));
         System.out.println();
 
+        String csvFileInput = null;
+        String csvDelimiter = null;
         try
         {
-            final String csvFileInput = Terminal.readString(
-                    "Name of the CSV file to load: ");
-            final String csvDelimiter = Terminal.readString(
+            csvFileInput = Terminal.readString(
+                    "Path to the CSV file to load: ");
+            csvDelimiter = Terminal.readString(
                     "By which character is the columns separated? ");
-
-            // Begin the parsing of the file.
-            /*final Map<String, List<String>> parsedFile =
-                    this.parseCsvFile(csvFileInput, csvDelimiter);*/
         }
         catch (final IOException e)
         {
             e.printStackTrace();
         }
+
+        if (csvFileInput != null)
+        {
+            Map<String, List<String>> parsedFile = null;
+            try
+            {
+                final Path filePath = Paths.get(csvFileInput);
+                final File file = filePath.toFile();
+
+                parsedFile = this.parseCsvFile(file, csvDelimiter);
+            }
+            catch (final InvalidPathException | IOException |
+                    URISyntaxException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (parsedFile != null)
+            {
+                throw new UnsupportedOperationException("not implemented");
+            }
+            else
+            {
+                System.out.println("Failed to parse the CSV file.");
+            }
+        }
+        else
+        {
+            System.out.println("No filename entered.");
+        }
     }
 
     Map<String, List<String>> parseCsvFile(final File file,
                                            final String delimiter)
-            throws IOException, FileNotFoundException, URISyntaxException
+            throws IOException, URISyntaxException
     {
         final Map<String, List<String>> out = new HashMap<>();
 

@@ -6,9 +6,13 @@ import org.dom4j.Element;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URLConnection;
 import java.security.NoSuchAlgorithmException;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -46,7 +50,7 @@ public class AuthResponse extends Response
      * Creates an authentication response based off of a request. See the
      * constructor in the base class for more information.
      *
-     * @param request the {@link Request}, which XML response to parse
+     * @param contentStream an InputStream with the XML response to parse
      *
      * @throws MalformedURLException
      * @throws NoSuchAlgorithmException
@@ -56,15 +60,41 @@ public class AuthResponse extends Response
      * @since 0.1.0
      */
     @SuppressWarnings("JavaDoc")
-    public AuthResponse(final Request request) throws MalformedURLException,
-            NoSuchAlgorithmException, IOException, DocumentException
+    public AuthResponse(final InputStream contentStream)
+            throws DocumentException
     {
-        super(request);
+        super(contentStream);
+    }
+
+    /**
+     * Creates a REST response object based off of a REST request. The XML
+     * response is parsed into a {@link Element} tree, from where the caller
+     * may retrieve the elements they wish.
+     *
+     * @param request the {@link Request}, which XML response to parse
+     *
+     * @throws IOException       if there were any problem with reading either
+     *                           the request or the response
+     * @throws DocumentException if the response couldn't be parsed into XML
+     * @throws MalformedURLException
+     * @throws NoSuchAlgorithmException
+     *
+     * @since 0.1.0
+     */
+    public static AuthResponse createAuthResponse(final Request request)
+            throws MalformedURLException, NoSuchAlgorithmException,
+            IOException, DocumentException
+    {
+        // Make an HTTP request to get the response.
+        final URLConnection connection = request.toUrl().openConnection();
+        final InputStream contentStream = connection.getInputStream();
+
+        return new AuthResponse(contentStream);
     }
 
     public String getToken() throws NoSuchElementException
     {
-        final Element tokenElement = this.getElement(tag_token, tag_auth);
+        final Element tokenElement = this.getElement(tag_auth, tag_token);
 
         return tokenElement.getText();
     }

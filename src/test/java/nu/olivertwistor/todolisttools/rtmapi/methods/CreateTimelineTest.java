@@ -1,11 +1,15 @@
 package nu.olivertwistor.todolisttools.rtmapi.methods;
 
+import nu.olivertwistor.todolisttools.rtmapi.Response;
 import nu.olivertwistor.todolisttools.util.Config;
+import org.dom4j.DocumentException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -40,19 +44,20 @@ public class CreateTimelineTest
      */
     @Test
     public void When_TimelineIsCreated_Then_CreateTimelineReturnsSuccess()
+            throws Exception
     {
+        final CreateTimeline createTimeline = new CreateTimeline(config);
+        final Response response = createTimeline.getResponse();
+
         try
         {
-            final CreateTimeline createTimeline = new CreateTimeline(config);
-
-            final boolean successResponse =
-                    createTimeline.getResponse().isResponseSuccess();
-
-            Assert.assertThat(successResponse, is(true));
+            Assert.assertThat(response.isResponseSuccess(), is(true));
         }
-        catch (final Exception e)
+        catch (final AssertionError e)
         {
-            e.printStackTrace();
+            System.out.println("Response was:" + System.lineSeparator() +
+                    response.toXmlString());
+            throw e;
         }
     }
 }

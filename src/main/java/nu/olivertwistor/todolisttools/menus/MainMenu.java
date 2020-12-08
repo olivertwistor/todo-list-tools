@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -49,6 +50,8 @@ public class MainMenu
 
         // Add the menu items.
         this.menuItems = new TreeMap<>();
+        this.menuItems.put("a", Pair.of("[A]dd tasks from file",
+                new CsvAddTasksAction(this.config, this.session)));
         this.menuItems.put("o", Pair.of("[O]btain authentication",
                 new ObtainAuthenticationAction(this.config)));
         this.menuItems.put("q", Pair.of("[Q]uit", new QuitAction()));
