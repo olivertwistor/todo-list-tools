@@ -47,6 +47,9 @@ public abstract class Request
     @NonNls
     protected static final String param_api_signature = "api_sig";
 
+    @NonNls
+    public static final String PARAM_AUTH_TOKEN = "auth_token";
+
     /**
      * URL parameter name for FROB.
      *

@@ -1,5 +1,8 @@
 package nu.olivertwistor.todolisttools.menus;
 
+import nu.olivertwistor.todolisttools.Session;
+import nu.olivertwistor.todolisttools.models.Task;
+import nu.olivertwistor.todolisttools.util.Config;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -11,6 +14,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,44 +25,32 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class CsvAddTasksActionTest
 {
+    private static Config config;
+    private static Session session;
+
+    @BeforeClass
+    public static void setUp() throws IOException
+    {
+        config = new Config("config.ini");
+        session = new Session(config);
+    }
     @Test
-    public void When_CsvFileIsGiven_Then_CorrespondingMapIsReturned()
+    public void When_CsvFileIsGiven_Then_CorrespondingTaskListIsReturned()
             throws Exception
     {
         final ClassLoader classLoader = this.getClass().getClassLoader();
         final File file = new File(
                 classLoader.getResource("tasks.csv").getFile());
 
-        final CsvAddTasksAction csvAddTasksAction = new CsvAddTasksAction();
-        final Map<String, List<String>> actualMap =
-                csvAddTasksAction.parseCsvFile(file, ";");
+        final CsvAddTasksAction csvAddTasksAction =
+                new CsvAddTasksAction(config, session);
+        final List<Task> actual = csvAddTasksAction.parseCsvFile(file, ";");
 
-        final Map<String, List<String>> expectedMap = new HashMap<>();
+        final List<Task> expected = new ArrayList<>();
+        expected.add(new Task("Buy milk"));
+        expected.add(new Task("Play guitar"));
+        expected.add(new Task("Call my boss"));
 
-        final List<String> nameList = new LinkedList<>();
-        nameList.add("Buy milk");
-        nameList.add("Play guitar");
-        nameList.add("Call my boss");
-        expectedMap.put("Name", nameList);
-
-        final List<String> dueList = new LinkedList<>();
-        dueList.add("Tomorrow");
-        dueList.add("Today");
-        dueList.add("Friday");
-        expectedMap.put("Due", dueList);
-
-        final List<String> listList = new LinkedList<>();
-        listList.add("Household");
-        listList.add("Fun");
-        listList.add("Work");
-        expectedMap.put("List", listList);
-
-        final List<String> commentsList = new LinkedList<>();
-        commentsList.add("Buy low fat if available.");
-        commentsList.add("");
-        commentsList.add("Apologise for spilling coffee on her blouse.");
-        expectedMap.put("Comments", commentsList);
-
-        Assert.assertThat(actualMap, equalTo(expectedMap));
+        Assert.assertThat(actual, equalTo(expected));
     }
 }

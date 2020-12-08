@@ -22,9 +22,6 @@ public class CheckToken
     @NonNls
     private static final String method_check_token = "rtm.auth.checkToken";
 
-    @NonNls
-    private static final String param_auth_token = "auth_token";
-
     private final Request request;
     private final AuthResponse response;
 
@@ -48,7 +45,7 @@ public class CheckToken
     {
         this.request = new RestRequest(config, method_check_token);
         this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
-        this.request.addParameter(param_auth_token, token);
+        this.request.addParameter(Request.PARAM_AUTH_TOKEN, token);
 
         this.response = AuthResponse.createAuthResponse(this.request);
     }

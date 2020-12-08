@@ -9,6 +9,7 @@ import org.dom4j.DocumentException;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
 
 public class AddTask
@@ -30,14 +31,22 @@ public class AddTask
 
     public AddTask(final Config config,
                    final Session session,
-                   final String smartAdd) throws DocumentException, NoSuchAlgorithmException, IOException
+                   final String smartAdd)
+            throws DocumentException, NoSuchAlgorithmException, IOException,
+            MalformedURLException
     {
         this.request = new RestRequest(config, method_add_task);
         this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
         this.request.addParameter(param_timeline, session.getTimeline());
         this.request.addParameter(param_name, smartAdd);
         this.request.addParameter(param_parse, "1");
+        this.request.addParameter(Request.PARAM_AUTH_TOKEN, config.getToken());
 
         this.response = Response.createResponse(this.request);
+    }
+
+    public Response getResponse()
+    {
+        return this.response;
     }
 }
