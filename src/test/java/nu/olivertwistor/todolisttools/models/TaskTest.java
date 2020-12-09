@@ -53,7 +53,7 @@ public class TaskTest
         task.setDue("4 days");
         task.setPriority("2");
         task.setList("Household");
-        task.setTimeEstimate("30 minutes");;
+        task.setTimeEstimate("30 minutes");
 
         Assert.assertThat(task.toSmartAdd(), is(target));
     }

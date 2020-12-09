@@ -67,20 +67,17 @@ public class AuthResponse extends Response
     }
 
     /**
-     * Creates a REST response object based off of a REST request. The XML
-     * response is parsed into a {@link Element} tree, from where the caller
-     * may retrieve the elements they wish.
+     * Creates an authentication response object based off of a REST request.
+     * The XML response is parsed into a {@link Element} tree, from where the
+     * caller may retrieve the elements they wish.
      *
      * @param request the {@link Request}, which XML response to parse
      *
-     * @throws IOException       if there were any problem with reading either
-     *                           the request or the response
-     * @throws DocumentException if the response couldn't be parsed into XML
-     * @throws MalformedURLException
-     * @throws NoSuchAlgorithmException
+     * @return An authentication response object.
      *
      * @since 0.1.0
      */
+    @SuppressWarnings("JavaDoc")
     public static AuthResponse createAuthResponse(final Request request)
             throws MalformedURLException, NoSuchAlgorithmException,
             IOException, DocumentException

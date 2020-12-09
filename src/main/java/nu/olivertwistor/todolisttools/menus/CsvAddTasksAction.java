@@ -8,7 +8,6 @@ import nu.olivertwistor.todolisttools.rtmapi.Response;
 import nu.olivertwistor.todolisttools.rtmapi.methods.AddTask;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
-import sun.text.resources.cldr.fo.FormatData_fo;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,7 +50,7 @@ public class CsvAddTasksAction implements MenuAction
             catch (final DocumentException | NoSuchAlgorithmException |
                     IOException e)
             {
-                e.printStackTrace();
+                System.out.println("Failed to create a new timeline");
             }
         }
     }
@@ -59,47 +58,28 @@ public class CsvAddTasksAction implements MenuAction
     @Override
     public void execute()
     {
-        System.out.println(String.join(System.lineSeparator(),
-                "Here, you can specify a CSV file containing tasks to add to ",
-                "Remember The Milk. Please note that the first row is ",
-                "considered headings, and the only task property currently ",
-                "implemented is name and it must be in the first column. All ",
-                "other columns are ignored. The tasks will be added to ",
-                "Inbox, and have the default due date and neither tags nor ",
-                "time estimates."));
-        System.out.println();
-
-        String csvFileInput = null;
-        String csvDelimiter = null;
+        final String[] csvUserInput;
         try
         {
-            csvFileInput = Terminal.readString(
-                    "Path to the CSV file to load: ");
-            csvDelimiter = Terminal.readString(
-                    "By which character is the columns separated? ");
+            csvUserInput = this.readCsvUserInput();
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
-        }
-
-        if (csvFileInput == null)
-        {
-            System.out.println("No filename entered.");
+            System.out.println("Failed to read user input.");
             return;
         }
 
         List<Task> parsedFile = null;
         try
         {
-            final Path filePath = Paths.get(csvFileInput);
+            final Path filePath = Paths.get(csvUserInput[0]);
             final File file = filePath.toFile();
 
-            parsedFile = this.parseCsvFile(file, csvDelimiter);
+            parsedFile = this.parseCsvFile(file, csvUserInput[1]);
         }
-        catch (final InvalidPathException | IOException | URISyntaxException e)
+        catch (final InvalidPathException | IOException e)
         {
-            e.printStackTrace();
+            System.out.println("Failed to parse the CSV file.");
         }
 
         if (parsedFile == null)
@@ -129,7 +109,8 @@ public class CsvAddTasksAction implements MenuAction
             catch (final DocumentException | NoSuchAlgorithmException |
                     IOException e)
             {
-                e.printStackTrace();
+                System.out.println(
+                        "Failed to make an add task request to the RTM API.");
             }
 
             try
@@ -140,13 +121,13 @@ public class CsvAddTasksAction implements MenuAction
             }
             catch (final InterruptedException e)
             {
-                e.printStackTrace();
+                System.out.println("Current thread was interrupted.");
             }
         }
     }
 
     List<Task> parseCsvFile(final File file, final String delimiter)
-            throws IOException, URISyntaxException
+            throws IOException
     {
         final List<Task> tasks = new ArrayList<>();
 
@@ -176,5 +157,32 @@ public class CsvAddTasksAction implements MenuAction
         }
 
         return tasks;
+    }
+
+    private String[] readCsvUserInput()
+            throws FileNotFoundException, IOException
+    {
+        System.out.println(String.join(System.lineSeparator(),
+                "Here, you can specify a CSV file containing tasks to add to ",
+                "Remember The Milk. Please note that the first row is ",
+                "considered headings, and the only task property currently ",
+                "implemented is name and it must be in the first column. All ",
+                "other columns are ignored. The tasks will be added to ",
+                "Inbox, and have the default due date and neither tags nor ",
+                "time estimates."));
+        System.out.println();
+
+        final String csvFileInput = Terminal.readString(
+                "Path to the CSV file to load: ");
+        final String csvDelimiter = Terminal.readString(
+                "By which character is the columns separated? ");
+
+        if (csvFileInput == null)
+        {
+            throw new FileNotFoundException(
+                    "Failed to find file: " + csvFileInput);
+        }
+
+        return new String[] { csvFileInput, csvDelimiter };
     }
 }

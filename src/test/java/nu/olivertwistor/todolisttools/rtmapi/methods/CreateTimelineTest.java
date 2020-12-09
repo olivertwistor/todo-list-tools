@@ -13,6 +13,11 @@ import java.security.NoSuchAlgorithmException;
 
 import static org.hamcrest.CoreMatchers.is;
 
+/**
+ * Unit tests for the {@link CreateTimeline} class.
+ *
+ * @since 0.1.0
+ */
 public class CreateTimelineTest
 {
     private static Config config;
@@ -39,6 +44,8 @@ public class CreateTimelineTest
     /**
      * Asserts that when a timeline is created, {@link CreateTimeline} returns
      * success.
+     *
+     * @throws Exception if anything goes awry
      *
      * @since 0.1.0
      */

@@ -42,7 +42,6 @@ public class ObtainAuthenticationAction implements MenuAction
         this.config = config;
     }
 
-    @SuppressWarnings({"OverlyLongMethod", "CallToPrintStackTrace"})
     @Override
     public void execute()
     {

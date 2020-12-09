@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -132,7 +131,10 @@ public class MainMenu
     @Override
     public String toString()
     {
-        return "MainMenu{config=" + this.config + ", menuItems=" +
-                this.menuItems + "}";
+        return "MainMenu{" +
+                "config=" + this.config +
+                ", session=" + this.session +
+                ", menuItems=" + this.menuItems +
+                '}';
     }
 }

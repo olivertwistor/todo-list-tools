@@ -12,6 +12,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * This class handles adding tasks to Remember The Milk.
+ *
+ * @since 0.1.0
+ */
 public class AddTask
 {
     @NonNls
@@ -29,6 +34,17 @@ public class AddTask
     private final Request request;
     private final Response response;
 
+    /**
+     * Creates a fully formed REST request for adding tasks to Remember The
+     * Milk, sends that request and retrieves a response.
+     *
+     * @param config   Config object for access to API key etc.
+     * @param session  Session containing the timeline for this app run
+     * @param smartAdd Smart Add string representing the task to add
+     *
+     * @since 0.1.0
+     */
+    @SuppressWarnings("JavaDoc")
     public AddTask(final Config config,
                    final Session session,
                    final String smartAdd)
@@ -48,5 +64,14 @@ public class AddTask
     public Response getResponse()
     {
         return this.response;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "AddTask{" +
+                "request=" + this.request +
+                ", response=" + this.response +
+                '}';
     }
 }

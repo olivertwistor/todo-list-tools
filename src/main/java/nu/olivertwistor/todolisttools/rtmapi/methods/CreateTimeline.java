@@ -13,6 +13,13 @@ import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
 
+/**
+ * This class handles creating a timeline. A timeline is a set point in time
+ * after which actions can be undone. Also, handles the response from Remember
+ * The Milk.
+ *
+ * @since 0.1.0
+ */
 public class CreateTimeline
 {
     @NonNls
@@ -24,6 +31,15 @@ public class CreateTimeline
     private final Request request;
     private final Response response;
 
+    /**
+     * Creates a fully formed REST request for creating a timeline, sends that
+     * request to Remember The Milk and retrieves a response.
+     *
+     * @param config Config object for access to API key etc.
+     *
+     * @since 0.1.0
+     */
+    @SuppressWarnings("JavaDoc")
     public CreateTimeline(final Config config)
             throws DocumentException, NoSuchAlgorithmException, IOException,
             MalformedURLException

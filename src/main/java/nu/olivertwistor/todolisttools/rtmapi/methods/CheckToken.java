@@ -9,6 +9,7 @@ import org.dom4j.DocumentException;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -33,15 +34,12 @@ public class CheckToken
      * @param config Config object for access to API key etc.
      * @param token  the authentication token to verify
      *
-     * @throws DocumentException
-     * @throws NoSuchAlgorithmException
-     * @throws IOException
-     *
      * @since 0.1.0
      */
-    @SuppressWarnings({"OverlyBroadThrowsClause", "JavaDoc"})
+    @SuppressWarnings("JavaDoc")
     public CheckToken(final Config config, final String token)
-            throws DocumentException, NoSuchAlgorithmException, IOException
+            throws DocumentException, NoSuchAlgorithmException,
+            MalformedURLException, IOException
     {
         this.request = new RestRequest(config, method_check_token);
         this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());

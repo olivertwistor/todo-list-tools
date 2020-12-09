@@ -1,6 +1,6 @@
 .idea/
 lib/pair-0.1*
-out/
+src/main/resources/app.cfg
 target/
 *.iml
 dev-config.ini
