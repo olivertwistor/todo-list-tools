@@ -35,7 +35,7 @@ public class CsvAddTasksActionTest
     @BeforeClass
     public static void setUp() throws IOException
     {
-        config = new Config("config.ini");
+        config = new Config("dev-config.ini");
         session = new Session(config);
     }
 
@@ -54,9 +54,8 @@ public class CsvAddTasksActionTest
         final File file = new File(
                 classLoader.getResource("tasks.csv").getFile());
 
-        final CsvAddTasksAction csvAddTasksAction =
-                new CsvAddTasksAction(config, session);
-        final List<Task> actual = csvAddTasksAction.parseCsvFile(file, ";");
+        final CsvAddTasksAction csvAddTasksAction = new CsvAddTasksAction();
+        final List<Task> actual = CsvAddTasksAction.parseCsvFile(file, ";");
 
         final List<Task> expected = new ArrayList<>();
         expected.add(new Task("Buy milk"));

@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -30,44 +31,24 @@ public class CsvAddTasksAction implements MenuAction
 {
     private static final int seconds_per_request = 1500;
 
-    private final Config config;
-    private final Session session;
-
-    /**
-     * Prepares for executing the add task action. Determines whether there is
-     * a valid timeline and if not, creates one.
-     *
-     * @param config  Config object for access to API key etc.
-     * @param session Session containing the timeline for this app run
-     *
-     * @since 0.1.0
-     */
-    public CsvAddTasksAction(final Config config, final Session session)
-    {
-        this.config = config;
-        this.session = session;
-        if (!this.session.hasTimeline())
-        {
-            try
-            {
-                this.session.createTimeline();
-                System.out.println("Created a new timeline.");
-            }
-            catch (final DocumentException | NoSuchAlgorithmException |
-                    IOException e)
-            {
-                System.out.println("Failed to create a new timeline");
-            }
-        }
-    }
-
     @Override
-    public void execute()
+    public void execute(final Config config, final Session session)
     {
+        try
+        {
+            createTimeline(session);
+        }
+        catch (final DocumentException | NoSuchAlgorithmException |
+                IOException e)
+        {
+            System.out.println("Failed to create a new timeline.");
+            return;
+        }
+
         final String[] csvUserInput;
         try
         {
-            csvUserInput = this.readCsvUserInput();
+            csvUserInput = readCsvUserInput();
         }
         catch (final IOException e)
         {
@@ -81,7 +62,7 @@ public class CsvAddTasksAction implements MenuAction
             final Path filePath = Paths.get(csvUserInput[0]);
             final File file = filePath.toFile();
 
-            parsedFile = this.parseCsvFile(file, csvUserInput[1]);
+            parsedFile = parseCsvFile(file, csvUserInput[1]);
         }
         catch (final InvalidPathException | IOException e)
         {
@@ -99,8 +80,7 @@ public class CsvAddTasksAction implements MenuAction
             final String smartAdd = task.toSmartAdd();
             try
             {
-                final AddTask addTask = new AddTask(
-                        this.config, this.session, smartAdd);
+                final AddTask addTask = new AddTask(config, session, smartAdd);
                 final Response response = addTask.getResponse();
                 if (response.isResponseSuccess())
                 {
@@ -144,7 +124,7 @@ public class CsvAddTasksAction implements MenuAction
      *
      * @since 0.1.0
      */
-    List<Task> parseCsvFile(final File file, final String delimiter)
+    static List<Task> parseCsvFile(final File file, final String delimiter)
             throws IOException
     {
         final List<Task> tasks = new ArrayList<>();
@@ -178,6 +158,24 @@ public class CsvAddTasksAction implements MenuAction
     }
 
     /**
+     * If the session has no timeline, it's created.
+     *
+     * @param session Session object with or without a timeline
+     *
+     * @since 0.1.0
+     */
+    @SuppressWarnings("JavaDoc")
+    private static void createTimeline(final Session session)
+            throws DocumentException, NoSuchAlgorithmException,
+            MalformedURLException, IOException
+    {
+        if (!session.hasTimeline())
+        {
+            session.createTimeline();
+        }
+    }
+
+    /**
      * Asks the user for the path to a CSV file to load, as well as for the
      * delimiter between columns in that file.
      *
@@ -189,7 +187,7 @@ public class CsvAddTasksAction implements MenuAction
      *
      * @since 0.1.0
      */
-    private String[] readCsvUserInput()
+    private static String[] readCsvUserInput()
             throws FileNotFoundException, IOException
     {
         System.out.println(String.join(System.lineSeparator(),

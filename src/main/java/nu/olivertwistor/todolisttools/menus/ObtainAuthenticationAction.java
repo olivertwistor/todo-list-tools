@@ -2,6 +2,7 @@ package nu.olivertwistor.todolisttools.menus;
 
 import nu.olivertwistor.java.tui.Terminal;
 import nu.olivertwistor.todolisttools.Authentication;
+import nu.olivertwistor.todolisttools.Session;
 import nu.olivertwistor.todolisttools.rtmapi.methods.CheckToken;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
@@ -29,26 +30,12 @@ public class ObtainAuthenticationAction implements MenuAction
     private static final String val_read_permissions = "read";
     private static final String val_write_permissions = "write";
 
-    private final Config config;
-
-    /**
-     * Creates a new ObtainAuthenticationAction.
-     *
-     * @param config Config object for access to the authentication token
-     *
-     * @since 0.1.0
-     */
-    public ObtainAuthenticationAction(final Config config)
-    {
-        this.config = config;
-    }
-
     @Override
-    public void execute()
+    public void execute(final Config config, final Session session)
     {
         try
         {
-            final boolean existingToken = this.checkExistingToken();
+            final boolean existingToken = checkExistingToken(config);
         }
         catch (final DocumentException | NoSuchAlgorithmException |
                 IOException e)
@@ -71,7 +58,7 @@ public class ObtainAuthenticationAction implements MenuAction
         try
         {
             final URL authUrl = authentication.generateAuthRequest(
-                    this.config, val_write_permissions);
+                    config, val_write_permissions);
             System.out.println(authUrl.toExternalForm());
         }
         catch (final NoSuchElementException | DocumentException |
@@ -81,11 +68,10 @@ public class ObtainAuthenticationAction implements MenuAction
             return;
         }
 
-        System.out.println("When you are done giving this program the " +
-                "required permissions, press ENTER.");
         try
         {
-            Terminal.readString();
+            Terminal.readString("Please confirm that you have visited the " +
+                    "URL (any character will do): ");
         }
         catch (final IOException e)
         {
@@ -99,10 +85,11 @@ public class ObtainAuthenticationAction implements MenuAction
         final String token;
         try
         {
-            token = authentication.obtainToken(this.config);
+            token = authentication.obtainToken(config);
 
             // Store the retrieved token to the config file.
-            this.config.setToken(token);
+            config.setToken(token);
+            System.out.println("Obtained an authentication token.");
         }
         catch (final DocumentException | NoSuchAlgorithmException |
                 IOException e)
@@ -123,13 +110,13 @@ public class ObtainAuthenticationAction implements MenuAction
      * @since 0.1.0
      */
     @SuppressWarnings("JavaDoc")
-    private boolean checkExistingToken()
+    private static boolean checkExistingToken(final Config config)
             throws DocumentException, NoSuchAlgorithmException,
             MalformedURLException, IOException
     {
-        final String existingToken = this.config.getToken();
+        final String existingToken = config.getToken();
         final CheckToken checkToken =
-                new CheckToken(this.config, existingToken);
+                new CheckToken(config, existingToken);
 
         if (checkToken.getResponse().isResponseSuccess())
         {
@@ -139,11 +126,5 @@ public class ObtainAuthenticationAction implements MenuAction
         }
 
         return false;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ObtainAuthenticationAction{config=" + this.config + "}";
     }
 }

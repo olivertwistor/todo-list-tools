@@ -50,9 +50,9 @@ public class MainMenu
         // Add the menu items.
         this.menuItems = new TreeMap<>();
         this.menuItems.put("a", Pair.of("[A]dd tasks from file",
-                new CsvAddTasksAction(this.config, this.session)));
+                new CsvAddTasksAction()));
         this.menuItems.put("o", Pair.of("[O]btain authentication",
-                new ObtainAuthenticationAction(this.config)));
+                new ObtainAuthenticationAction()));
         this.menuItems.put("q", Pair.of("[Q]uit", new QuitAction()));
     }
 
@@ -102,11 +102,11 @@ public class MainMenu
                 final Pair<String, MenuAction> pair = this.menuItems.get(input);
                 if (pair != null)
                 {
-                    final MenuAction item = pair.get_2();
+                    final MenuAction item = pair._2;
                     if (item != null)
                     {
                         validItem = true;
-                        item.execute();
+                        item.execute(this.config, this.session);
                     }
                 }
                 else

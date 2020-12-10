@@ -62,4 +62,13 @@ public class CreateTimeline
     {
         return this.response;
     }
+
+    @Override
+    public String toString()
+    {
+        return "CreateTimeline{" +
+                "request=" + this.request +
+                ", response=" + this.response +
+                '}';
+    }
 }
