@@ -1,5 +1,8 @@
 package nu.olivertwistor.todolisttools.menus;
 
+import nu.olivertwistor.todolisttools.Session;
+import nu.olivertwistor.todolisttools.util.Config;
+
 /**
  * Prints out a goodbye message and exits the application.
  *
@@ -8,7 +11,7 @@ package nu.olivertwistor.todolisttools.menus;
 public class QuitAction implements MenuAction
 {
     @Override
-    public void execute()
+    public void execute(final Config config, final Session session)
     {
         System.out.println("Goodbye!");
         System.exit(0);

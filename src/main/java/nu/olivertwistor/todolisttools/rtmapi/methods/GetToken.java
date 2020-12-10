@@ -45,7 +45,7 @@ public class GetToken
         this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
         this.request.addParameter(Request.PARAM_FROB, frob);
 
-        this.response = new AuthResponse(this.request);
+        this.response = AuthResponse.createAuthResponse(this.request);
     }
 
     public AuthResponse getResponse()

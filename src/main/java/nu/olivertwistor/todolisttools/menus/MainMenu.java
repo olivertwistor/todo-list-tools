@@ -2,6 +2,7 @@ package nu.olivertwistor.todolisttools.menus;
 
 import ch.rfin.util.Pair;
 import nu.olivertwistor.java.tui.UnclosableInputStream;
+import nu.olivertwistor.todolisttools.Session;
 import nu.olivertwistor.todolisttools.util.Config;
 
 import java.io.BufferedReader;
@@ -17,18 +18,16 @@ import java.util.TreeMap;
  * constructor. Call {@link #show()} to print the menu. Call {@link #act()} to
  * ask for user input and do different things depending on the chosen menu item.
  *
- * @author Johan Nilsson
  * @since  0.1.0
  */
 public class MainMenu
 {
-    private static final String val_read_permissions = "read";
-
     private final Config config;
+    private final Session session;
     private final SortedMap<String, Pair<String, MenuAction>> menuItems;
 
     /**
-     * Creates a new HashMap for the menu items and adds the menu items.
+     * Creates a new map for the menu items and adds the menu items.
      *
      * Each menu item consists of the following:
      * <ul>
@@ -38,16 +37,22 @@ public class MainMenu
      *     <li>{@link MenuAction} to execute in {@link #act()}</li>
      * </ul>
      *
-     * @param config Config object to use throughout this app
+     * @param config  Config object to use throughout this app
+     * @param session Session containing the timeline for this app run
      *
      * @since 0.1.0
      */
-    public MainMenu(final Config config)
+    public MainMenu(final Config config, final Session session)
     {
         this.config = config;
+        this.session = session;
+
+        // Add the menu items.
         this.menuItems = new TreeMap<>();
+        this.menuItems.put("a", Pair.of("[A]dd tasks from file",
+                new CsvAddTasksAction()));
         this.menuItems.put("o", Pair.of("[O]btain authentication",
-                new ObtainAuthenticationAction(this.config)));
+                new ObtainAuthenticationAction()));
         this.menuItems.put("q", Pair.of("[Q]uit", new QuitAction()));
     }
 
@@ -97,11 +102,11 @@ public class MainMenu
                 final Pair<String, MenuAction> pair = this.menuItems.get(input);
                 if (pair != null)
                 {
-                    final MenuAction item = pair.get_2();
+                    final MenuAction item = pair._2;
                     if (item != null)
                     {
                         validItem = true;
-                        item.execute();
+                        item.execute(this.config, this.session);
                     }
                 }
                 else
@@ -126,7 +131,10 @@ public class MainMenu
     @Override
     public String toString()
     {
-        return "MainMenu{config=" + this.config + ", " +
-                "menuItems=" + this.menuItems + "}";
+        return "MainMenu{" +
+                "config=" + this.config +
+                ", session=" + this.session +
+                ", menuItems=" + this.menuItems +
+                '}';
     }
 }

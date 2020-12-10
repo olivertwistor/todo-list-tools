@@ -1,7 +1,7 @@
 package nu.olivertwistor.todolisttools.rtmapi.methods;
 
+import nu.olivertwistor.todolisttools.rtmapi.AuthResponse;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
-import nu.olivertwistor.todolisttools.rtmapi.Response;
 import nu.olivertwistor.todolisttools.rtmapi.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
@@ -28,7 +28,7 @@ public class GetFrob
     private static final String tag_frob = "frob";
 
     private final Request request;
-    private final Response response;
+    private final AuthResponse response;
 
     /**
      * Creates a fully formed REST request for getting a FROB string, sends
@@ -49,7 +49,7 @@ public class GetFrob
         this.request = new RestRequest(config, method_get_frob);
         this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
 
-        this.response = new Response(this.request);
+        this.response = AuthResponse.createAuthResponse(this.request);
     }
 
     /**
@@ -72,9 +72,7 @@ public class GetFrob
     @Override
     public String toString()
     {
-        return "GetFrob{" +
-                "request=" + this.request + ", " +
-                "response=" + this.response +
-                "}";
+        return "GetFrob{request=" + this.request + ", response=" +
+                this.response + "}";
     }
 }

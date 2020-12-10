@@ -48,6 +48,14 @@ public abstract class Request
     protected static final String param_api_signature = "api_sig";
 
     /**
+     * URL parameter name for the authentication token.
+     *
+     * @since 0.1.0
+     */
+    @NonNls
+    public static final String PARAM_AUTH_TOKEN = "auth_token";
+
+    /**
      * URL parameter name for FROB.
      *
      * @since 0.1.0
@@ -141,7 +149,9 @@ public abstract class Request
     {
         try
         {
-            return this.toUri().toURL();
+            final URL url = this.toUri().toURL();
+
+            return url;
         }
         catch (final URISyntaxException e)
         {

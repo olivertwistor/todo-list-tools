@@ -8,6 +8,7 @@ import org.dom4j.DocumentException;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -21,9 +22,6 @@ public class CheckToken
     @NonNls
     private static final String method_check_token = "rtm.auth.checkToken";
 
-    @NonNls
-    private static final String param_auth_token = "auth_token";
-
     private final Request request;
     private final AuthResponse response;
 
@@ -35,21 +33,18 @@ public class CheckToken
      * @param config Config object for access to API key etc.
      * @param token  the authentication token to verify
      *
-     * @throws DocumentException
-     * @throws NoSuchAlgorithmException
-     * @throws IOException
-     *
      * @since 0.1.0
      */
-    @SuppressWarnings({"OverlyBroadThrowsClause", "JavaDoc"})
+    @SuppressWarnings("JavaDoc")
     public CheckToken(final Config config, final String token)
-            throws DocumentException, NoSuchAlgorithmException, IOException
+            throws DocumentException, NoSuchAlgorithmException,
+            MalformedURLException, IOException
     {
         this.request = new RestRequest(config, method_check_token);
         this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
-        this.request.addParameter(param_auth_token, token);
+        this.request.addParameter(Request.PARAM_AUTH_TOKEN, token);
 
-        this.response = new AuthResponse(this.request);
+        this.response = AuthResponse.createAuthResponse(this.request);
     }
 
     public AuthResponse getResponse()
