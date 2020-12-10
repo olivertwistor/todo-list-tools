@@ -13,7 +13,7 @@ import static org.hamcrest.core.Is.is;
  * @author Johan Nilsson
  * @since  0.1.0
  */
-class ConfigTest
+public class ConfigTest
 {
     /**
      * Asserts that an instantiated Config class can read the API key
