@@ -47,6 +47,11 @@ public abstract class Request
     @NonNls
     protected static final String param_api_signature = "api_sig";
 
+    /**
+     * URL parameter name for the authentication token.
+     *
+     * @since 0.1.0
+     */
     @NonNls
     public static final String PARAM_AUTH_TOKEN = "auth_token";
 

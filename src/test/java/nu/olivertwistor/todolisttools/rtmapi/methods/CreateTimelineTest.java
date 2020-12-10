@@ -2,14 +2,11 @@ package nu.olivertwistor.todolisttools.rtmapi.methods;
 
 import nu.olivertwistor.todolisttools.rtmapi.Response;
 import nu.olivertwistor.todolisttools.util.Config;
-import org.dom4j.DocumentException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.ComparisonFailure;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 import static org.hamcrest.CoreMatchers.is;
 

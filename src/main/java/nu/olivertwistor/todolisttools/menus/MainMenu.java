@@ -18,7 +18,6 @@ import java.util.TreeMap;
  * constructor. Call {@link #show()} to print the menu. Call {@link #act()} to
  * ask for user input and do different things depending on the chosen menu item.
  *
- * @author Johan Nilsson
  * @since  0.1.0
  */
 public class MainMenu
@@ -38,7 +37,8 @@ public class MainMenu
      *     <li>{@link MenuAction} to execute in {@link #act()}</li>
      * </ul>
      *
-     * @param config Config object to use throughout this app
+     * @param config  Config object to use throughout this app
+     * @param session Session containing the timeline for this app run
      *
      * @since 0.1.0
      */

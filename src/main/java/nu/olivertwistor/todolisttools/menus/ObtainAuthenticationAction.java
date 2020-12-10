@@ -7,6 +7,7 @@ import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
@@ -45,28 +46,15 @@ public class ObtainAuthenticationAction implements MenuAction
     @Override
     public void execute()
     {
-        final String existingToken = this.config.getToken();
-        if (this.config.getToken() != null)
+        try
         {
-            try
-            {
-                final CheckToken checkToken =
-                        new CheckToken(this.config, existingToken);
-                if (checkToken.getResponse().isResponseSuccess())
-                {
-                    System.out.println(String.join(System.lineSeparator(),
-                            "You already have authenticated this ",
-                            "application. In order to reauthenticate it, you ",
-                            "have to first delete the config key ",
-                            "\"auth-token\"."));
-                    return;
-                }
-            }
-            catch (final DocumentException | NoSuchAlgorithmException |
-                    IOException e)
-            {
-                e.printStackTrace();
-            }
+            final boolean existingToken = this.checkExistingToken();
+        }
+        catch (final DocumentException | NoSuchAlgorithmException |
+                IOException e)
+        {
+            System.out.println("Failed to check for existing token.");
+            return;
         }
 
         // We have no valid authentication token, so let's proceed with
@@ -86,29 +74,11 @@ public class ObtainAuthenticationAction implements MenuAction
                     this.config, val_write_permissions);
             System.out.println(authUrl.toExternalForm());
         }
-        catch (final NoSuchElementException e)
+        catch (final NoSuchElementException | DocumentException |
+                NoSuchAlgorithmException | IOException e)
         {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        catch (final DocumentException e)
-        {
-            System.err.println("Failed to read authentication response.");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        catch (final NoSuchAlgorithmException e)
-        {
-            System.err.println(
-                    "Failed to create hash for communication with the API.");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        catch (final IOException e)
-        {
-            System.err.println("I/O error.");
-            e.printStackTrace();
-            System.exit(1);
+            System.out.println("Failed to generate an authentication request");
+            return;
         }
 
         System.out.println("When you are done giving this program the " +
@@ -120,8 +90,7 @@ public class ObtainAuthenticationAction implements MenuAction
         catch (final IOException e)
         {
             System.err.println("Failed to read user input.");
-            e.printStackTrace();
-            System.exit(1);
+            return;
         }
 
         // Now when we have obtained authentication and the user have confirmed
@@ -135,25 +104,41 @@ public class ObtainAuthenticationAction implements MenuAction
             // Store the retrieved token to the config file.
             this.config.setToken(token);
         }
-        catch (final DocumentException e)
+        catch (final DocumentException | NoSuchAlgorithmException |
+                IOException e)
         {
-            System.err.println("Failed to read authentication response.");
-            e.printStackTrace();
-            System.exit(1);
+            System.out.println("Failed to either obtain an authentication " +
+                    "token or store it in the config file.");
+            return;
         }
-        catch (final NoSuchAlgorithmException e)
+    }
+
+    /**
+     * Determines whether there is an existing authentication token and whether
+     * it is valid.
+     *
+     * @return True if the authentication token exists and is valid; false
+     *         otherwise.
+     *
+     * @since 0.1.0
+     */
+    @SuppressWarnings("JavaDoc")
+    private boolean checkExistingToken()
+            throws DocumentException, NoSuchAlgorithmException,
+            MalformedURLException, IOException
+    {
+        final String existingToken = this.config.getToken();
+        final CheckToken checkToken =
+                new CheckToken(this.config, existingToken);
+
+        if (checkToken.getResponse().isResponseSuccess())
         {
-            System.err.println(
-                    "Failed to create hash for communication with the API.");
-            e.printStackTrace();
-            System.exit(1);
+            System.out.println("You already have authenticated this " +
+                    "application.");
+            return true;
         }
-        catch (final IOException e)
-        {
-            System.err.println("I/O error.");
-            e.printStackTrace();
-            System.exit(1);
-        }
+
+        return false;
     }
 
     @Override

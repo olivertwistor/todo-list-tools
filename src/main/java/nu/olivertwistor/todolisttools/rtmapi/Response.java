@@ -14,7 +14,6 @@ import java.net.URLConnection;
 import java.security.NoSuchAlgorithmException;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -104,14 +103,11 @@ public class Response
      *
      * @param request the {@link Request}, which XML response to parse
      *
-     * @throws IOException       if there were any problem with reading either
-     *                           the request or the response
-     * @throws DocumentException if the response couldn't be parsed into XML
-     * @throws MalformedURLException
-     * @throws NoSuchAlgorithmException
+     * @return The created Response object.
      *
      * @since 0.1.0
      */
+    @SuppressWarnings("JavaDoc")
     public static Response createResponse(final Request request)
             throws MalformedURLException, NoSuchAlgorithmException,
             IOException, DocumentException
@@ -167,6 +163,24 @@ public class Response
         return val_status_failure.equals(status);
     }
 
+    /**
+     * Searches for an element in the XML tree based on a tag name in a tag
+     * tree.
+     *
+     * @param base the base element for which to start search
+     * @param tags a list of tags describing the tree in which to search, based
+     *             in the base; it's the last tag in the list that is the
+     *             desired tag
+     *
+     * @return The element that is found after starting at the base and
+     *         traversing the tag tree.
+     *
+     * @throws NoSuchElementException if either the base element doesn't exist,
+     *                                the tags list is empty or if any of the
+     *                                tags in the tags list doesn't exist
+     *
+     * @since 0.1.0
+     */
     public Element getElement(final Element base, final Deque<String> tags)
             throws NoSuchElementException
     {
@@ -197,12 +211,44 @@ public class Response
         return this.getElement(element, tags);
     }
 
+    /**
+     * Searches for an element in the XML tree based on a tag name in a tag
+     * tree.
+     *
+     * @param base the base element for which to start search
+     * @param tags a list of tags describing the tree in which to search, based
+     *             in the base; it's the last tag in the list that is the
+     *             desired tag
+     *
+     * @return The element that is found after starting at the base and
+     *         traversing the tag tree.
+     *
+     * @throws NoSuchElementException if either the base element doesn't exist,
+     *                                the tags list is empty or if any of the
+     *                                tags in the tags list doesn't exist
+     *
+     * @since 0.1.0
+     */
     public Element getElement(final String base, final Deque<String> tags)
             throws NoSuchElementException
     {
         return this.getElement(this.rootElement.element(base), tags);
     }
 
+    /**
+     * Gets an element in the XML tree based on a parent tag and a child tag.
+     *
+     * @param base the parent tag; the tag directly above the desired tag in
+     *             the XML tree
+     * @param tag  the desired (child) tag
+     *
+     * @return The element identified by the parent tag and the child tag.
+     *
+     * @throws NoSuchElementException if either the base tag or the child tag
+     *                                doesn't exist
+     *
+     * @since 0.1.0
+     */
     public Element getElement(final String base, final String tag)
             throws NoSuchElementException
     {
@@ -212,12 +258,39 @@ public class Response
         return this.getElement(base, tags);
     }
 
+    /**
+     * Searches for an element in the XML tree based on a tag name in a tag
+     * tree.
+     *
+     * @param tags a list of tags describing the tree in which to search, based
+     *             in the root node; it's the last tag in the list that is the
+     *             desired tag
+     *
+     * @return The element that is found after starting at the root node and
+     *         traversing the tag tree.
+     *
+     * @throws NoSuchElementException if the tags list is empty or if any of
+     *                                the tags in the tags list doesn't exist
+     *
+     * @since 0.1.0
+     */
     public Element getElement(final Deque<String> tags)
             throws NoSuchElementException
     {
         return this.getElement(this.rootElement, tags);
     }
 
+    /**
+     * Gets an element based on a tag name directly under the root name.
+     *
+     * @param tag the desired tag
+     *
+     * @return The element identified by the desired tag.
+     *
+     * @throws NoSuchElementException if the tag doesn't exist
+     *
+     * @since 0.1.0
+     */
     public Element getElement(final String tag) throws NoSuchElementException
     {
         final Element element = this.rootElement.element(tag);
@@ -244,7 +317,9 @@ public class Response
     @Override
     public String toString()
     {
-        return "Response{rootElement=" + this.rootElement +
-                ", document=" + this.document + "}";
+        return "Response{" +
+                "rootElement=" + this.rootElement +
+                ", document=" + this.document +
+                "}";
     }
 }

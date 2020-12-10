@@ -1,6 +1,5 @@
 package nu.olivertwistor.todolisttools.menus;
 
-import ch.rfin.util.Pair;
 import nu.olivertwistor.java.tui.Terminal;
 import nu.olivertwistor.todolisttools.Session;
 import nu.olivertwistor.todolisttools.models.Task;
@@ -11,12 +10,8 @@ import org.dom4j.DocumentException;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -24,12 +19,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
 
+/**
+ * Adds tasks to Remember The Milk based on a user supplied CSV file.
+ *
+ * @since 0.1.0
+ */
 public class CsvAddTasksAction implements MenuAction
 {
     private static final int seconds_per_request = 1500;
@@ -37,6 +33,15 @@ public class CsvAddTasksAction implements MenuAction
     private final Config config;
     private final Session session;
 
+    /**
+     * Prepares for executing the add task action. Determines whether there is
+     * a valid timeline and if not, creates one.
+     *
+     * @param config  Config object for access to API key etc.
+     * @param session Session containing the timeline for this app run
+     *
+     * @since 0.1.0
+     */
     public CsvAddTasksAction(final Config config, final Session session)
     {
         this.config = config;
@@ -46,6 +51,7 @@ public class CsvAddTasksAction implements MenuAction
             try
             {
                 this.session.createTimeline();
+                System.out.println("Created a new timeline.");
             }
             catch (final DocumentException | NoSuchAlgorithmException |
                     IOException e)
@@ -126,6 +132,18 @@ public class CsvAddTasksAction implements MenuAction
         }
     }
 
+    /**
+     * Parses a CSV file into a list of Task objects.
+     *
+     * @param file      the file to parse
+     * @param delimiter the delimiting character between columns in the file
+     *
+     * @return A list of Task objects.
+     *
+     * @throws IOException if the file couldn't be read
+     *
+     * @since 0.1.0
+     */
     List<Task> parseCsvFile(final File file, final String delimiter)
             throws IOException
     {
@@ -159,6 +177,18 @@ public class CsvAddTasksAction implements MenuAction
         return tasks;
     }
 
+    /**
+     * Asks the user for the path to a CSV file to load, as well as for the
+     * delimiter between columns in that file.
+     *
+     * @return The path to a CSV file and the delimiter between columns,
+     *         together in an array.
+     *
+     * @throws FileNotFoundException if the file couldn't be found
+     * @throws IOException           if user input couldn't be read
+     *
+     * @since 0.1.0
+     */
     private String[] readCsvUserInput()
             throws FileNotFoundException, IOException
     {
