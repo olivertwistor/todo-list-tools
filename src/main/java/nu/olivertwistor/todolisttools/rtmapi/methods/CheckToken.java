@@ -47,6 +47,16 @@ public class CheckToken
         this.response = AuthResponse.createAuthResponse(this.request);
     }
 
+    public boolean isResponseSuccess()
+    {
+        return this.response.isResponseSuccess();
+    }
+
+    public boolean isResponseFailure()
+    {
+        return this.response.isResponseFailure();
+    }
+
     public AuthResponse getResponse()
     {
         return this.response;

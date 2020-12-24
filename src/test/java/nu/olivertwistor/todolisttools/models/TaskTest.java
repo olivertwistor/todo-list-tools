@@ -25,7 +25,7 @@ public class TaskTest
         // We need to create two targets, each with a permutation of the tags
         // because the SmartAddBuilder uses a Set for tags, and Sets are
         // unordered.
-        final String[] targets = {
+        final String[] targets = new String[] {
                 "Buy milk https://grocerystore.com ~Tomorrow ^Saturday " +
                         "*After 1 week @Work !2 #Household #car #money " +
                         "=30 minutes //Pick low fat if available.",

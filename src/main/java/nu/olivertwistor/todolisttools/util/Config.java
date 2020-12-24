@@ -5,6 +5,8 @@ import org.ini4j.Wini;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Configuration values from config files are read via this class.
@@ -32,6 +34,24 @@ public class Config
             throws InvalidFileFormatException, IOException
     {
         this.ini = new Wini(new File(filePath));
+    }
+
+    /**
+     * Creating a new instance of this object based on a certain URL pointing
+     * to configuration.
+     *
+     * @param url URL pointing to configuration
+     *
+     * @throws InvalidFileFormatException if the configuration isn't formatted
+     *                                    correctly
+     * @throws IOException                if the given URL couldn't be found or
+     *                                    read
+     *
+     * @since 0.1.0
+     */
+    public Config(final URL url) throws InvalidFileFormatException, IOException
+    {
+        this.ini = new Wini(url);
     }
 
     /**

@@ -77,8 +77,8 @@ public class AuthRequest extends Request
     public URI toUri() throws URISyntaxException, NoSuchAlgorithmException
     {
         final URIBuilder builder = new URIBuilder(endpoint_auth);
-        this.parameters.forEach(
-                (item) -> builder.addParameter(item._1, item._2));
+        this.parameters.forEach((Pair<String, String> item) ->
+                builder.addParameter(item._1, item._2));
         builder.addParameter(param_api_signature, this.generateSignature());
 
         return builder.build();

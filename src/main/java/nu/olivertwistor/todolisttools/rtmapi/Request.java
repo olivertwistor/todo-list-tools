@@ -201,13 +201,13 @@ public abstract class Request
         // Put all parameters into a SortedMap to have them sorted (temporarily
         // for this method only).
         final SortedMap<String, String> sortedParameters = new TreeMap<>();
-        this.parameters.forEach(
-                (item) -> sortedParameters.put(item._1, item._2));
+        this.parameters.forEach((Pair<String, String> item) ->
+                sortedParameters.put(item._1, item._2));
 
         final StringBuilder beforeHash = new StringBuilder(
                 this.config.getSharedSecret());
-        sortedParameters.forEach(
-                (key, value) -> beforeHash.append(key).append(value));
+        sortedParameters.forEach((String key, String value) ->
+                beforeHash.append(key).append(value));
 
         return hash(beforeHash.toString());
     }

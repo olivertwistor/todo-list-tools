@@ -5,6 +5,7 @@ import nu.olivertwistor.todolisttools.util.Config;
 import org.ini4j.InvalidFileFormatException;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * Main class for this app. Contains the main method.
@@ -12,6 +13,7 @@ import java.io.IOException;
  * @author Johan Nilsson
  * @since  0.1.0
  */
+@SuppressWarnings({"CallToPrintStackTrace", "UseOfSystemOutOrSystemErr"})
 public final class App
 {
     /**
@@ -19,11 +21,9 @@ public final class App
      * indefinitely. Thereby, it's very important that at least one of the main
      * menu items calls {@link System#exit(int)}.
      *
-     * @param configFilePath path to config file
-     *
      * @since 0.1.0
      */
-    private App(final String configFilePath)
+    private App()
     {
         // We must first see whether we can load the config. Also, start a new
         // session for this run of the application.
@@ -31,18 +31,20 @@ public final class App
         Session session = null;
         try
         {
-            config = new Config(configFilePath);
+            final URL configPath = this.getClass().getResource("app.cfg");
+            config = new Config(configPath);
             session = new Session(config);
         }
         catch (final InvalidFileFormatException e)
         {
-            System.err.println(
-                    "The given config file hasn't got the correct format:");
+            System.err.println("Failed to parse configuration format: ");
+            e.printStackTrace();
             System.exit(1);
         }
         catch (final IOException e)
         {
-            System.err.println("The given config file couldn't be opened.");
+            System.err.println("Failed to open URL to the configuration: ");
+            e.printStackTrace();
             System.exit(1);
         }
 
@@ -79,14 +81,6 @@ public final class App
      */
     public static void main(final String[] args)
     {
-        if (args.length < 1)
-        {
-            System.err.println("Too few arguments.");
-            System.err.println("Usage: java -jar todo-list-tools.jar [path " +
-                    "to config file]");
-            System.exit(1);
-        }
-
-        new App(args[0]);
+        new App();
     }
 }

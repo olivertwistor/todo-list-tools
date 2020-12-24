@@ -21,12 +21,14 @@ import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Adds tasks to Remember The Milk based on a user supplied CSV file.
  *
  * @since 0.1.0
  */
+@SuppressWarnings("PublicMethodWithoutLogging")
 public class CsvAddTasksAction implements MenuAction
 {
     private static final int seconds_per_request = 1500;
@@ -205,11 +207,7 @@ public class CsvAddTasksAction implements MenuAction
         final String csvDelimiter = Terminal.readString(
                 "By which character is the columns separated? ");
 
-        if (csvFileInput == null)
-        {
-            throw new FileNotFoundException(
-                    "Failed to find file: " + csvFileInput);
-        }
+        Objects.requireNonNull(csvFileInput, "Failed to find file: " + csvFileInput);
 
         return new String[] { csvFileInput, csvDelimiter };
     }

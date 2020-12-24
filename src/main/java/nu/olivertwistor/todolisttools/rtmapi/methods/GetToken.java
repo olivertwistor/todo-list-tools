@@ -48,6 +48,11 @@ public class GetToken
         this.response = AuthResponse.createAuthResponse(this.request);
     }
 
+    public String getToken()
+    {
+        return this.response.getToken();
+    }
+
     public AuthResponse getResponse()
     {
         return this.response;

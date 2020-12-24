@@ -51,8 +51,7 @@ public class CheckTokenTest
             final CheckToken checkToken =
                     new CheckToken(config, config.getToken());
 
-            final boolean successResponse =
-                    checkToken.getResponse().isResponseSuccess();
+            final boolean successResponse = checkToken.isResponseSuccess();
 
             Assert.assertThat(successResponse, is(true));
         }
@@ -76,7 +75,7 @@ public class CheckTokenTest
             final CheckToken checkToken = new CheckToken(config, "foobar");
 
             final boolean failResponse =
-                    checkToken.getResponse().isResponseFailure();
+                    checkToken.isResponseFailure();
 
             Assert.assertThat(failResponse, is(true));
         }

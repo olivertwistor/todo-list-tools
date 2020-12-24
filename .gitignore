@@ -3,4 +3,3 @@ lib/pair-0.1*
 src/main/resources/app.cfg
 target/
 *.iml
-dev-config.ini

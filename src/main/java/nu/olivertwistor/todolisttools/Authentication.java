@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * This class handles authentication to the Remember The Milk service. The way
@@ -85,15 +86,12 @@ public final class Authentication
             DocumentException, NoSuchAlgorithmException, MalformedURLException,
             IOException
     {
-        if (this.authRequest == null)
-        {
-            throw new UnsupportedOperationException("Authentication has not " +
-                    "yet been obtained. Please call #generateAuthRequest() " +
-                    "before calling this method.");
-        }
+        Objects.requireNonNull(this.authRequest, "Authentication has not " +
+                "yet been obtained. Please call #generateAuthRequest() " +
+                "before calling this method.");
 
         final GetToken getToken = new GetToken(config, this.frobString);
-        return getToken.getResponse().getToken();
+        return getToken.getToken();
     }
 
     @Override

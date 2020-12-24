@@ -1,7 +1,7 @@
 package nu.olivertwistor.todolisttools.models;
 
 import ch.rfin.util.Pair;
-import nu.olivertwistor.todolisttools.util.SmartAddConstants;
+import nu.olivertwistor.todolisttools.util.SmartAddPrefixes;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -42,42 +42,42 @@ public class Task
      */
     public Task(final String name)
     {
-        this.name = Pair.of(SmartAddConstants.PREFIX_NAME, name);
+        this.name = Pair.of(SmartAddPrefixes.PREFIX_NAME, name);
     }
 
     public void setUrl(final String url)
     {
-        this.url = Pair.of(SmartAddConstants.PREFIX_URL, url);
+        this.url = Pair.of(SmartAddPrefixes.PREFIX_URL, url);
     }
 
     public void setStart(final String start)
     {
-        this.start = Pair.of(SmartAddConstants.PREFIX_START, start);
+        this.start = Pair.of(SmartAddPrefixes.PREFIX_START, start);
     }
 
     public void setDue(final String due)
     {
-        this.due = Pair.of(SmartAddConstants.PREFIX_DUE, due);
+        this.due = Pair.of(SmartAddPrefixes.PREFIX_DUE, due);
     }
 
     public void setRepeat(final String repeat)
     {
-        this.repeat = Pair.of(SmartAddConstants.PREFIX_REPEAT, repeat);
+        this.repeat = Pair.of(SmartAddPrefixes.PREFIX_REPEAT, repeat);
     }
 
     public void setLocation(final String location)
     {
-        this.location = Pair.of(SmartAddConstants.PREFIX_LOCATION, location);
+        this.location = Pair.of(SmartAddPrefixes.PREFIX_LOCATION, location);
     }
 
     public void setPriority(final String priority)
     {
-        this.priority = Pair.of(SmartAddConstants.PREFIX_PRIORITY, priority);
+        this.priority = Pair.of(SmartAddPrefixes.PREFIX_PRIORITY, priority);
     }
 
     public void setList(final String list)
     {
-        this.list = Pair.of(SmartAddConstants.PREFIX_LIST, list);
+        this.list = Pair.of(SmartAddPrefixes.PREFIX_LIST, list);
     }
 
     /**
@@ -89,7 +89,7 @@ public class Task
      */
     public void addTag(final String tag)
     {
-        this.tags.add(Pair.of(SmartAddConstants.PREFIX_TAG, tag));
+        this.tags.add(Pair.of(SmartAddPrefixes.PREFIX_TAG, tag));
     }
 
     /**
@@ -101,19 +101,19 @@ public class Task
      */
     public void removeTag(final String tag)
     {
-        this.tags.remove(Pair.of(SmartAddConstants.PREFIX_TAG, tag));
+        this.tags.remove(Pair.of(SmartAddPrefixes.PREFIX_TAG, tag));
     }
 
     public void setTimeEstimate(final String timeEstimate)
     {
         this.timeEstimate = Pair.of(
-                SmartAddConstants.PREFIX_TIME_ESTIMATE, timeEstimate);
+                SmartAddPrefixes.PREFIX_TIME_ESTIMATE, timeEstimate);
     }
 
     public void setComments(final String comments)
     {
         this.comments = Pair.of(
-                SmartAddConstants.PREFIX_COMMENTS, comments);
+                SmartAddPrefixes.PREFIX_COMMENTS, comments);
     }
 
     /**

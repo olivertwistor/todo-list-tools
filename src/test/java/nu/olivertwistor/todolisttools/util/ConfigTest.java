@@ -21,7 +21,6 @@ public class ConfigTest
      *
      * @since 0.1.0
      */
-    @SuppressWarnings("MethodMayBeStatic")
     @Test
     public void getApiKey()
     {

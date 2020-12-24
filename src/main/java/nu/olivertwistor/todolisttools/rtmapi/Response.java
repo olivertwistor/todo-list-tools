@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * A REST response takes a {@link Request} and reads the XML response, storing
@@ -132,11 +133,8 @@ public class Response
     public boolean isResponseSuccess() throws NoSuchElementException
     {
         final String status = this.rootElement.attributeValue(ATTRIB_STATUS);
-        if (status == null)
-        {
-            throw new NoSuchElementException(
-                    "Failed to find a status attribute on the root element.");
-        }
+        Objects.requireNonNull(status,
+                "Failed to find a status attribute on the root element.");
 
         return val_status_success.equals(status);
     }
@@ -154,11 +152,8 @@ public class Response
     public boolean isResponseFailure() throws NoSuchElementException
     {
         final String status = this.rootElement.attributeValue(ATTRIB_STATUS);
-        if (status == null)
-        {
-            throw new NoSuchElementException(
-                    "Failed to find a status attribute on the root element.");
-        }
+        Objects.requireNonNull(status,
+                "Failed to find a status attribute on the root element.");
 
         return val_status_failure.equals(status);
     }
