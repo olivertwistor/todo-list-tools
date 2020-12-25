@@ -17,11 +17,12 @@ import java.util.List;
  * @author Johan Nilsson
  * @since  0.1.0
  */
+@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public class RestRequest extends Request
 {
-    private static final String endpoint_rest =
+    private static final String ENDPOINT_REST =
             "https://api.rememberthemilk.com/services/rest/";
-    private static final String param_method = "method";
+    private static final String PARAM_METHOD = "method";
 
     /**
      * Creates a REST request.
@@ -32,12 +33,12 @@ public class RestRequest extends Request
      *
      * @since 0.1.0
      */
-    public RestRequest(final Config config,
-                       final String methodName,
-                       final List<Pair<String, String>> parameters)
+    private RestRequest(final Config config,
+                        final String methodName,
+                        final List<Pair<String, String>> parameters)
     {
         super(config, parameters);
-        this.parameters.add(Pair.of(param_method, methodName));
+        this.parameters.add(Pair.of(RestRequest.PARAM_METHOD, methodName));
     }
 
     /**
@@ -65,20 +66,24 @@ public class RestRequest extends Request
      *
      * @since 0.1.0
      */
+    @SuppressWarnings("NestedMethodCall")
     @Override
-    public URI toUri() throws URISyntaxException, NoSuchAlgorithmException
+    public final URI toUri()
+            throws URISyntaxException, NoSuchAlgorithmException
     {
-        final URIBuilder builder = new URIBuilder(endpoint_rest);
+        final URIBuilder builder = new URIBuilder(RestRequest.ENDPOINT_REST);
         this.parameters.forEach((Pair<String, String> item) ->
                 builder.addParameter(item._1, item._2));
-        builder.addParameter(param_api_signature, this.generateSignature());
+        builder.addParameter(Request.PARAM_API_SIGNATURE,
+                this.generateSignature());
 
         return builder.build();
     }
 
+    @SuppressWarnings("DesignForExtension")
     @Override
     public String toString()
     {
-        return "RestRequest{super=" + super.toString() + "}";
+        return "RestRequest{super=" + super.toString() + '}';
     }
 }

@@ -17,19 +17,20 @@ import java.security.NoSuchAlgorithmException;
  *
  * @since 0.1.0
  */
-public class AddTask
+@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
+public final class AddTask
 {
     @NonNls
-    private static final String method_add_task = "rtm.tasks.add";
+    private static final String METHOD_ADD_TASK = "rtm.tasks.add";
 
     @NonNls
-    private static final String param_timeline = "timeline";
+    private static final String PARAM_TIMELINE = "timeline";
 
     @NonNls
-    private static final String param_name = "name";
+    private static final String PARAM_NAME = "name";
 
     @NonNls
-    private static final String param_parse = "parse";
+    private static final String PARAM_PARSE = "parse";
 
     private final Request request;
     private final Response response;
@@ -51,14 +52,23 @@ public class AddTask
             throws DocumentException, NoSuchAlgorithmException, IOException,
             MalformedURLException
     {
-        this.request = new RestRequest(config, method_add_task);
-        this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
-        this.request.addParameter(param_timeline, session.getTimeline());
-        this.request.addParameter(param_name, smartAdd);
-        this.request.addParameter(param_parse, "1");
-        this.request.addParameter(Request.PARAM_AUTH_TOKEN, config.getToken());
+        final String apiKey = config.getApiKey();
+        final String token = config.getToken();
+
+        this.request = new RestRequest(config, AddTask.METHOD_ADD_TASK);
+        this.request.addParameter(Request.PARAM_API_KEY, apiKey);
+        this.request.addParameter(
+                AddTask.PARAM_TIMELINE, session.getTimeline());
+        this.request.addParameter(AddTask.PARAM_NAME, smartAdd);
+        this.request.addParameter(AddTask.PARAM_PARSE, "1");
+        this.request.addParameter(Request.PARAM_AUTH_TOKEN, token);
 
         this.response = Response.createResponse(this.request);
+    }
+
+    public boolean isResponseSuccess()
+    {
+        return this.response.isResponseSuccess();
     }
 
     public Response getResponse()
@@ -67,7 +77,7 @@ public class AddTask
     }
 
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
         return "AddTask{" +
                 "request=" + this.request +

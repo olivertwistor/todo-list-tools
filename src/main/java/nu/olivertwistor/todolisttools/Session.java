@@ -3,6 +3,7 @@ package nu.olivertwistor.todolisttools;
 import nu.olivertwistor.todolisttools.rtmapi.methods.CreateTimeline;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -17,7 +18,8 @@ import java.security.NoSuchAlgorithmException;
  *
  * @since 0.1.0
  */
-public class Session
+@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
+public final class Session
 {
     private final Config config;
     private String timeline;
@@ -29,7 +31,7 @@ public class Session
      *
      * @since 0.1.0
      */
-    public Session(final Config config)
+    Session(final Config config)
     {
         this.config = config;
         this.timeline = "";
@@ -70,7 +72,7 @@ public class Session
     }
 
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
         return "Session{" +
                 "config=" + this.config +

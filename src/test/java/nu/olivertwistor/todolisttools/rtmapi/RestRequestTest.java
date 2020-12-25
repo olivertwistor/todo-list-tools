@@ -1,14 +1,8 @@
 package nu.olivertwistor.todolisttools.rtmapi;
 
-import nu.olivertwistor.todolisttools.util.Config;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-
-import static org.hamcrest.CoreMatchers.*;
 
 /**
  * Unit tests for the {@link RestRequest} class.
@@ -16,47 +10,22 @@ import static org.hamcrest.CoreMatchers.*;
  * @author Johan Nilsson
  * @since  0.1.0
  */
-public class RestRequestTest
+public final class RestRequestTest
 {
-    private static Config config;
-
-    /**
-     * Tries to create a Config object from the file "dev-config.ini" (a
-     * development config file containing a proper API key and shared secret).
-     *
-     * @since 0.1.0
-     */
-    @BeforeClass
-    public static void setup()
-    {
-        try
-        {
-            config = new Config("dev-config.ini");
-        }
-        catch (final IOException e)
-        {
-            System.err.println(e.getLocalizedMessage());
-        }
-    }
-
     /**
      * Asserts that the following statement is true: "Given a known string, its
      * hash value is the MD5 hash."
      *
+     * @throws Exception if something goes wrong
+     *
      * @since 0.1.0
      */
+    @SuppressWarnings("HardCodedStringLiteral")
     @Test
-    public void Given_KnownString_Then_ValidHash()
+    public void Given_KnownString_Then_ValidHash() throws Exception
     {
-        try
-        {
-            Assert.assertThat(
-                    Request.hash("hello.world"),
-                    is("18aa7764566d19e9a9afb6ea0bf1fa81"));
-        }
-        catch (final NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
-        }
+        Assert.assertThat("MD5 hash of known string should be as expected.",
+                Request.hash("hello.world"),
+                CoreMatchers.is("18aa7764566d19e9a9afb6ea0bf1fa81"));
     }
 }

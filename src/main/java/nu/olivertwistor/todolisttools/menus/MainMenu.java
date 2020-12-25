@@ -20,7 +20,8 @@ import java.util.TreeMap;
  *
  * @since  0.1.0
  */
-public class MainMenu
+@SuppressWarnings({"HardCodedStringLiteral", "PublicMethodWithoutLogging", "StringConcatenation", "ClassWithoutLogger"})
+public final class MainMenu
 {
     private final Config config;
     private final Session session;
@@ -68,7 +69,8 @@ public class MainMenu
         for (final Pair<String, MenuAction> pair :
                 this.menuItems.values())
         {
-            System.out.println(pair.get_1());
+            final String key = pair.get_1();
+            System.out.println(key);
         }
         System.out.println();
     }
@@ -77,11 +79,14 @@ public class MainMenu
      * Reads a line from user input and calls the corresponding function from
      * the menu items Map.
      *
-     * If any error occurs in reading user input, the program is terminated.
+     * @return Whether this action should lead to the current menu (level)
+     *         exiting, for example when a "Quit" or "Up one level" menu item
+     *         is selected.
      *
      * @since 0.1.0
      */
-    public void act()
+    @SuppressWarnings("NestedMethodCall")
+    public boolean act()
     {
         // Temporarily set the system InputStream to our own InputStream that
         // doesn't close.
@@ -106,7 +111,15 @@ public class MainMenu
                     if (item != null)
                     {
                         validItem = true;
-                        item.execute(this.config, this.session);
+                        final boolean exit = item.execute(
+                                this.config, this.session);
+                        if (exit)
+                        {
+                            // Reset the system InputStream to System.in.
+                            System.setIn(System.in);
+
+                            return true;
+                        }
                     }
                 }
                 else
@@ -126,6 +139,8 @@ public class MainMenu
             // Reset the system InputStream to System.in.
             System.setIn(System.in);
         }
+
+        return false;
     }
 
     @Override

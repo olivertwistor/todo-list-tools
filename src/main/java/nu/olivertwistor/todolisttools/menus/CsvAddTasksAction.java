@@ -3,7 +3,6 @@ package nu.olivertwistor.todolisttools.menus;
 import nu.olivertwistor.java.tui.Terminal;
 import nu.olivertwistor.todolisttools.Session;
 import nu.olivertwistor.todolisttools.models.Task;
-import nu.olivertwistor.todolisttools.rtmapi.Response;
 import nu.olivertwistor.todolisttools.rtmapi.methods.AddTask;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
@@ -28,34 +27,37 @@ import java.util.Objects;
  *
  * @since 0.1.0
  */
-@SuppressWarnings("PublicMethodWithoutLogging")
-public class CsvAddTasksAction implements MenuAction
+@SuppressWarnings(
+        {"PublicMethodWithoutLogging", "HardCodedStringLiteral",
+                "DuplicateStringLiteralInspection", "StringConcatenation",
+                "ClassWithoutLogger", "MultiCatchCanBeSplit"})
+public final class CsvAddTasksAction implements MenuAction
 {
-    private static final int seconds_per_request = 1500;
+    private static final int SECONDS_PER_REQUEST = 1_500;
 
     @Override
-    public void execute(final Config config, final Session session)
+    public boolean execute(final Config config, final Session session)
     {
         try
         {
-            createTimeline(session);
+            CsvAddTasksAction.createTimeline(session);
         }
         catch (final DocumentException | NoSuchAlgorithmException |
                 IOException e)
         {
             System.out.println("Failed to create a new timeline.");
-            return;
+            return false;
         }
 
         final String[] csvUserInput;
         try
         {
-            csvUserInput = readCsvUserInput();
+            csvUserInput = CsvAddTasksAction.readCsvUserInput();
         }
         catch (final IOException e)
         {
             System.out.println("Failed to read user input.");
-            return;
+            return false;
         }
 
         List<Task> parsedFile = null;
@@ -64,7 +66,7 @@ public class CsvAddTasksAction implements MenuAction
             final Path filePath = Paths.get(csvUserInput[0]);
             final File file = filePath.toFile();
 
-            parsedFile = parseCsvFile(file, csvUserInput[1]);
+            parsedFile = CsvAddTasksAction.parseCsvFile(file, csvUserInput[1]);
         }
         catch (final InvalidPathException | IOException e)
         {
@@ -74,7 +76,7 @@ public class CsvAddTasksAction implements MenuAction
         if (parsedFile == null)
         {
             System.out.println("Failed to parse the CSV file into tasks.");
-            return;
+            return false;
         }
 
         for (final Task task : parsedFile)
@@ -83,8 +85,7 @@ public class CsvAddTasksAction implements MenuAction
             try
             {
                 final AddTask addTask = new AddTask(config, session, smartAdd);
-                final Response response = addTask.getResponse();
-                if (response.isResponseSuccess())
+                if (addTask.isResponseSuccess())
                 {
                     System.out.println("Added task to RTM: " + smartAdd);
                 }
@@ -105,13 +106,15 @@ public class CsvAddTasksAction implements MenuAction
             {
                 // Wait a moment until adding the next task to make sure we
                 // adhere to the API rate limit.
-                Thread.sleep(seconds_per_request);
+                Thread.sleep(CsvAddTasksAction.SECONDS_PER_REQUEST);
             }
             catch (final InterruptedException e)
             {
                 System.out.println("Current thread was interrupted.");
             }
         }
+
+        return false;
     }
 
     /**
@@ -129,15 +132,15 @@ public class CsvAddTasksAction implements MenuAction
     static List<Task> parseCsvFile(final File file, final String delimiter)
             throws IOException
     {
-        final List<Task> tasks = new ArrayList<>();
-
         // Read the file line by line and split each line into columns.
+        final Path filePath = file.toPath();
         try (final BufferedReader br = Files.newBufferedReader(
-                file.toPath(), StandardCharsets.UTF_8))
+                filePath, StandardCharsets.UTF_8))
         {
             // Skip the first line.
             final String skippedLine = br.readLine();
             int nReadLines = 0;
+            final List<Task> tasks = new ArrayList<>();
             if (skippedLine != null)
             {
                 System.out.println("Skipped line: " + skippedLine);
@@ -154,9 +157,8 @@ public class CsvAddTasksAction implements MenuAction
             }
 
             System.out.println("Read " + nReadLines + " lines.");
+            return tasks;
         }
-
-        return tasks;
     }
 
     /**
@@ -166,7 +168,7 @@ public class CsvAddTasksAction implements MenuAction
      *
      * @since 0.1.0
      */
-    @SuppressWarnings("JavaDoc")
+    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     private static void createTimeline(final Session session)
             throws DocumentException, NoSuchAlgorithmException,
             MalformedURLException, IOException
@@ -207,7 +209,8 @@ public class CsvAddTasksAction implements MenuAction
         final String csvDelimiter = Terminal.readString(
                 "By which character is the columns separated? ");
 
-        Objects.requireNonNull(csvFileInput, "Failed to find file: " + csvFileInput);
+        Objects.requireNonNull(csvFileInput,
+                () -> "Failed to find file: " + csvFileInput);
 
         return new String[] { csvFileInput, csvDelimiter };
     }

@@ -1,48 +1,25 @@
 package nu.olivertwistor.todolisttools.menus;
 
-import nu.olivertwistor.todolisttools.Session;
 import nu.olivertwistor.todolisttools.models.Task;
-import nu.olivertwistor.todolisttools.util.Config;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.*;
 
 /**
  * Unit tests for the {@link CsvAddTasksAction} class.
  *
  * @since 0.1.0
  */
-public class CsvAddTasksActionTest
+public final class CsvAddTasksActionTest
 {
-    private static Config config;
-    private static Session session;
-
-    /**
-     * Sets up the foundation for all the tests in this class. A config file
-     * and a session is loaded.
-     *
-     * @throws IOException if the config file couldn't be loaded
-     *
-     * @since 0.1.0
-     */
-    @BeforeClass
-    public static void setUp() throws IOException
-    {
-        config = new Config("dev-config.ini");
-        session = new Session(config);
-    }
-
     /**
      * Asserts that when a CSV file is read, a correct task list is returned.
      *
-     * @throws Exception if anything at all goes wrong
+     * @throws Exception if anything goes wrong
      *
      * @since 0.1.0
      */
@@ -54,14 +31,14 @@ public class CsvAddTasksActionTest
         final File file = new File(
                 classLoader.getResource("tasks.csv").getFile());
 
-        final CsvAddTasksAction csvAddTasksAction = new CsvAddTasksAction();
         final List<Task> actual = CsvAddTasksAction.parseCsvFile(file, ";");
 
         final List<Task> expected = new ArrayList<>();
-        expected.add(new Task("Buy milk"));
-        expected.add(new Task("Play guitar"));
-        expected.add(new Task("Call my boss"));
+        expected.add(new Task("Buy milk")); //NON-NLS
+        expected.add(new Task("Play guitar")); //NON-NLS
+        expected.add(new Task("Call my boss")); //NON-NLS
 
-        Assert.assertThat(actual, equalTo(expected));
+        Assert.assertThat("Task list not parsed correctly from file.",
+                actual, CoreMatchers.equalTo(expected));
     }
 }

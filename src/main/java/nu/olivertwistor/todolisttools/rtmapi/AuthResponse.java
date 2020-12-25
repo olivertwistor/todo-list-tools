@@ -1,6 +1,5 @@
 package nu.olivertwistor.todolisttools.rtmapi;
 
-import org.dom4j.Attribute;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.jetbrains.annotations.NonNls;
@@ -8,10 +7,9 @@ import org.jetbrains.annotations.NonNls;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLConnection;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
@@ -21,28 +19,14 @@ import java.util.NoSuchElementException;
  *
  * @since  0.1.0
  */
-public class AuthResponse extends Response
+@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
+public final class AuthResponse extends Response
 {
     @NonNls
-    private static final String attrib_user_id = "id";
+    private static final String TAG_AUTH = "auth";
 
     @NonNls
-    private static final String attrib_username = "username";
-
-    @NonNls
-    private static final String attrib_fullname = "fullname";
-
-    @NonNls
-    private static final String tag_auth = "auth";
-
-    @NonNls
-    private static final String tag_permissions = "perms";
-
-    @NonNls
-    private static final String tag_token = "token";
-
-    @NonNls
-    private static final String tag_user = "user";
+    private static final String TAG_TOKEN = "token";
 
     /**
      * Creates an authentication response based off of a request. See the
@@ -58,7 +42,7 @@ public class AuthResponse extends Response
      * @since 0.1.0
      */
     @SuppressWarnings("JavaDoc")
-    public AuthResponse(final InputStream contentStream)
+    private AuthResponse(final InputStream contentStream)
             throws DocumentException
     {
         super(contentStream);
@@ -81,51 +65,29 @@ public class AuthResponse extends Response
             IOException, DocumentException
     {
         // Make an HTTP request to get the response.
-        final URLConnection connection = request.toUrl().openConnection();
+        final URL url = request.toUrl();
+        final URLConnection connection = url.openConnection();
         final InputStream contentStream = connection.getInputStream();
 
         return new AuthResponse(contentStream);
     }
 
-    public String getToken() throws NoSuchElementException
+    /**
+     * Gets the token from the REST response.
+     *
+     * @return The token as a string.
+     *
+     * @throws NoSuchElementException if a token couldn't be found in the
+     *                                response
+     *
+     * @since 0.1.0
+     */
+    public String getToken()
     {
-        final Element tokenElement = this.getElement(tag_auth, tag_token);
+        final Element tokenElement = this.getElement(
+                AuthResponse.TAG_AUTH, AuthResponse.TAG_TOKEN);
 
         return tokenElement.getText();
     }
 
-    public String getPermissions() throws NoSuchElementException
-    {
-        final Element permElement = this.getElement(tag_permissions, tag_auth);
-
-        return permElement.getText();
-    }
-
-    /**
-     * Gets the Remember The Milk user info: user id, username and full name.
-     *
-     * @return The Remember The Milk user info as a map with the following
-     * keys: {@link #attrib_user_id}, {@link #attrib_username} and
-     * {@link #attrib_fullname}.
-     *
-     * @throws NoSuchElementException if the user couldn't be found in the
-     *                                response.
-     *
-     * @since 0.1.0
-     */
-    public Map<String, String> getUser() throws NoSuchElementException
-    {
-        final Map<String, String> userData = new HashMap<>();
-
-        final Element user = this.getElement(tag_user, tag_auth);
-        final Attribute userId = user.attribute(attrib_user_id);
-        final Attribute username = user.attribute(attrib_username);
-        final Attribute fullname = user.attribute(attrib_fullname);
-
-        userData.put(attrib_user_id, userId.getValue());
-        userData.put(attrib_username, username.getValue());
-        userData.put(attrib_fullname, fullname.getValue());
-
-        return userData;
-    }
 }

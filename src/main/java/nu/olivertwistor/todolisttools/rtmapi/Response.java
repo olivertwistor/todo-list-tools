@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLConnection;
 import java.security.NoSuchAlgorithmException;
 import java.util.Deque;
@@ -24,40 +25,24 @@ import java.util.Objects;
  * @author Johan Nilsson
  * @since  0.1.0
  */
+@SuppressWarnings({"MethodWithTooExceptionsDeclared", "StringConcatenation", "ClassWithoutLogger", "PublicMethodWithoutLogging", "HardCodedStringLiteral"})
 public class Response
 {
     @NonNls
-    private static final String attrib_error_code = "code";
+    private static final String ATTRIB_STATUS = "stat";
 
     @NonNls
-    private static final String attrib_error_message = "msg";
-
-    /**
-     * XML attribute name for response status.
-     *
-     * @since 0.1.0
-     */
-    @NonNls
-    public static final String ATTRIB_STATUS = "stat";
+    private static final String VAL_STATUS_FAILURE = "fail";
 
     @NonNls
-    private static final String tag_error = "err";
-
-    @NonNls
-    private static final String tag_response = "rsp";
-
-    @NonNls
-    private static final String val_status_failure = "fail";
-
-    @NonNls
-    private static final String val_status_success = "ok";
+    private static final String VAL_STATUS_SUCCESS = "ok";
 
     /**
      * The root element of the XML response.
      *
      * @since 0.1.0
      */
-    protected final Element rootElement;
+    private final Element rootElement;
 
     private final Document document;
 
@@ -72,7 +57,7 @@ public class Response
      *
      * @since 0.1.0
      */
-    public Response(final InputStream contentStream) throws DocumentException
+    Response(final InputStream contentStream) throws DocumentException
     {
         final SAXReader reader = new SAXReader();
         this.document = reader.read(contentStream);
@@ -90,7 +75,7 @@ public class Response
      *
      * @since 0.1.0
      */
-    public Response(final File file) throws DocumentException
+    Response(final File file) throws DocumentException
     {
         final SAXReader reader = new SAXReader();
         this.document = reader.read(file);
@@ -114,7 +99,8 @@ public class Response
             IOException, DocumentException
     {
         // Make an HTTP request to get the response.
-        final URLConnection connection = request.toUrl().openConnection();
+        final URL url = request.toUrl();
+        final URLConnection connection = url.openConnection();
         final InputStream contentStream = connection.getInputStream();
 
         return new Response(contentStream);
@@ -125,18 +111,19 @@ public class Response
      *
      * @return True if successful; false otherwise.
      *
-     * @throws NoSuchElementException if {@link #ATTRIB_STATUS} couldn't be
+     * @throws NoSuchElementException if the status attribute couldn't be
      *                                found in the response
      *
      * @since 0.1.0
      */
-    public boolean isResponseSuccess() throws NoSuchElementException
+    public final boolean isResponseSuccess()
     {
-        final String status = this.rootElement.attributeValue(ATTRIB_STATUS);
+        final String status = this.rootElement.attributeValue(
+                Response.ATTRIB_STATUS);
         Objects.requireNonNull(status,
                 "Failed to find a status attribute on the root element.");
 
-        return val_status_success.equals(status);
+        return Response.VAL_STATUS_SUCCESS.equals(status);
     }
 
     /**
@@ -144,18 +131,19 @@ public class Response
      *
      * @return True if a failure; false otherwise.
      *
-     * @throws NoSuchElementException if {@link #ATTRIB_STATUS} couldn't be
+     * @throws NoSuchElementException if the status attribute couldn't be
      *                                found in the response
      *
      * @since 0.1.0
      */
-    public boolean isResponseFailure() throws NoSuchElementException
+    public final boolean isResponseFailure()
     {
-        final String status = this.rootElement.attributeValue(ATTRIB_STATUS);
+        final String status = this.rootElement.attributeValue(
+                Response.ATTRIB_STATUS);
         Objects.requireNonNull(status,
                 "Failed to find a status attribute on the root element.");
 
-        return val_status_failure.equals(status);
+        return Response.VAL_STATUS_FAILURE.equals(status);
     }
 
     /**
@@ -176,10 +164,10 @@ public class Response
      *
      * @since 0.1.0
      */
-    public Element getElement(final Element base, final Deque<String> tags)
-            throws NoSuchElementException
+    @SuppressWarnings("IfCanBeAssertion")
+    private Element getElement(final Element base, final Deque<String> tags)
     {
-        if (base == null || tags.isEmpty())
+        if ((base == null) || tags.isEmpty())
         {
             throw new NoSuchElementException(
                     "No base element, or the list is empty.");
@@ -224,10 +212,10 @@ public class Response
      *
      * @since 0.1.0
      */
-    public Element getElement(final String base, final Deque<String> tags)
-            throws NoSuchElementException
+    private Element getElement(final String base, final Deque<String> tags)
     {
-        return this.getElement(this.rootElement.element(base), tags);
+        final Element element = this.rootElement.element(base);
+        return this.getElement(element, tags);
     }
 
     /**
@@ -244,8 +232,7 @@ public class Response
      *
      * @since 0.1.0
      */
-    public Element getElement(final String base, final String tag)
-            throws NoSuchElementException
+    final Element getElement(final String base, final String tag)
     {
         final Deque<String> tags = new LinkedList<>();
         tags.add(tag);
@@ -269,8 +256,7 @@ public class Response
      *
      * @since 0.1.0
      */
-    public Element getElement(final Deque<String> tags)
-            throws NoSuchElementException
+    final Element getElement(final Deque<String> tags)
     {
         return this.getElement(this.rootElement, tags);
     }
@@ -286,13 +272,10 @@ public class Response
      *
      * @since 0.1.0
      */
-    public Element getElement(final String tag) throws NoSuchElementException
+    public final Element getElement(final String tag)
     {
         final Element element = this.rootElement.element(tag);
-        if (element == null)
-        {
-            throw new NoSuchElementException(tag + " does not exist.");
-        }
+        Objects.requireNonNull(element, () -> tag + " does not exist.");
 
         return element;
     }
@@ -304,17 +287,18 @@ public class Response
      *
      * @since 0.1.0
      */
-    public String toXmlString()
+    public final String toXmlString()
     {
         return this.document.asXML();
     }
 
+    @SuppressWarnings("DesignForExtension")
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
         return "Response{" +
                 "rootElement=" + this.rootElement +
                 ", document=" + this.document +
-                "}";
+                '}';
     }
 }

@@ -1,17 +1,17 @@
 package nu.olivertwistor.todolisttools.models;
 
+import org.hamcrest.CoreMatchers;
+import org.jetbrains.annotations.NonNls;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.is;
 
 /**
  * Unit tests for the {@link Task} class.
  *
  * @since 0.1.0
  */
-public class TaskTest
+@SuppressWarnings({"StringConcatenation", "HardcodedFileSeparator"})
+public final class TaskTest
 {
     /**
      * Asserts that when creating a task setting all class members, the correct
@@ -19,20 +19,13 @@ public class TaskTest
      *
      * @since 0.1.0
      */
+    @SuppressWarnings({"HardCodedStringLiteral", "HardcodedFileSeparator"})
     @Test
     public void When_SmartAddTasksUsingAllSetters_Then_CorrectStringIsReturned()
     {
         // We need to create two targets, each with a permutation of the tags
         // because the SmartAddBuilder uses a Set for tags, and Sets are
         // unordered.
-        final String[] targets = new String[] {
-                "Buy milk https://grocerystore.com ~Tomorrow ^Saturday " +
-                        "*After 1 week @Work !2 #Household #car #money " +
-                        "=30 minutes //Pick low fat if available.",
-                "Buy milk https://grocerystore.com ~Tomorrow ^Saturday " +
-                        "*After 1 week @Work !2 #Household #money #car " +
-                        "=30 minutes //Pick low fat if available."
-        };
 
         final Task task = new Task("Buy milk");
         task.setUrl("https://grocerystore.com");
@@ -47,8 +40,20 @@ public class TaskTest
         task.setTimeEstimate("30 minutes");
         task.setComments("Pick low fat if available.");
 
+        final String[] targets = {
+                "Buy milk https://grocerystore.com ~Tomorrow ^Saturday " +
+                        "*After 1 week @Work !2 #Household #car #money " +
+                        "=30 minutes //Pick low fat if available.",
+                "Buy milk https://grocerystore.com ~Tomorrow ^Saturday " +
+                        "*After 1 week @Work !2 #Household #money #car " +
+                        "=30 minutes //Pick low fat if available."
+        };
         Assert.assertThat(
-                task.toSmartAdd(), anyOf(is(targets[0]), is(targets[1])));
+                "Parameterized task creation should equal smart add string.",
+                task.toSmartAdd(),
+                CoreMatchers.anyOf(
+                        CoreMatchers.is(targets[0]),
+                        CoreMatchers.is(targets[1])));
     }
 
     /**
@@ -60,16 +65,17 @@ public class TaskTest
     @Test
     public void When_SmartAddTasksUsingSomeSetters_Then_CorrectStringIsReturned()
     {
-        final String target = "Buy milk https://grocerystore.com ^4 days !2 " +
-                "#Household =30 minutes";
-
-        final Task task = new Task("Buy milk");
+        final Task task = new Task("Buy milk"); //NON-NLS
         task.setUrl("https://grocerystore.com");
-        task.setDue("4 days");
+        task.setDue("4 days"); //NON-NLS
         task.setPriority("2");
-        task.setList("Household");
-        task.setTimeEstimate("30 minutes");
+        task.setList("Household"); //NON-NLS
+        task.setTimeEstimate("30 minutes"); //NON-NLS
 
-        Assert.assertThat(task.toSmartAdd(), is(target));
+        @NonNls final String target = "Buy milk https://grocerystore.com " +
+                "^4 days !2 #Household =30 minutes";
+        Assert.assertThat(
+                "Parameterized task creation should equal smart add string.",
+                task.toSmartAdd(), CoreMatchers.is(target));
     }
 }

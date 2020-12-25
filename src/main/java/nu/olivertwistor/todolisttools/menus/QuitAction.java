@@ -8,12 +8,13 @@ import nu.olivertwistor.todolisttools.util.Config;
  *
  * @since 0.1.0
  */
-public class QuitAction implements MenuAction
+@SuppressWarnings({"PublicMethodWithoutLogging", "HardCodedStringLiteral", "ClassWithoutLogger"})
+public final class QuitAction implements MenuAction
 {
     @Override
-    public void execute(final Config config, final Session session)
+    public boolean execute(final Config config, final Session session)
     {
         System.out.println("Goodbye!");
-        System.exit(0);
+        return true;
     }
 }

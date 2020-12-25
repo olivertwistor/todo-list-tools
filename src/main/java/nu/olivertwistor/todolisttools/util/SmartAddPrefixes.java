@@ -1,11 +1,14 @@
 package nu.olivertwistor.todolisttools.util;
 
+import org.jetbrains.annotations.NonNls;
+
 /**
- * This class holds the various smart add prefixes, such as ^ for due date and
+ * This enum holds the various smart add prefixes, such as ^ for due date and
  * @ for location.
  *
  * @since 0.1.0
  */
+@SuppressWarnings("PublicMethodWithoutLogging")
 public enum SmartAddPrefixes
 {
     /**
@@ -83,10 +86,17 @@ public enum SmartAddPrefixes
      *
      * @since 0.1.0
      */
-    COMMENTS("//");
+    @SuppressWarnings("HardcodedFileSeparator") COMMENTS("//");
 
     private final String prefix;
 
+    /**
+     * Creates a new smart add prefix.
+     *
+     * @param prefix the prefix as a string
+     *
+     * @since 0.1.0
+     */
     SmartAddPrefixes(final String prefix)
     {
         this.prefix = prefix;
@@ -95,5 +105,13 @@ public enum SmartAddPrefixes
     public String getPrefix()
     {
         return this.prefix;
+    }
+
+    @Override
+    public @NonNls String toString()
+    {
+        return "SmartAddPrefixes{" +
+                "prefix='" + this.prefix + '\'' +
+                '}';
     }
 }

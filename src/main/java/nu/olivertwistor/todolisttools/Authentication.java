@@ -5,6 +5,7 @@ import nu.olivertwistor.todolisttools.rtmapi.methods.GetFrob;
 import nu.olivertwistor.todolisttools.rtmapi.methods.GetToken;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -25,6 +26,7 @@ import java.util.Objects;
  * @author Johan Nilsson
  * @since  0.1.0
  */
+@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging", "ConstantExpression"})
 public final class Authentication
 {
     private AuthRequest authRequest;
@@ -46,11 +48,10 @@ public final class Authentication
      * @throws MalformedURLException
      * @throws IOException
      */
-    @SuppressWarnings("JavaDoc")
+    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     public URL generateAuthRequest(final Config config,
                                    final String permission)
-            throws NoSuchElementException, DocumentException,
-            NoSuchAlgorithmException, MalformedURLException, IOException
+            throws DocumentException, NoSuchAlgorithmException, MalformedURLException, IOException
     {
         // First, retrieve a FROB.
         final GetFrob getFrob = new GetFrob(config);
@@ -80,11 +81,9 @@ public final class Authentication
      * @throws MalformedURLException
      * @throws IOException
      */
-    @SuppressWarnings("JavaDoc")
+    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     public String obtainToken(final Config config)
-            throws UnsupportedOperationException, NoSuchElementException,
-            DocumentException, NoSuchAlgorithmException, MalformedURLException,
-            IOException
+            throws DocumentException, NoSuchAlgorithmException, MalformedURLException, IOException
     {
         Objects.requireNonNull(this.authRequest, "Authentication has not " +
                 "yet been obtained. Please call #generateAuthRequest() " +
@@ -95,9 +94,9 @@ public final class Authentication
     }
 
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
         return "Authentication{authRequest=" + this.authRequest +
-                ", frobString=" + this.frobString + "}";
+                ", frobString=" + this.frobString + '}';
     }
 }

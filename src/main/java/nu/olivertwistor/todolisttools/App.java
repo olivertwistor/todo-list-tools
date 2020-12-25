@@ -13,7 +13,7 @@ import java.net.URL;
  * @author Johan Nilsson
  * @since  0.1.0
  */
-@SuppressWarnings({"CallToPrintStackTrace", "UseOfSystemOutOrSystemErr"})
+@SuppressWarnings({"CallToPrintStackTrace", "UseOfSystemOutOrSystemErr", "HardCodedStringLiteral", "ClassWithoutLogger", "UtilityClassCanBeEnum", "PublicMethodWithoutLogging"})
 public final class App
 {
     /**
@@ -21,9 +21,11 @@ public final class App
      * indefinitely. Thereby, it's very important that at least one of the main
      * menu items calls {@link System#exit(int)}.
      *
+     * @param args unused
+     *
      * @since 0.1.0
      */
-    private App()
+    public static void main(final String... args)
     {
         // We must first see whether we can load the config. Also, start a new
         // session for this run of the application.
@@ -31,7 +33,7 @@ public final class App
         Session session = null;
         try
         {
-            final URL configPath = this.getClass().getResource("app.cfg");
+            final URL configPath = App.class.getResource("app.cfg");
             config = new Config(configPath);
             session = new Session(config);
         }
@@ -63,24 +65,20 @@ public final class App
         System.out.println();
 
         final MainMenu mainMenu = new MainMenu(config, session);
+        boolean exit;
         do
         {
             mainMenu.show();
-            mainMenu.act();
+            exit = mainMenu.act();
         }
-        while (true);
+        while (!exit);
     }
 
     /**
-     * If the program starts with the correct number of arguments, an instance
-     * of this class is created.
-     *
-     * @param args program arguments; should contain a path to a config file
+     * Empty constructor. This class doesn't need to be instantiated, because
+     * it's the entry point for this app.
      *
      * @since 0.1.0
      */
-    public static void main(final String[] args)
-    {
-        new App();
-    }
+    private App() { }
 }

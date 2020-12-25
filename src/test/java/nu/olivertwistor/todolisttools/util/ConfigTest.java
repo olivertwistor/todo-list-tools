@@ -1,11 +1,10 @@
 package nu.olivertwistor.todolisttools.util;
 
+import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-
-import static org.hamcrest.core.Is.is;
 
 /**
  * Unit tests of the {@link Config} class.
@@ -13,7 +12,8 @@ import static org.hamcrest.core.Is.is;
  * @author Johan Nilsson
  * @since  0.1.0
  */
-public class ConfigTest
+@SuppressWarnings("StringConcatenation")
+public final class ConfigTest
 {
     /**
      * Asserts that an instantiated Config class can read the API key
@@ -21,6 +21,7 @@ public class ConfigTest
      *
      * @since 0.1.0
      */
+    @SuppressWarnings("HardCodedStringLiteral")
     @Test
     public void getApiKey()
     {
@@ -29,7 +30,8 @@ public class ConfigTest
             final Config config = new Config("config.ini");
             final String apiKey = config.getApiKey();
 
-            Assert.assertThat(apiKey, is("xxx"));
+            Assert.assertThat("The api key property should be readable from " +
+                    "the config file", apiKey, Is.is("xxx"));
         }
         catch (final IOException e)
         {
