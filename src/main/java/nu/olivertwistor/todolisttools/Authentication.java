@@ -51,7 +51,8 @@ public final class Authentication
     @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     public URL generateAuthRequest(final Config config,
                                    final String permission)
-            throws DocumentException, NoSuchAlgorithmException, MalformedURLException, IOException
+            throws DocumentException, NoSuchAlgorithmException,
+            MalformedURLException, IOException
     {
         // First, retrieve a FROB.
         final GetFrob getFrob = new GetFrob(config);
@@ -83,7 +84,8 @@ public final class Authentication
      */
     @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     public String obtainToken(final Config config)
-            throws DocumentException, NoSuchAlgorithmException, MalformedURLException, IOException
+            throws DocumentException, NoSuchAlgorithmException,
+            MalformedURLException, IOException
     {
         Objects.requireNonNull(this.authRequest, "Authentication has not " +
                 "yet been obtained. Please call #generateAuthRequest() " +

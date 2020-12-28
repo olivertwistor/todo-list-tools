@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * Unit tests for the {@link CheckToken} class.
@@ -28,7 +29,8 @@ public final class CheckTokenTest
     @BeforeClass
     public static void setUp() throws Exception
     {
-        CheckTokenTest.config = new Config("dev-config.ini");
+        final URL url = CheckTokenTest.class.getResource("/app.cfg");
+        CheckTokenTest.config = new Config(url);
     }
 
     /**

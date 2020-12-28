@@ -7,6 +7,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.net.URL;
+
 /**
  * Unit tests for the {@link CreateTimeline} class.
  *
@@ -28,7 +30,8 @@ public final class CreateTimelineTest
     @BeforeClass
     public static void setUp() throws Exception
     {
-        CreateTimelineTest.config = new Config("dev-config.ini");
+        final URL url = CreateTimelineTest.class.getResource("/app.cfg");
+        CreateTimelineTest.config = new Config(url);
     }
 
     /**

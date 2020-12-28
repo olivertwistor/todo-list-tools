@@ -5,6 +5,7 @@ import nu.olivertwistor.todolisttools.util.Config;
 import org.ini4j.InvalidFileFormatException;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -33,7 +34,7 @@ public final class App
         Session session = null;
         try
         {
-            final URL configPath = App.class.getResource("app.cfg");
+            final URL configPath = App.class.getResource("/app.cfg");
             config = new Config(configPath);
             session = new Session(config);
         }
@@ -48,6 +49,10 @@ public final class App
             System.err.println("Failed to open URL to the configuration: ");
             e.printStackTrace();
             System.exit(1);
+        }
+        catch (URISyntaxException e)
+        {
+            e.printStackTrace();
         }
 
         System.out.println("Todo List Tool");

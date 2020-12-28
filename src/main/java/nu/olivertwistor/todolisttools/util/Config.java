@@ -1,17 +1,19 @@
 package nu.olivertwistor.todolisttools.util;
 
+import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
  * Configuration values from config files are read via this class.
  *
- * @author Johan Nilsson
  * @since  0.1.0
  */
 @SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
@@ -29,25 +31,8 @@ public final class Config
     @NonNls
     private static final String PROP_AUTH_TOKEN = "auth-token";
 
-    private final Wini ini;
-
-    /**
-     * Creating a new instance of this object based on a certain config file.
-     *
-     * @param filePath path to the config file to use
-     *
-     * @throws InvalidFileFormatException if the given config file isn't
-     *                                    formatted correctly
-     * @throws IOException                if the given config file couldn't be
-     *                                    found or read
-     *
-     * @since 0.1.0
-     */
-    public Config(final @NonNls String filePath)
-            throws InvalidFileFormatException, IOException
-    {
-        this.ini = new Wini(new File(filePath));
-    }
+    private final File file;
+    private final Ini ini;
 
     /**
      * Creating a new instance of this object based on a certain URL pointing
@@ -62,9 +47,30 @@ public final class Config
      *
      * @since 0.1.0
      */
-    public Config(final URL url) throws InvalidFileFormatException, IOException
+    public Config(final URL url)
+            throws InvalidFileFormatException, IOException, URISyntaxException
     {
-        this.ini = new Wini(url);
+        final URI uri = url.toURI();
+        this.file = new File(uri);
+        this.ini = new Ini(url);
+    }
+
+    /**
+     * Creating a new instance of this object based on a certain config file.
+     *
+     * @param filePath path to the config file to use
+     *
+     * @throws InvalidFileFormatException if the given config file isn't
+     *                                    formatted correctly
+     * @throws IOException                if the given config file couldn't be
+     *                                    found or read
+     *
+     * @since 0.1.0
+     */
+    public Config(final @NonNls String filePath)
+            throws InvalidFileFormatException, IOException, URISyntaxException
+    {
+        this(new URL(filePath));
     }
 
     /**
@@ -117,7 +123,7 @@ public final class Config
     public void setToken(final String token) throws IOException
     {
         this.ini.put(Config.GROUP_API, Config.PROP_AUTH_TOKEN, token);
-        this.ini.store();
+        this.ini.store(this.file);
     }
 
     @Override

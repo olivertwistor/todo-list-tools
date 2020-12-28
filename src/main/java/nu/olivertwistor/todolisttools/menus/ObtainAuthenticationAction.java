@@ -65,7 +65,7 @@ public final class ObtainAuthenticationAction implements MenuAction
         catch (final NoSuchElementException | DocumentException |
                 NoSuchAlgorithmException | IOException e)
         {
-            System.out.println("Failed to generate an authentication request");
+            System.out.println("Failed to generate an authentication request.");
             return false;
         }
 

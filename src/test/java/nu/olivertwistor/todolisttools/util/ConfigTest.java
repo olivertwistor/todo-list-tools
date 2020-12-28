@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * Unit tests of the {@link Config} class.
@@ -33,7 +34,7 @@ public final class ConfigTest
             Assert.assertThat("The api key property should be readable from " +
                     "the config file", apiKey, Is.is("xxx"));
         }
-        catch (final IOException e)
+        catch (final IOException | URISyntaxException e)
         {
             e.printStackTrace();
         }
