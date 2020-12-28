@@ -1,8 +1,8 @@
-package nu.olivertwistor.todolisttools;
+package nu.olivertwistor.todolisttools.menus;
 
 import nu.olivertwistor.todolisttools.rtmapi.AuthRequest;
-import nu.olivertwistor.todolisttools.rtmapi.methods.GetFrob;
-import nu.olivertwistor.todolisttools.rtmapi.methods.GetToken;
+import nu.olivertwistor.todolisttools.rtmapi.auth.GetFrob;
+import nu.olivertwistor.todolisttools.rtmapi.auth.GetToken;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 import org.jetbrains.annotations.NonNls;
@@ -27,7 +27,7 @@ import java.util.Objects;
  * @since  0.1.0
  */
 @SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging", "ConstantExpression"})
-public final class Authentication
+final class Authentication
 {
     private AuthRequest authRequest;
     private String frobString;

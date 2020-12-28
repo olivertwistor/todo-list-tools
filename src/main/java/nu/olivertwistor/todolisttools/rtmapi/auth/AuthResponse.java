@@ -1,5 +1,7 @@
-package nu.olivertwistor.todolisttools.rtmapi;
+package nu.olivertwistor.todolisttools.rtmapi.auth;
 
+import nu.olivertwistor.todolisttools.rtmapi.Request;
+import nu.olivertwistor.todolisttools.rtmapi.Response;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.jetbrains.annotations.NonNls;
@@ -60,7 +62,7 @@ public final class AuthResponse extends Response
      * @since 0.1.0
      */
     @SuppressWarnings("JavaDoc")
-    public static AuthResponse createAuthResponse(final Request request)
+    static AuthResponse createAuthResponse(final Request request)
             throws MalformedURLException, NoSuchAlgorithmException,
             IOException, DocumentException
     {

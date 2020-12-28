@@ -1,8 +1,7 @@
-package nu.olivertwistor.todolisttools.rtmapi.methods;
+package nu.olivertwistor.todolisttools.rtmapi.auth;
 
-import nu.olivertwistor.todolisttools.rtmapi.AuthResponse;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
-import nu.olivertwistor.todolisttools.rtmapi.RestRequest;
+import nu.olivertwistor.todolisttools.rtmapi.rest.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;

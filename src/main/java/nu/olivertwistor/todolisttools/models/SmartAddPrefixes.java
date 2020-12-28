@@ -1,4 +1,4 @@
-package nu.olivertwistor.todolisttools.util;
+package nu.olivertwistor.todolisttools.models;
 
 import org.jetbrains.annotations.NonNls;
 

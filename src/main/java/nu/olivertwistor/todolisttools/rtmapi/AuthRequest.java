@@ -73,8 +73,8 @@ public final class AuthRequest extends Request
      * @return URI object needed for making the request.
      *
      * @throws URISyntaxException       if the resulting URI is malformed.
-     * @throws NoSuchAlgorithmException if the hashing algorith used by
-     *                                  {@link #hash(String)} doesn't exist
+     * @throws NoSuchAlgorithmException if the hashing algorith used doesn't
+     *                                  exist
      *
      * @since 0.1.0
      */

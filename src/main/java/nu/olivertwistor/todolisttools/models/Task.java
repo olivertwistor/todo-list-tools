@@ -1,7 +1,6 @@
 package nu.olivertwistor.todolisttools.models;
 
 import ch.rfin.util.Pair;
-import nu.olivertwistor.todolisttools.util.SmartAddPrefixes;
 import org.jetbrains.annotations.NonNls;
 
 import java.util.HashSet;

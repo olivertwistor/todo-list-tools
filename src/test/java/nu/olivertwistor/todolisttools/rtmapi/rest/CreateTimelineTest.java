@@ -1,4 +1,4 @@
-package nu.olivertwistor.todolisttools.rtmapi.methods;
+package nu.olivertwistor.todolisttools.rtmapi.rest;
 
 import nu.olivertwistor.todolisttools.rtmapi.Response;
 import nu.olivertwistor.todolisttools.util.Config;

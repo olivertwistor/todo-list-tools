@@ -2,6 +2,7 @@ package nu.olivertwistor.todolisttools;
 
 import nu.olivertwistor.todolisttools.menus.MainMenu;
 import nu.olivertwistor.todolisttools.util.Config;
+import nu.olivertwistor.todolisttools.util.Session;
 import org.ini4j.InvalidFileFormatException;
 
 import java.io.IOException;
@@ -14,8 +15,8 @@ import java.net.URL;
  * @author Johan Nilsson
  * @since  0.1.0
  */
-@SuppressWarnings({"CallToPrintStackTrace", "UseOfSystemOutOrSystemErr", "HardCodedStringLiteral", "ClassWithoutLogger", "UtilityClassCanBeEnum", "PublicMethodWithoutLogging"})
-public final class App
+@SuppressWarnings({"CallToPrintStackTrace", "UseOfSystemOutOrSystemErr", "HardCodedStringLiteral", "ClassWithoutLogger", "UtilityClassCanBeEnum", "PublicMethodWithoutLogging", "ClassUnconnectedToPackage"})
+final class App
 {
     /**
      * Prints a short privacy policy and then creates the main menu. Loops
@@ -50,7 +51,7 @@ public final class App
             e.printStackTrace();
             System.exit(1);
         }
-        catch (URISyntaxException e)
+        catch (final URISyntaxException e)
         {
             e.printStackTrace();
         }

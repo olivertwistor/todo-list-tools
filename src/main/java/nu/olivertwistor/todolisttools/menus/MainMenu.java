@@ -2,7 +2,7 @@ package nu.olivertwistor.todolisttools.menus;
 
 import ch.rfin.util.Pair;
 import nu.olivertwistor.java.tui.UnclosableInputStream;
-import nu.olivertwistor.todolisttools.Session;
+import nu.olivertwistor.todolisttools.util.Session;
 import nu.olivertwistor.todolisttools.util.Config;
 
 import java.io.BufferedReader;

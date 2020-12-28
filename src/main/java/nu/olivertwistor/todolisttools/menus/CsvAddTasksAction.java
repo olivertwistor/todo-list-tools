@@ -1,9 +1,10 @@
 package nu.olivertwistor.todolisttools.menus;
 
 import nu.olivertwistor.java.tui.Terminal;
-import nu.olivertwistor.todolisttools.Session;
+import nu.olivertwistor.todolisttools.rtmapi.rest.CreateTimeline;
+import nu.olivertwistor.todolisttools.util.Session;
 import nu.olivertwistor.todolisttools.models.Task;
-import nu.olivertwistor.todolisttools.rtmapi.methods.AddTask;
+import nu.olivertwistor.todolisttools.rtmapi.rest.AddTask;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 
@@ -40,7 +41,7 @@ public final class CsvAddTasksAction implements MenuAction
     {
         try
         {
-            CsvAddTasksAction.createTimeline(session);
+            CsvAddTasksAction.createTimeline(config, session);
         }
         catch (final DocumentException | NoSuchAlgorithmException |
                 IOException e)
@@ -162,20 +163,25 @@ public final class CsvAddTasksAction implements MenuAction
     }
 
     /**
-     * If the session has no timeline, it's created.
+     * Creates a new timeline by requesting one from the Remember The Milk API,
+     * and stores it within this session object.
      *
-     * @param session Session object with or without a timeline
+     * Note that this action will invalidate the last timeline, making all
+     * actions made before calling this method undoable.
      *
      * @since 0.1.0
      */
     @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
-    private static void createTimeline(final Session session)
+    private static void createTimeline(final Config config,
+                                       final Session session)
             throws DocumentException, NoSuchAlgorithmException,
             MalformedURLException, IOException
     {
         if (!session.hasTimeline())
         {
-            session.createTimeline();
+            final CreateTimeline createTimeline = new CreateTimeline(config);
+            final String timeline = createTimeline.getTimeline();
+            session.setTimeline(timeline);
         }
     }
 

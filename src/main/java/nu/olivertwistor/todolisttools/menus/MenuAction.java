@@ -1,6 +1,6 @@
 package nu.olivertwistor.todolisttools.menus;
 
-import nu.olivertwistor.todolisttools.Session;
+import nu.olivertwistor.todolisttools.util.Session;
 import nu.olivertwistor.todolisttools.util.Config;
 
 /**

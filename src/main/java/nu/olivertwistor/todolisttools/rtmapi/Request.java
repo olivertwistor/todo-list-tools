@@ -46,7 +46,7 @@ public abstract class Request
      * @since 0.1.0
      */
     @NonNls
-    static final String PARAM_API_SIGNATURE = "api_sig";
+    protected static final String PARAM_API_SIGNATURE = "api_sig";
 
     /**
      * URL parameter name for the authentication token.
@@ -76,7 +76,7 @@ public abstract class Request
      *
      * @since 0.1.0
      */
-    final List<Pair<String, String>> parameters;
+    protected final List<Pair<String, String>> parameters;
 
     /**
      * Creates a request.
@@ -86,7 +86,8 @@ public abstract class Request
      *
      * @since 0.1.0
      */
-    Request(final Config config, final List<Pair<String, String>> parameters)
+    protected Request(final Config config,
+                      final List<Pair<String, String>> parameters)
     {
         this.config = config;
         this.parameters = new LinkedList<>(parameters);
@@ -200,7 +201,7 @@ public abstract class Request
      * @since 0.1.0
      */
     @SuppressWarnings("NestedMethodCall")
-    final String generateSignature() throws NoSuchAlgorithmException
+    protected final String generateSignature() throws NoSuchAlgorithmException
     {
         // Put all parameters into a SortedMap to have them sorted (temporarily
         // for this method only).

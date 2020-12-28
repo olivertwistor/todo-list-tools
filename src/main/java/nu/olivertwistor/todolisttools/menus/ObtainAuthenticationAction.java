@@ -1,9 +1,8 @@
 package nu.olivertwistor.todolisttools.menus;
 
 import nu.olivertwistor.java.tui.Terminal;
-import nu.olivertwistor.todolisttools.Authentication;
-import nu.olivertwistor.todolisttools.Session;
-import nu.olivertwistor.todolisttools.rtmapi.methods.CheckToken;
+import nu.olivertwistor.todolisttools.util.Session;
+import nu.olivertwistor.todolisttools.rtmapi.auth.CheckToken;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 

@@ -2,7 +2,6 @@ package nu.olivertwistor.todolisttools.util;
 
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
-import org.ini4j.Wini;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
@@ -47,30 +46,13 @@ public final class Config
      *
      * @since 0.1.0
      */
+    @SuppressWarnings("JavaDoc")
     public Config(final URL url)
             throws InvalidFileFormatException, IOException, URISyntaxException
     {
         final URI uri = url.toURI();
         this.file = new File(uri);
         this.ini = new Ini(url);
-    }
-
-    /**
-     * Creating a new instance of this object based on a certain config file.
-     *
-     * @param filePath path to the config file to use
-     *
-     * @throws InvalidFileFormatException if the given config file isn't
-     *                                    formatted correctly
-     * @throws IOException                if the given config file couldn't be
-     *                                    found or read
-     *
-     * @since 0.1.0
-     */
-    public Config(final @NonNls String filePath)
-            throws InvalidFileFormatException, IOException, URISyntaxException
-    {
-        this(new URL(filePath));
     }
 
     /**
@@ -129,6 +111,9 @@ public final class Config
     @Override
     public @NonNls String toString()
     {
-        return "Config{ini=" + this.ini + '}';
+        return "Config{" +
+                "file=" + this.file +
+                ", ini=" + this.ini +
+                '}';
     }
 }

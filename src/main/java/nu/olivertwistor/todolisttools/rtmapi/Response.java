@@ -57,7 +57,7 @@ public class Response
      *
      * @since 0.1.0
      */
-    Response(final InputStream contentStream) throws DocumentException
+    protected Response(final InputStream contentStream) throws DocumentException
     {
         final SAXReader reader = new SAXReader();
         this.document = reader.read(contentStream);
@@ -232,7 +232,7 @@ public class Response
      *
      * @since 0.1.0
      */
-    final Element getElement(final String base, final String tag)
+    protected final Element getElement(final String base, final String tag)
     {
         final Deque<String> tags = new LinkedList<>();
         tags.add(tag);
