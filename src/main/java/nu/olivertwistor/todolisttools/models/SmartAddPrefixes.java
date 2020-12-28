@@ -1,107 +1,117 @@
-package nu.olivertwistor.todolisttools.util;
+package nu.olivertwistor.todolisttools.models;
 
 import org.jetbrains.annotations.NonNls;
 
 /**
- * This class holds the various smart add prefixes, such as ^ for due date and
+ * This enum holds the various smart add prefixes, such as ^ for due date and
  * @ for location.
  *
  * @since 0.1.0
  */
-public final class SmartAddConstants
+@SuppressWarnings("PublicMethodWithoutLogging")
+public enum SmartAddPrefixes
 {
     /**
      * Prefix for the name attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_NAME = "";
+    NAME(""),
 
     /**
      * Prefix for the URL attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_URL = "";
+    URL(""),
 
     /**
      * Prefix for the start date attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_START = "~";
+    START("~"),
 
     /**
      * Prefix for the due date attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_DUE = "^";
+    DUE("^"),
 
     /**
      * Prefix for the repeat attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_REPEAT = "*";
+    REPEAT("*"),
 
     /**
      * Prefix for the location attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_LOCATION = "@";
+    LOCATION("@"),
 
     /**
      * Prefix for the priority attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_PRIORITY = "!";
+    PRIORITY("!"),
 
     /**
      * Prefix for the list attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_LIST = "#";
+    LIST("#"),
 
     /**
      * Prefix for the tag attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_TAG = "#";
+    TAG("#"),
 
     /**
      * Prefix for the time estimate attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_TIME_ESTIMATE = "=";
+    TIME_ESTIMATE("="),
 
     /**
      * Prefix for the comments attribute.
      *
      * @since 0.1.0
      */
-    @NonNls
-    public static final String PREFIX_COMMENTS = "//";
+    @SuppressWarnings("HardcodedFileSeparator") COMMENTS("//");
+
+    private final String prefix;
 
     /**
-     * Empty private constructor to prevent instantiation.
+     * Creates a new smart add prefix.
+     *
+     * @param prefix the prefix as a string
      *
      * @since 0.1.0
      */
-    private SmartAddConstants() { }
+    SmartAddPrefixes(final String prefix)
+    {
+        this.prefix = prefix;
+    }
+
+    public String getPrefix()
+    {
+        return this.prefix;
+    }
+
+    @Override
+    public @NonNls String toString()
+    {
+        return "SmartAddPrefixes{" +
+                "prefix='" + this.prefix + '\'' +
+                '}';
+    }
 }

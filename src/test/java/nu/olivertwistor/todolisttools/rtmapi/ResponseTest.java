@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
  *
  * @since  0.1.0
  */
-public class ResponseTest
+public final class ResponseTest
 {
     private static Response response;
 
@@ -32,7 +32,7 @@ public class ResponseTest
         final File file = new File(
                 classLoader.getResource("response.xml").getFile());
 
-        response = new Response(file);
+        ResponseTest.response = new Response(file);
     }
 
     /**
@@ -42,12 +42,13 @@ public class ResponseTest
      *
      * @since 0.1.0
      */
+    @SuppressWarnings("HardCodedStringLiteral")
     @Test
     public void When_GivenSingleValidTag_Then_ElementIsFound()
             throws NoSuchElementException
     {
         final String frobTag = "frob";
-        response.getElement(frobTag);
+        ResponseTest.response.getElement(frobTag);
     }
 
     /**
@@ -62,10 +63,10 @@ public class ResponseTest
             throws NoSuchElementException
     {
         final Deque<String> tags = new LinkedList<>();
-        tags.add("lists");
-        tags.add("list");
-        tags.add("task");
+        tags.add("lists"); //NON-NLS
+        tags.add("list"); //NON-NLS
+        tags.add("task"); //NON-NLS
 
-        response.getElement(tags);
+        ResponseTest.response.getElement(tags);
     }
 }

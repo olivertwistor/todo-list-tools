@@ -1,16 +1,18 @@
-package nu.olivertwistor.todolisttools;
+package nu.olivertwistor.todolisttools.menus;
 
 import nu.olivertwistor.todolisttools.rtmapi.AuthRequest;
-import nu.olivertwistor.todolisttools.rtmapi.methods.GetFrob;
-import nu.olivertwistor.todolisttools.rtmapi.methods.GetToken;
+import nu.olivertwistor.todolisttools.rtmapi.auth.GetFrob;
+import nu.olivertwistor.todolisttools.rtmapi.auth.GetToken;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * This class handles authentication to the Remember The Milk service. The way
@@ -24,7 +26,8 @@ import java.util.NoSuchElementException;
  * @author Johan Nilsson
  * @since  0.1.0
  */
-public final class Authentication
+@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging", "ConstantExpression"})
+final class Authentication
 {
     private AuthRequest authRequest;
     private String frobString;
@@ -45,11 +48,11 @@ public final class Authentication
      * @throws MalformedURLException
      * @throws IOException
      */
-    @SuppressWarnings("JavaDoc")
+    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     public URL generateAuthRequest(final Config config,
                                    final String permission)
-            throws NoSuchElementException, DocumentException,
-            NoSuchAlgorithmException, MalformedURLException, IOException
+            throws DocumentException, NoSuchAlgorithmException,
+            MalformedURLException, IOException
     {
         // First, retrieve a FROB.
         final GetFrob getFrob = new GetFrob(config);
@@ -79,27 +82,23 @@ public final class Authentication
      * @throws MalformedURLException
      * @throws IOException
      */
-    @SuppressWarnings("JavaDoc")
+    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     public String obtainToken(final Config config)
-            throws UnsupportedOperationException, NoSuchElementException,
-            DocumentException, NoSuchAlgorithmException, MalformedURLException,
-            IOException
+            throws DocumentException, NoSuchAlgorithmException,
+            MalformedURLException, IOException
     {
-        if (this.authRequest == null)
-        {
-            throw new UnsupportedOperationException("Authentication has not " +
-                    "yet been obtained. Please call #generateAuthRequest() " +
-                    "before calling this method.");
-        }
+        Objects.requireNonNull(this.authRequest, "Authentication has not " +
+                "yet been obtained. Please call #generateAuthRequest() " +
+                "before calling this method.");
 
         final GetToken getToken = new GetToken(config, this.frobString);
-        return getToken.getResponse().getToken();
+        return getToken.getToken();
     }
 
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
         return "Authentication{authRequest=" + this.authRequest +
-                ", frobString=" + this.frobString + "}";
+                ", frobString=" + this.frobString + '}';
     }
 }

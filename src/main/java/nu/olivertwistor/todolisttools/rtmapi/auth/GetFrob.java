@@ -1,8 +1,7 @@
-package nu.olivertwistor.todolisttools.rtmapi.methods;
+package nu.olivertwistor.todolisttools.rtmapi.auth;
 
-import nu.olivertwistor.todolisttools.rtmapi.AuthResponse;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
-import nu.olivertwistor.todolisttools.rtmapi.RestRequest;
+import nu.olivertwistor.todolisttools.rtmapi.rest.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -19,13 +18,14 @@ import java.util.NoSuchElementException;
  *
  * @since 0.1.0
  */
-public class GetFrob
+@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
+public final class GetFrob
 {
     @NonNls
-    private static final String method_get_frob = "rtm.auth.getFrob";
+    private static final String METHOD_GET_FROB = "rtm.auth.getFrob";
 
     @NonNls
-    private static final String tag_frob = "frob";
+    private static final String TAG_FROB = "frob";
 
     private final Request request;
     private final AuthResponse response;
@@ -46,8 +46,10 @@ public class GetFrob
             throws DocumentException, NoSuchAlgorithmException, IOException,
             MalformedURLException
     {
-        this.request = new RestRequest(config, method_get_frob);
-        this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
+        final String apiKey = config.getApiKey();
+
+        this.request = new RestRequest(config, GetFrob.METHOD_GET_FROB);
+        this.request.addParameter(Request.PARAM_API_KEY, apiKey);
 
         this.response = AuthResponse.createAuthResponse(this.request);
     }
@@ -62,17 +64,17 @@ public class GetFrob
      *
      * @since 0.1.0
      */
-    public String getFrob() throws NoSuchElementException
+    public String getFrob()
     {
-        final Element frobElement = this.response.getElement(tag_frob);
+        final Element frobElement = this.response.getElement(GetFrob.TAG_FROB);
 
         return frobElement.getText();
     }
 
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
         return "GetFrob{request=" + this.request + ", response=" +
-                this.response + "}";
+                this.response + '}';
     }
 }

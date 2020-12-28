@@ -1,8 +1,7 @@
-package nu.olivertwistor.todolisttools.rtmapi.methods;
+package nu.olivertwistor.todolisttools.rtmapi.auth;
 
-import nu.olivertwistor.todolisttools.rtmapi.AuthResponse;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
-import nu.olivertwistor.todolisttools.rtmapi.RestRequest;
+import nu.olivertwistor.todolisttools.rtmapi.rest.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 import org.jetbrains.annotations.NonNls;
@@ -17,10 +16,11 @@ import java.security.NoSuchAlgorithmException;
  *
  * @since 0.1.0
  */
-public class GetToken
+@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
+public final class GetToken
 {
     @NonNls
-    private static final String method_get_token = "rtm.auth.getToken";
+    private static final String METHOD_GET_TOKEN = "rtm.auth.getToken";
 
     private final Request request;
     private final AuthResponse response;
@@ -41,11 +41,18 @@ public class GetToken
             throws DocumentException, NoSuchAlgorithmException, IOException,
             MalformedURLException
     {
-        this.request = new RestRequest(config, method_get_token);
-        this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
+        final String apiKey = config.getApiKey();
+
+        this.request = new RestRequest(config, GetToken.METHOD_GET_TOKEN);
+        this.request.addParameter(Request.PARAM_API_KEY, apiKey);
         this.request.addParameter(Request.PARAM_FROB, frob);
 
         this.response = AuthResponse.createAuthResponse(this.request);
+    }
+
+    public String getToken()
+    {
+        return this.response.getToken();
     }
 
     public AuthResponse getResponse()
@@ -54,11 +61,11 @@ public class GetToken
     }
 
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
         return "GetToken{" +
                 "request=" + this.request + ", " +
                 "response=" + this.response +
-                "}";
+                '}';
     }
 }

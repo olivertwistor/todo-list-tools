@@ -2,9 +2,12 @@ package nu.olivertwistor.todolisttools;
 
 import nu.olivertwistor.todolisttools.menus.MainMenu;
 import nu.olivertwistor.todolisttools.util.Config;
+import nu.olivertwistor.todolisttools.util.Session;
 import org.ini4j.InvalidFileFormatException;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Main class for this app. Contains the main method.
@@ -12,18 +15,19 @@ import java.io.IOException;
  * @author Johan Nilsson
  * @since  0.1.0
  */
-public final class App
+@SuppressWarnings({"CallToPrintStackTrace", "UseOfSystemOutOrSystemErr", "HardCodedStringLiteral", "ClassWithoutLogger", "UtilityClassCanBeEnum", "PublicMethodWithoutLogging", "ClassUnconnectedToPackage"})
+final class App
 {
     /**
      * Prints a short privacy policy and then creates the main menu. Loops
      * indefinitely. Thereby, it's very important that at least one of the main
      * menu items calls {@link System#exit(int)}.
      *
-     * @param configFilePath path to config file
+     * @param args unused
      *
      * @since 0.1.0
      */
-    private App(final String configFilePath)
+    public static void main(final String... args)
     {
         // We must first see whether we can load the config. Also, start a new
         // session for this run of the application.
@@ -31,19 +35,25 @@ public final class App
         Session session = null;
         try
         {
-            config = new Config(configFilePath);
+            final URL configPath = App.class.getResource("/app.cfg");
+            config = new Config(configPath);
             session = new Session(config);
         }
         catch (final InvalidFileFormatException e)
         {
-            System.err.println(
-                    "The given config file hasn't got the correct format:");
+            System.err.println("Failed to parse configuration format: ");
+            e.printStackTrace();
             System.exit(1);
         }
         catch (final IOException e)
         {
-            System.err.println("The given config file couldn't be opened.");
+            System.err.println("Failed to open URL to the configuration: ");
+            e.printStackTrace();
             System.exit(1);
+        }
+        catch (final URISyntaxException e)
+        {
+            e.printStackTrace();
         }
 
         System.out.println("Todo List Tool");
@@ -61,32 +71,20 @@ public final class App
         System.out.println();
 
         final MainMenu mainMenu = new MainMenu(config, session);
+        boolean exit;
         do
         {
             mainMenu.show();
-            mainMenu.act();
+            exit = mainMenu.act();
         }
-        while (true);
+        while (!exit);
     }
 
     /**
-     * If the program starts with the correct number of arguments, an instance
-     * of this class is created.
-     *
-     * @param args program arguments; should contain a path to a config file
+     * Empty constructor. This class doesn't need to be instantiated, because
+     * it's the entry point for this app.
      *
      * @since 0.1.0
      */
-    public static void main(final String[] args)
-    {
-        if (args.length < 1)
-        {
-            System.err.println("Too few arguments.");
-            System.err.println("Usage: java -jar todo-list-tools.jar [path " +
-                    "to config file]");
-            System.exit(1);
-        }
-
-        new App(args[0]);
-    }
+    private App() { }
 }

@@ -1,37 +1,58 @@
 package nu.olivertwistor.todolisttools.util;
 
+import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
-import org.ini4j.Wini;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Configuration values from config files are read via this class.
  *
- * @author Johan Nilsson
  * @since  0.1.0
  */
-public class Config
+@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
+public final class Config
 {
-    private final Wini ini;
+    @NonNls
+    private static final String GROUP_API = "api";
+
+    @NonNls
+    private static final String PROP_KEY = "key";
+
+    @NonNls
+    private static final String PROP_SHARED_SECRET = "shared-secret";
+
+    @NonNls
+    private static final String PROP_AUTH_TOKEN = "auth-token";
+
+    private final File file;
+    private final Ini ini;
 
     /**
-     * Creating a new instance of this object based on a certain config file.
+     * Creating a new instance of this object based on a certain URL pointing
+     * to configuration.
      *
-     * @param filePath path to the config file to use
+     * @param url URL pointing to configuration
      *
-     * @throws InvalidFileFormatException if the given config file isn't
-     *                                    formatted correctly
-     * @throws IOException                if the given config file couldn't be
-     *                                    found or read
+     * @throws InvalidFileFormatException if the configuration isn't formatted
+     *                                    correctly
+     * @throws IOException                if the given URL couldn't be found or
+     *                                    read
      *
      * @since 0.1.0
      */
-    public Config(final String filePath)
-            throws InvalidFileFormatException, IOException
+    @SuppressWarnings("JavaDoc")
+    public Config(final URL url)
+            throws InvalidFileFormatException, IOException, URISyntaxException
     {
-        this.ini = new Wini(new File(filePath));
+        final URI uri = url.toURI();
+        this.file = new File(uri);
+        this.ini = new Ini(url);
     }
 
     /**
@@ -43,7 +64,7 @@ public class Config
      */
     public String getApiKey()
     {
-        return this.ini.get("api", "key");
+        return this.ini.get(Config.GROUP_API, Config.PROP_KEY);
     }
 
     /**
@@ -56,7 +77,7 @@ public class Config
      */
     public String getSharedSecret()
     {
-        return this.ini.get("api", "shared-secret");
+        return this.ini.get(Config.GROUP_API, Config.PROP_SHARED_SECRET);
     }
 
     /**
@@ -69,7 +90,7 @@ public class Config
      */
     public String getToken()
     {
-        return this.ini.get("api", "auth-token");
+        return this.ini.get(Config.GROUP_API, Config.PROP_AUTH_TOKEN);
     }
 
     /**
@@ -83,13 +104,16 @@ public class Config
      */
     public void setToken(final String token) throws IOException
     {
-        this.ini.put("api", "auth-token", token);
-        this.ini.store();
+        this.ini.put(Config.GROUP_API, Config.PROP_AUTH_TOKEN, token);
+        this.ini.store(this.file);
     }
 
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
-        return "Config{ini=" + this.ini + "}";
+        return "Config{" +
+                "file=" + this.file +
+                ", ini=" + this.ini +
+                '}';
     }
 }

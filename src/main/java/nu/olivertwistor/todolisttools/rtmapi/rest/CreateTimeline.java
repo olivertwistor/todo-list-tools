@@ -1,8 +1,7 @@
-package nu.olivertwistor.todolisttools.rtmapi.methods;
+package nu.olivertwistor.todolisttools.rtmapi.rest;
 
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.Response;
-import nu.olivertwistor.todolisttools.rtmapi.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -20,13 +19,14 @@ import java.util.NoSuchElementException;
  *
  * @since 0.1.0
  */
-public class CreateTimeline
+@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
+public final class CreateTimeline
 {
     @NonNls
-    private static final String method_create_timeline = "rtm.timelines.create";
+    private static final String METHOD_CREATE_TIMELINE = "rtm.timelines.create";
 
     @NonNls
-    private static final String tag_timeline = "timeline";
+    private static final String TAG_TIMELINE = "timeline";
 
     private final Request request;
     private final Response response;
@@ -44,18 +44,38 @@ public class CreateTimeline
             throws DocumentException, NoSuchAlgorithmException, IOException,
             MalformedURLException
     {
-        this.request = new RestRequest(config, method_create_timeline);
-        this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
-        this.request.addParameter(Request.PARAM_AUTH_TOKEN, config.getToken());
+        final String apiKey = config.getApiKey();
+        final String token = config.getToken();
+
+        this.request = new RestRequest(
+                config, CreateTimeline.METHOD_CREATE_TIMELINE);
+        this.request.addParameter(Request.PARAM_API_KEY, apiKey);
+        this.request.addParameter(Request.PARAM_AUTH_TOKEN, token);
 
         this.response = Response.createResponse(this.request);
     }
 
-    public String getTimeline() throws NoSuchElementException
+    /**
+     * Gets the timeline from the REST response.
+     *
+     * @return The timeline as a string.
+     *
+     * @throws NoSuchElementException if a timeline couldn't be found in the
+     *                                response
+     *
+     * @since 0.1.0
+     */
+    public String getTimeline()
     {
-        final Element timelineElement = this.response.getElement(tag_timeline);
+        final Element timelineElement = this.response.getElement(
+                CreateTimeline.TAG_TIMELINE);
 
         return timelineElement.getText();
+    }
+
+    boolean isResponseSuccess()
+    {
+        return this.response.isResponseSuccess();
     }
 
     public Response getResponse()
@@ -64,7 +84,7 @@ public class CreateTimeline
     }
 
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
         return "CreateTimeline{" +
                 "request=" + this.request +

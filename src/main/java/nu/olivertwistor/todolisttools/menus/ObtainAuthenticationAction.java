@@ -1,9 +1,8 @@
 package nu.olivertwistor.todolisttools.menus;
 
 import nu.olivertwistor.java.tui.Terminal;
-import nu.olivertwistor.todolisttools.Authentication;
-import nu.olivertwistor.todolisttools.Session;
-import nu.olivertwistor.todolisttools.rtmapi.methods.CheckToken;
+import nu.olivertwistor.todolisttools.util.Session;
+import nu.olivertwistor.todolisttools.rtmapi.auth.CheckToken;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 
@@ -25,23 +24,23 @@ import java.util.NoSuchElementException;
  *
  * @since 0.1.0
  */
-public class ObtainAuthenticationAction implements MenuAction
+@SuppressWarnings({"PublicMethodWithoutLogging", "HardCodedStringLiteral", "ConstantExpression", "StringConcatenation", "ClassWithoutLogger", "MultiCatchCanBeSplit"})
+public final class ObtainAuthenticationAction implements MenuAction
 {
-    private static final String val_read_permissions = "read";
-    private static final String val_write_permissions = "write";
+    private static final String VAL_WRITE_PERMISSIONS = "write";
 
     @Override
-    public void execute(final Config config, final Session session)
+    public boolean execute(final Config config, final Session session)
     {
         try
         {
-            final boolean existingToken = checkExistingToken(config);
+            ObtainAuthenticationAction.checkExistingToken(config);
         }
         catch (final DocumentException | NoSuchAlgorithmException |
                 IOException e)
         {
             System.out.println("Failed to check for existing token.");
-            return;
+            return false;
         }
 
         // We have no valid authentication token, so let's proceed with
@@ -58,14 +57,15 @@ public class ObtainAuthenticationAction implements MenuAction
         try
         {
             final URL authUrl = authentication.generateAuthRequest(
-                    config, val_write_permissions);
-            System.out.println(authUrl.toExternalForm());
+                    config, ObtainAuthenticationAction.VAL_WRITE_PERMISSIONS);
+            final String urlString = authUrl.toExternalForm();
+            System.out.println(urlString);
         }
         catch (final NoSuchElementException | DocumentException |
                 NoSuchAlgorithmException | IOException e)
         {
-            System.out.println("Failed to generate an authentication request");
-            return;
+            System.out.println("Failed to generate an authentication request.");
+            return false;
         }
 
         try
@@ -76,16 +76,15 @@ public class ObtainAuthenticationAction implements MenuAction
         catch (final IOException e)
         {
             System.err.println("Failed to read user input.");
-            return;
+            return false;
         }
 
         // Now when we have obtained authentication and the user have confirmed
         // that, we can retrieve the token we will use for any subsequent calls
         // to the API.
-        final String token;
         try
         {
-            token = authentication.obtainToken(config);
+            final String token = authentication.obtainToken(config);
 
             // Store the retrieved token to the config file.
             config.setToken(token);
@@ -96,8 +95,10 @@ public class ObtainAuthenticationAction implements MenuAction
         {
             System.out.println("Failed to either obtain an authentication " +
                     "token or store it in the config file.");
-            return;
+            return false;
         }
+
+        return false;
     }
 
     /**
@@ -109,7 +110,7 @@ public class ObtainAuthenticationAction implements MenuAction
      *
      * @since 0.1.0
      */
-    @SuppressWarnings("JavaDoc")
+    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     private static boolean checkExistingToken(final Config config)
             throws DocumentException, NoSuchAlgorithmException,
             MalformedURLException, IOException
@@ -118,9 +119,9 @@ public class ObtainAuthenticationAction implements MenuAction
         final CheckToken checkToken =
                 new CheckToken(config, existingToken);
 
-        if (checkToken.getResponse().isResponseSuccess())
+        if (checkToken.isResponseSuccess())
         {
-            System.out.println("You already have authenticated this " +
+            System.out.println("You have already authenticated this " +
                     "application.");
             return true;
         }

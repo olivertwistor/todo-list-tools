@@ -29,6 +29,7 @@ import java.util.TreeMap;
  *
  * @since  0.1.0
  */
+@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public abstract class Request
 {
     /**
@@ -45,7 +46,7 @@ public abstract class Request
      * @since 0.1.0
      */
     @NonNls
-    protected static final String param_api_signature = "api_sig";
+    protected static final String PARAM_API_SIGNATURE = "api_sig";
 
     /**
      * URL parameter name for the authentication token.
@@ -68,7 +69,7 @@ public abstract class Request
      *
      * @since 0.1.0
      */
-    protected final Config config;
+    private final Config config;
 
     /**
      * List of URL parameters in key/value pairs.
@@ -112,7 +113,7 @@ public abstract class Request
      *
      * @since 0.1.0
      */
-    public void addParameter(final String key, final String value)
+    public final void addParameter(final String key, final String value)
     {
         this.parameters.add(Pair.of(key, value));
     }
@@ -129,7 +130,7 @@ public abstract class Request
      *
      * @since 0.1.0
      */
-    public abstract URI toUri()
+    protected abstract URI toUri()
             throws URISyntaxException, NoSuchAlgorithmException;
 
     /**
@@ -145,17 +146,20 @@ public abstract class Request
      *
      * @since 0.1.0
      */
-    public URL toUrl() throws MalformedURLException, NoSuchAlgorithmException
+    public final URL toUrl()
+            throws MalformedURLException, NoSuchAlgorithmException
     {
         try
         {
-            final URL url = this.toUri().toURL();
+            final URI uri = this.toUri();
+            final URL url = uri.toURL();
 
             return url;
         }
         catch (final URISyntaxException e)
         {
-            throw new MalformedURLException(e.getMessage());
+            final String message = e.getMessage();
+            throw new MalformedURLException(message);
         }
     }
 
@@ -171,13 +175,13 @@ public abstract class Request
      *
      * @since 0.1.0
      */
-    protected static String hash(final String message)
-            throws NoSuchAlgorithmException
+    static String hash(final String message) throws NoSuchAlgorithmException
     {
         final Charset charset = StandardCharsets.UTF_8;
 
         final MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(message.getBytes(charset));
+        final byte[] bytes = message.getBytes(charset);
+        md.update(bytes);
         final byte[] digest = md.digest();
 
         return DatatypeConverter.printHexBinary(digest)
@@ -196,26 +200,28 @@ public abstract class Request
      *
      * @since 0.1.0
      */
-    protected String generateSignature() throws NoSuchAlgorithmException
+    @SuppressWarnings("NestedMethodCall")
+    protected final String generateSignature() throws NoSuchAlgorithmException
     {
         // Put all parameters into a SortedMap to have them sorted (temporarily
         // for this method only).
         final SortedMap<String, String> sortedParameters = new TreeMap<>();
-        this.parameters.forEach(
-                (item) -> sortedParameters.put(item._1, item._2));
+        this.parameters.forEach((Pair<String, String> item) ->
+                sortedParameters.put(item._1, item._2));
 
         final StringBuilder beforeHash = new StringBuilder(
                 this.config.getSharedSecret());
-        sortedParameters.forEach(
-                (key, value) -> beforeHash.append(key).append(value));
+        sortedParameters.forEach((String key, String value) ->
+                beforeHash.append(key).append(value));
 
-        return hash(beforeHash.toString());
+        return Request.hash(beforeHash.toString());
     }
 
+    @SuppressWarnings("DesignForExtension")
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
         return "RestRequest{config=" + this.config +
-                ", parameters=" + this.parameters + "}";
+                ", parameters=" + this.parameters + '}';
     }
 }

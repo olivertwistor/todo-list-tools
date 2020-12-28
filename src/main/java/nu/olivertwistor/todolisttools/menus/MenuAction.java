@@ -1,6 +1,6 @@
 package nu.olivertwistor.todolisttools.menus;
 
-import nu.olivertwistor.todolisttools.Session;
+import nu.olivertwistor.todolisttools.util.Session;
 import nu.olivertwistor.todolisttools.util.Config;
 
 /**
@@ -10,7 +10,7 @@ import nu.olivertwistor.todolisttools.util.Config;
  * @since 0.1.0
  */
 @FunctionalInterface
-public interface MenuAction
+interface MenuAction
 {
     /**
      * Executes the action.
@@ -18,7 +18,11 @@ public interface MenuAction
      * @param config  Config object to use throughout this app
      * @param session Session containing the timeline for this app run
      *
+     * @return Whether this action should lead to the current menu (level)
+     *         exiting, for example when a "Quit" or "Up one level" menu item
+     *         is selected.
+     *
      * @since 0.1.0
      */
-    void execute(Config config, Session session);
+    boolean execute(Config config, Session session);
 }

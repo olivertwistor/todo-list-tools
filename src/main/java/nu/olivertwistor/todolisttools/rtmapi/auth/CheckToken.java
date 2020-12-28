@@ -1,8 +1,7 @@
-package nu.olivertwistor.todolisttools.rtmapi.methods;
+package nu.olivertwistor.todolisttools.rtmapi.auth;
 
-import nu.olivertwistor.todolisttools.rtmapi.AuthResponse;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
-import nu.olivertwistor.todolisttools.rtmapi.RestRequest;
+import nu.olivertwistor.todolisttools.rtmapi.rest.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.dom4j.DocumentException;
 import org.jetbrains.annotations.NonNls;
@@ -17,10 +16,11 @@ import java.security.NoSuchAlgorithmException;
  *
  * @since 0.1.0
  */
-public class CheckToken
+@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
+public final class CheckToken
 {
     @NonNls
-    private static final String method_check_token = "rtm.auth.checkToken";
+    private static final String METHOD_CHECK_TOKEN = "rtm.auth.checkToken";
 
     private final Request request;
     private final AuthResponse response;
@@ -40,11 +40,23 @@ public class CheckToken
             throws DocumentException, NoSuchAlgorithmException,
             MalformedURLException, IOException
     {
-        this.request = new RestRequest(config, method_check_token);
-        this.request.addParameter(Request.PARAM_API_KEY, config.getApiKey());
+        final String apiKey = config.getApiKey();
+
+        this.request = new RestRequest(config, CheckToken.METHOD_CHECK_TOKEN);
+        this.request.addParameter(Request.PARAM_API_KEY, apiKey);
         this.request.addParameter(Request.PARAM_AUTH_TOKEN, token);
 
         this.response = AuthResponse.createAuthResponse(this.request);
+    }
+
+    public boolean isResponseSuccess()
+    {
+        return this.response.isResponseSuccess();
+    }
+
+    boolean isResponseFailure()
+    {
+        return this.response.isResponseFailure();
     }
 
     public AuthResponse getResponse()
@@ -53,9 +65,9 @@ public class CheckToken
     }
 
     @Override
-    public String toString()
+    public @NonNls String toString()
     {
-        return "CheckToken{super=" + super.toString() + ", request=" +
-                this.request + ", response=" + this.response + "}";
+        return "CheckToken{request=" + this.request + ", response=" +
+                this.response + '}';
     }
 }
