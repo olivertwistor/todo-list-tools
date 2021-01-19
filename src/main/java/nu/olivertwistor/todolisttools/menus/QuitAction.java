@@ -6,9 +6,8 @@ import nu.olivertwistor.todolisttools.util.Config;
 /**
  * Prints out a goodbye message and exits the application.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"PublicMethodWithoutLogging", "HardCodedStringLiteral", "ClassWithoutLogger"})
 public final class QuitAction implements MenuAction
 {
     @Override

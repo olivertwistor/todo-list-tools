@@ -22,10 +22,8 @@ import java.util.Objects;
  * A REST response takes a {@link Request} and reads the XML response, storing
  * the {@link Element root element} for later use.
  *
- * @author Johan Nilsson
- * @since  0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"MethodWithTooExceptionsDeclared", "StringConcatenation", "ClassWithoutLogger", "PublicMethodWithoutLogging", "HardCodedStringLiteral"})
 public class Response
 {
     @NonNls
@@ -40,7 +38,7 @@ public class Response
     /**
      * The root element of the XML response.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     private final Element rootElement;
 
@@ -53,11 +51,9 @@ public class Response
      *
      * @param contentStream an InputStream with the XML response to parse
      *
-     * @throws DocumentException if the response couldn't be parsed into XML
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    protected Response(final InputStream contentStream) throws DocumentException
+    protected Response(final InputStream contentStream)
     {
         final SAXReader reader = new SAXReader();
         this.document = reader.read(contentStream);
@@ -71,11 +67,9 @@ public class Response
      *
      * @param file a file containing the XML response to parse
      *
-     * @throws DocumentException if the file couldn't be parsed into XML
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    Response(final File file) throws DocumentException
+    Response(final File file)
     {
         final SAXReader reader = new SAXReader();
         this.document = reader.read(file);
@@ -91,12 +85,9 @@ public class Response
      *
      * @return The created Response object.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("JavaDoc")
     public static Response createResponse(final Request request)
-            throws MalformedURLException, NoSuchAlgorithmException,
-            IOException, DocumentException
     {
         // Make an HTTP request to get the response.
         final URL url = request.toUrl();
@@ -111,10 +102,7 @@ public class Response
      *
      * @return True if successful; false otherwise.
      *
-     * @throws NoSuchElementException if the status attribute couldn't be
-     *                                found in the response
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public final boolean isResponseSuccess()
     {
@@ -131,10 +119,7 @@ public class Response
      *
      * @return True if a failure; false otherwise.
      *
-     * @throws NoSuchElementException if the status attribute couldn't be
-     *                                found in the response
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public final boolean isResponseFailure()
     {
@@ -158,29 +143,14 @@ public class Response
      * @return The element that is found after starting at the base and
      *         traversing the tag tree.
      *
-     * @throws NoSuchElementException if either the base element doesn't exist,
-     *                                the tags list is empty or if any of the
-     *                                tags in the tags list doesn't exist
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("IfCanBeAssertion")
     private Element getElement(final Element base, final Deque<String> tags)
     {
-        if ((base == null) || tags.isEmpty())
-        {
-            throw new NoSuchElementException(
-                    "No base element, or the list is empty.");
-        }
-
         // Take a look at the first tag in the list. We also remove it from the
         // list, to prepare for the recursion further on.
         final String firstTag = tags.pop();
         final Element element = base.element(firstTag);
-        if (element == null)
-        {
-            throw new NoSuchElementException(firstTag + " does not exist.");
-        }
 
         // If the remaining list is empty, it means that we have reached our
         // final level in the hierarchy and can stop the recursion.
@@ -206,11 +176,7 @@ public class Response
      * @return The element that is found after starting at the base and
      *         traversing the tag tree.
      *
-     * @throws NoSuchElementException if either the base element doesn't exist,
-     *                                the tags list is empty or if any of the
-     *                                tags in the tags list doesn't exist
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     private Element getElement(final String base, final Deque<String> tags)
     {
@@ -227,10 +193,7 @@ public class Response
      *
      * @return The element identified by the parent tag and the child tag.
      *
-     * @throws NoSuchElementException if either the base tag or the child tag
-     *                                doesn't exist
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     protected final Element getElement(final String base, final String tag)
     {
@@ -251,10 +214,7 @@ public class Response
      * @return The element that is found after starting at the root node and
      *         traversing the tag tree.
      *
-     * @throws NoSuchElementException if the tags list is empty or if any of
-     *                                the tags in the tags list doesn't exist
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     final Element getElement(final Deque<String> tags)
     {
@@ -268,9 +228,7 @@ public class Response
      *
      * @return The element identified by the desired tag.
      *
-     * @throws NoSuchElementException if the tag doesn't exist
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public final Element getElement(final String tag)
     {
@@ -285,20 +243,10 @@ public class Response
      *
      * @return The XML tree as a string.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public final String toXmlString()
     {
         return this.document.asXML();
-    }
-
-    @SuppressWarnings("DesignForExtension")
-    @Override
-    public @NonNls String toString()
-    {
-        return "Response{" +
-                "rootElement=" + this.rootElement +
-                ", document=" + this.document +
-                '}';
     }
 }

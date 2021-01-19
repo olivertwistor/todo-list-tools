@@ -7,9 +7,8 @@ import org.jetbrains.annotations.NonNls;
  * after which some actions may be undone. Actions made before the timeline may
  * not. At object instantiation, there is no timeline at all.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class Session
 {
     private final Config config;
@@ -20,7 +19,7 @@ public final class Session
      *
      * @param config Config object for access to API key etc.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public Session(final Config config)
     {
@@ -38,7 +37,7 @@ public final class Session
      *
      * @return Boolean.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public boolean hasTimeline()
     {
@@ -48,14 +47,5 @@ public final class Session
     public void setTimeline(final String timeline)
     {
         this.timeline = timeline;
-    }
-
-    @Override
-    public @NonNls String toString()
-    {
-        return "Session{" +
-                "config=" + this.config +
-                ", timeline='" + this.timeline + '\'' +
-                '}';
     }
 }

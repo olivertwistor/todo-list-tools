@@ -14,9 +14,8 @@ import java.security.NoSuchAlgorithmException;
  * This class handles the generation of a request for an authentication token
  * and also handles the response from Remember The Milk.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class GetToken
 {
     @NonNls
@@ -31,15 +30,9 @@ public final class GetToken
      *
      * @param config Config object for access to API key etc.
      *
-     * @throws DocumentException
-     * @throws NoSuchAlgorithmException
-     * @throws IOException
-     * @throws MalformedURLException
+     * @since 0.1.0
      */
-    @SuppressWarnings("JavaDoc")
     public GetToken(final Config config, final String frob)
-            throws DocumentException, NoSuchAlgorithmException, IOException,
-            MalformedURLException
     {
         final String apiKey = config.getApiKey();
 
@@ -58,14 +51,5 @@ public final class GetToken
     public AuthResponse getResponse()
     {
         return this.response;
-    }
-
-    @Override
-    public @NonNls String toString()
-    {
-        return "GetToken{" +
-                "request=" + this.request + ", " +
-                "response=" + this.response +
-                '}';
     }
 }

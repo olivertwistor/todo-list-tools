@@ -18,9 +18,8 @@ import java.util.TreeMap;
  * constructor. Call {@link #show()} to print the menu. Call {@link #act()} to
  * ask for user input and do different things depending on the chosen menu item.
  *
- * @since  0.1.0
+ * @since  1.0.0
  */
-@SuppressWarnings({"HardCodedStringLiteral", "PublicMethodWithoutLogging", "StringConcatenation", "ClassWithoutLogger"})
 public final class MainMenu
 {
     private final Config config;
@@ -41,7 +40,7 @@ public final class MainMenu
      * @param config  Config object to use throughout this app
      * @param session Session containing the timeline for this app run
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public MainMenu(final Config config, final Session session)
     {
@@ -60,7 +59,7 @@ public final class MainMenu
     /**
      * Prints out the main menu to stdout.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public void show()
     {
@@ -83,9 +82,8 @@ public final class MainMenu
      *         exiting, for example when a "Quit" or "Up one level" menu item
      *         is selected.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("NestedMethodCall")
     public boolean act()
     {
         // Temporarily set the system InputStream to our own InputStream that
@@ -141,15 +139,5 @@ public final class MainMenu
         }
 
         return false;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "MainMenu{" +
-                "config=" + this.config +
-                ", session=" + this.session +
-                ", menuItems=" + this.menuItems +
-                '}';
     }
 }

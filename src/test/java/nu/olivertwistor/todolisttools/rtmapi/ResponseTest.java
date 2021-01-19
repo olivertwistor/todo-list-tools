@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 /**
  * Unit tests for the {@link Response} class.
  *
- * @since  0.1.0
+ * @since  1.0.0
  */
 public final class ResponseTest
 {
@@ -21,12 +21,10 @@ public final class ResponseTest
      * Loads the resource file "response.xml" and creates a Response object
      * based off that.
      *
-     * @throws Exception if anything at all went wrong
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @BeforeClass
-    public static void setUp() throws Exception
+    public static void setUp()
     {
         final ClassLoader classLoader = ResponseTest.class.getClassLoader();
         final File file = new File(
@@ -38,14 +36,10 @@ public final class ResponseTest
     /**
      * Asserts that an element with the desired tag is found in the Response.
      *
-     * @throws NoSuchElementException if the element couldn't be found
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("HardCodedStringLiteral")
     @Test
     public void When_GivenSingleValidTag_Then_ElementIsFound()
-            throws NoSuchElementException
     {
         final String frobTag = "frob";
         ResponseTest.response.getElement(frobTag);
@@ -54,18 +48,15 @@ public final class ResponseTest
     /**
      * Asserts that an element in a tag list is found in the Response.
      *
-     * @throws NoSuchElementException if the element couldn't be found
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @Test
     public void When_GivenNestedValidTags_Then_ElementIsFound()
-            throws NoSuchElementException
     {
         final Deque<String> tags = new LinkedList<>();
-        tags.add("lists"); //NON-NLS
-        tags.add("list"); //NON-NLS
-        tags.add("task"); //NON-NLS
+        tags.add("lists");
+        tags.add("list");
+        tags.add("task");
 
         ResponseTest.response.getElement(tags);
     }

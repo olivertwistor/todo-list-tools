@@ -16,9 +16,8 @@ import java.util.NoSuchElementException;
  * This class handles the generation of a request for a FROB string and also
  * handles the response from Remember The Milk.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class GetFrob
 {
     @NonNls
@@ -36,15 +35,9 @@ public final class GetFrob
      *
      * @param config Config object for access to API key etc.
      *
-     * @throws DocumentException
-     * @throws NoSuchAlgorithmException
-     * @throws IOException
-     * @throws MalformedURLException
+     * @since 0.1.0
      */
-    @SuppressWarnings("JavaDoc")
     public GetFrob(final Config config)
-            throws DocumentException, NoSuchAlgorithmException, IOException,
-            MalformedURLException
     {
         final String apiKey = config.getApiKey();
 
@@ -59,22 +52,12 @@ public final class GetFrob
      *
      * @return The FROB string.
      *
-     * @throws NoSuchElementException if the FROB couldn't be found in the
-     *                                response.
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getFrob()
     {
         final Element frobElement = this.response.getElement(GetFrob.TAG_FROB);
 
         return frobElement.getText();
-    }
-
-    @Override
-    public @NonNls String toString()
-    {
-        return "GetFrob{request=" + this.request + ", response=" +
-                this.response + '}';
     }
 }

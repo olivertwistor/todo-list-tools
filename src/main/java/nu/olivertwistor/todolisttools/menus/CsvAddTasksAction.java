@@ -26,12 +26,8 @@ import java.util.Objects;
 /**
  * Adds tasks to Remember The Milk based on a user supplied CSV file.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings(
-        {"PublicMethodWithoutLogging", "HardCodedStringLiteral",
-                "DuplicateStringLiteralInspection", "StringConcatenation",
-                "ClassWithoutLogger", "MultiCatchCanBeSplit"})
 public final class CsvAddTasksAction implements MenuAction
 {
     private static final int SECONDS_PER_REQUEST = 1_500;
@@ -39,68 +35,28 @@ public final class CsvAddTasksAction implements MenuAction
     @Override
     public boolean execute(final Config config, final Session session)
     {
-        try
-        {
-            CsvAddTasksAction.createTimeline(config, session);
-        }
-        catch (final DocumentException | NoSuchAlgorithmException |
-                IOException e)
-        {
-            System.out.println("Failed to create a new timeline.");
-            return false;
-        }
+        CsvAddTasksAction.createTimeline(config, session);
 
         final String[] csvUserInput;
-        try
-        {
-            csvUserInput = CsvAddTasksAction.readCsvUserInput();
-        }
-        catch (final IOException e)
-        {
-            System.out.println("Failed to read user input.");
-            return false;
-        }
+        csvUserInput = CsvAddTasksAction.readCsvUserInput();
 
         List<Task> parsedFile = null;
-        try
-        {
-            final Path filePath = Paths.get(csvUserInput[0]);
-            final File file = filePath.toFile();
-
-            parsedFile = CsvAddTasksAction.parseCsvFile(file, csvUserInput[1]);
-        }
-        catch (final InvalidPathException | IOException e)
-        {
-            System.out.println("Failed to parse the CSV file.");
-        }
-
-        if (parsedFile == null)
-        {
-            System.out.println("Failed to parse the CSV file into tasks.");
-            return false;
-        }
+        final Path filePath = Paths.get(csvUserInput[0]);
+        final File file = filePath.toFile();
+        parsedFile = CsvAddTasksAction.parseCsvFile(file, csvUserInput[1]);
 
         for (final Task task : parsedFile)
         {
             final String smartAdd = task.toSmartAdd();
-            try
+            final AddTask addTask = new AddTask(config, session, smartAdd);
+            if (addTask.isResponseSuccess())
             {
-                final AddTask addTask = new AddTask(config, session, smartAdd);
-                if (addTask.isResponseSuccess())
-                {
-                    System.out.println("Added task to RTM: " + smartAdd);
-                }
-                else
-                {
-                    System.out.println(
-                            "Failed to add task tag to RTM: " + smartAdd);
-                }
+                System.out.println("Added task to RTM: " + smartAdd);
             }
-            catch (final DocumentException | NoSuchAlgorithmException |
-                    IOException e)
+            else
             {
                 System.out.println(
-                        "Failed to make an add task request to the RTM API.");
+                        "Failed to add task tag to RTM: " + smartAdd);
             }
 
             try
@@ -126,9 +82,7 @@ public final class CsvAddTasksAction implements MenuAction
      *
      * @return A list of Task objects.
      *
-     * @throws IOException if the file couldn't be read
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     static List<Task> parseCsvFile(final File file, final String delimiter)
             throws IOException
@@ -169,13 +123,10 @@ public final class CsvAddTasksAction implements MenuAction
      * Note that this action will invalidate the last timeline, making all
      * actions made before calling this method undoable.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     private static void createTimeline(final Config config,
                                        final Session session)
-            throws DocumentException, NoSuchAlgorithmException,
-            MalformedURLException, IOException
     {
         if (!session.hasTimeline())
         {
@@ -192,13 +143,9 @@ public final class CsvAddTasksAction implements MenuAction
      * @return The path to a CSV file and the delimiter between columns,
      *         together in an array.
      *
-     * @throws FileNotFoundException if the file couldn't be found
-     * @throws IOException           if user input couldn't be read
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     private static String[] readCsvUserInput()
-            throws FileNotFoundException, IOException
     {
         System.out.println(String.join(System.lineSeparator(),
                 "Here, you can specify a CSV file containing tasks to add to ",

@@ -12,49 +12,26 @@ import java.net.URL;
 /**
  * Main class for this app. Contains the main method.
  *
- * @author Johan Nilsson
- * @since  0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"CallToPrintStackTrace", "UseOfSystemOutOrSystemErr", "HardCodedStringLiteral", "ClassWithoutLogger", "UtilityClassCanBeEnum", "PublicMethodWithoutLogging", "ClassUnconnectedToPackage"})
 final class App
 {
     /**
-     * Prints a short privacy policy and then creates the main menu. Loops
-     * indefinitely. Thereby, it's very important that at least one of the main
-     * menu items calls {@link System#exit(int)}.
+     * Prints a short privacy policy and then creates the main menu.
      *
      * @param args unused
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    public static void main(final String... args)
+    public static void main(final String[] args)
     {
-        // We must first see whether we can load the config. Also, start a new
-        // session for this run of the application.
+        // Load the config. Also, start a new session for this run of the
+        // application.
         Config config = null;
         Session session = null;
-        try
-        {
-            final URL configPath = App.class.getResource("/app.cfg");
-            config = new Config(configPath);
-            session = new Session(config);
-        }
-        catch (final InvalidFileFormatException e)
-        {
-            System.err.println("Failed to parse configuration format: ");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        catch (final IOException e)
-        {
-            System.err.println("Failed to open URL to the configuration: ");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        catch (final URISyntaxException e)
-        {
-            e.printStackTrace();
-        }
+        final URL configPath = App.class.getResource("/app.cfg");
+        config = new Config(configPath);
+        session = new Session(config);
 
         System.out.println("Todo List Tool");
         System.out.println("==============");
@@ -84,7 +61,7 @@ final class App
      * Empty constructor. This class doesn't need to be instantiated, because
      * it's the entry point for this app.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     private App() { }
 }

@@ -22,9 +22,8 @@ import java.util.NoSuchElementException;
  * determined. If there is an existing and valid authentication token, no
  * further authentication will be done.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"PublicMethodWithoutLogging", "HardCodedStringLiteral", "ConstantExpression", "StringConcatenation", "ClassWithoutLogger", "MultiCatchCanBeSplit"})
 public final class ObtainAuthenticationAction implements MenuAction
 {
     private static final String VAL_WRITE_PERMISSIONS = "write";
@@ -32,16 +31,7 @@ public final class ObtainAuthenticationAction implements MenuAction
     @Override
     public boolean execute(final Config config, final Session session)
     {
-        try
-        {
-            ObtainAuthenticationAction.checkExistingToken(config);
-        }
-        catch (final DocumentException | NoSuchAlgorithmException |
-                IOException e)
-        {
-            System.out.println("Failed to check for existing token.");
-            return false;
-        }
+        ObtainAuthenticationAction.checkExistingToken(config);
 
         // We have no valid authentication token, so let's proceed with
         // obtaining one.
@@ -54,49 +44,22 @@ public final class ObtainAuthenticationAction implements MenuAction
         System.out.println();
 
         final Authentication authentication = new Authentication();
-        try
-        {
-            final URL authUrl = authentication.generateAuthRequest(
-                    config, ObtainAuthenticationAction.VAL_WRITE_PERMISSIONS);
-            final String urlString = authUrl.toExternalForm();
-            System.out.println(urlString);
-        }
-        catch (final NoSuchElementException | DocumentException |
-                NoSuchAlgorithmException | IOException e)
-        {
-            System.out.println("Failed to generate an authentication request.");
-            return false;
-        }
+        final URL authUrl = authentication.generateAuthRequest(
+                config, ObtainAuthenticationAction.VAL_WRITE_PERMISSIONS);
+        final String urlString = authUrl.toExternalForm();
+        System.out.println(urlString);
 
-        try
-        {
-            Terminal.readString("Please confirm that you have visited the " +
-                    "URL (any character will do): ");
-        }
-        catch (final IOException e)
-        {
-            System.err.println("Failed to read user input.");
-            return false;
-        }
+        Terminal.readString("Please confirm that you have visited the URL (" +
+                "any character will do): ");
 
         // Now when we have obtained authentication and the user have confirmed
         // that, we can retrieve the token we will use for any subsequent calls
         // to the API.
-        try
-        {
-            final String token = authentication.obtainToken(config);
+        final String token = authentication.obtainToken(config);
 
-            // Store the retrieved token to the config file.
-            config.setToken(token);
-            System.out.println("Obtained an authentication token.");
-        }
-        catch (final DocumentException | NoSuchAlgorithmException |
-                IOException e)
-        {
-            System.out.println("Failed to either obtain an authentication " +
-                    "token or store it in the config file.");
-            return false;
-        }
+        // Store the retrieved token to the config file.
+        config.setToken(token);
+        System.out.println("Obtained an authentication token.");
 
         return false;
     }
@@ -108,16 +71,12 @@ public final class ObtainAuthenticationAction implements MenuAction
      * @return True if the authentication token exists and is valid; false
      *         otherwise.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     private static boolean checkExistingToken(final Config config)
-            throws DocumentException, NoSuchAlgorithmException,
-            MalformedURLException, IOException
     {
         final String existingToken = config.getToken();
-        final CheckToken checkToken =
-                new CheckToken(config, existingToken);
+        final CheckToken checkToken = new CheckToken(config, existingToken);
 
         if (checkToken.isResponseSuccess())
         {

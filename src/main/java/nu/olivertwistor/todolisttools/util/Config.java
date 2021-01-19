@@ -13,9 +13,8 @@ import java.net.URL;
 /**
  * Configuration values from config files are read via this class.
  *
- * @since  0.1.0
+ * @since  1.0.0
  */
-@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class Config
 {
     @NonNls
@@ -39,16 +38,9 @@ public final class Config
      *
      * @param url URL pointing to configuration
      *
-     * @throws InvalidFileFormatException if the configuration isn't formatted
-     *                                    correctly
-     * @throws IOException                if the given URL couldn't be found or
-     *                                    read
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("JavaDoc")
     public Config(final URL url)
-            throws InvalidFileFormatException, IOException, URISyntaxException
     {
         final URI uri = url.toURI();
         this.file = new File(uri);
@@ -60,7 +52,7 @@ public final class Config
      *
      * @return The API key; or null if the config file key couldn't be found.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getApiKey()
     {
@@ -73,7 +65,7 @@ public final class Config
      * @return The shared secret; or null if the config file key couldn't be
      *         found.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getSharedSecret()
     {
@@ -86,7 +78,7 @@ public final class Config
      * @return The authentication token; or null if the config file key
      *         couldn't be found.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getToken()
     {
@@ -98,22 +90,11 @@ public final class Config
      *
      * @param token the authentication token
      *
-     * @throws IOException if the config file couldn't be written to
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public void setToken(final String token) throws IOException
     {
         this.ini.put(Config.GROUP_API, Config.PROP_AUTH_TOKEN, token);
         this.ini.store(this.file);
-    }
-
-    @Override
-    public @NonNls String toString()
-    {
-        return "Config{" +
-                "file=" + this.file +
-                ", ini=" + this.ini +
-                '}';
     }
 }

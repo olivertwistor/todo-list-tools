@@ -14,9 +14,8 @@ import java.security.NoSuchAlgorithmException;
 /**
  * This class handles adding tasks to Remember The Milk.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class AddTask
 {
     @NonNls
@@ -42,14 +41,11 @@ public final class AddTask
      * @param session  Session containing the timeline for this app run
      * @param smartAdd Smart Add string representing the task to add
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("JavaDoc")
     public AddTask(final Config config,
                    final Session session,
                    final String smartAdd)
-            throws DocumentException, NoSuchAlgorithmException, IOException,
-            MalformedURLException
     {
         final String apiKey = config.getApiKey();
         final String token = config.getToken();
@@ -73,14 +69,5 @@ public final class AddTask
     public Response getResponse()
     {
         return this.response;
-    }
-
-    @Override
-    public @NonNls String toString()
-    {
-        return "AddTask{" +
-                "request=" + this.request +
-                ", response=" + this.response +
-                '}';
     }
 }

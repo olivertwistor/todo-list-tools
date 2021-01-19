@@ -7,7 +7,7 @@ import nu.olivertwistor.todolisttools.util.Config;
  * Classes implementing this interface define some action that can be executed
  * when a menu item is selected.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 @FunctionalInterface
 interface MenuAction
@@ -22,7 +22,7 @@ interface MenuAction
      *         exiting, for example when a "Quit" or "Up one level" menu item
      *         is selected.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     boolean execute(Config config, Session session);
 }

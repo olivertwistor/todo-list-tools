@@ -19,9 +19,8 @@ import java.util.NoSuchElementException;
  * Remember The Milk's authentication service. See the base class for further
  * information.
  *
- * @since  0.1.0
+ * @since  1.0.0
  */
-@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class AuthResponse extends Response
 {
     @NonNls
@@ -36,14 +35,8 @@ public final class AuthResponse extends Response
      *
      * @param contentStream an InputStream with the XML response to parse
      *
-     * @throws MalformedURLException
-     * @throws NoSuchAlgorithmException
-     * @throws IOException
-     * @throws DocumentException
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("JavaDoc")
     private AuthResponse(final InputStream contentStream)
             throws DocumentException
     {
@@ -59,12 +52,9 @@ public final class AuthResponse extends Response
      *
      * @return An authentication response object.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("JavaDoc")
     static AuthResponse createAuthResponse(final Request request)
-            throws MalformedURLException, NoSuchAlgorithmException,
-            IOException, DocumentException
     {
         // Make an HTTP request to get the response.
         final URL url = request.toUrl();
@@ -79,10 +69,7 @@ public final class AuthResponse extends Response
      *
      * @return The token as a string.
      *
-     * @throws NoSuchElementException if a token couldn't be found in the
-     *                                response
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getToken()
     {
@@ -91,5 +78,4 @@ public final class AuthResponse extends Response
 
         return tokenElement.getText();
     }
-
 }

@@ -17,9 +17,8 @@ import java.util.NoSuchElementException;
  * after which actions can be undone. Also, handles the response from Remember
  * The Milk.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class CreateTimeline
 {
     @NonNls
@@ -37,12 +36,9 @@ public final class CreateTimeline
      *
      * @param config Config object for access to API key etc.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("JavaDoc")
     public CreateTimeline(final Config config)
-            throws DocumentException, NoSuchAlgorithmException, IOException,
-            MalformedURLException
     {
         final String apiKey = config.getApiKey();
         final String token = config.getToken();
@@ -60,10 +56,7 @@ public final class CreateTimeline
      *
      * @return The timeline as a string.
      *
-     * @throws NoSuchElementException if a timeline couldn't be found in the
-     *                                response
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getTimeline()
     {
@@ -81,14 +74,5 @@ public final class CreateTimeline
     public Response getResponse()
     {
         return this.response;
-    }
-
-    @Override
-    public @NonNls String toString()
-    {
-        return "CreateTimeline{" +
-                "request=" + this.request +
-                ", response=" + this.response +
-                '}';
     }
 }

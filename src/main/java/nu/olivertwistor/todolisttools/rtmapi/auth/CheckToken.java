@@ -14,9 +14,8 @@ import java.security.NoSuchAlgorithmException;
  * This class handles checking the validity of an authentication token. Also,
  * handles the response from Remember The Milk.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class CheckToken
 {
     @NonNls
@@ -33,12 +32,9 @@ public final class CheckToken
      * @param config Config object for access to API key etc.
      * @param token  the authentication token to verify
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("JavaDoc")
     public CheckToken(final Config config, final String token)
-            throws DocumentException, NoSuchAlgorithmException,
-            MalformedURLException, IOException
     {
         final String apiKey = config.getApiKey();
 
@@ -62,12 +58,5 @@ public final class CheckToken
     public AuthResponse getResponse()
     {
         return this.response;
-    }
-
-    @Override
-    public @NonNls String toString()
-    {
-        return "CheckToken{request=" + this.request + ", response=" +
-                this.response + '}';
     }
 }

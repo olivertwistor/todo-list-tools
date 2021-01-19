@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  * Unit tests for the {@link Request} class.
  *
- * @since  0.1.0
+ * @since  1.0.0
  */
 public final class RequestTest
 {
@@ -15,13 +15,10 @@ public final class RequestTest
      * Asserts that the following statement is true: "Given a known string, its
      * hash value is the MD5 hash."
      *
-     * @throws Exception if something goes wrong
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("HardCodedStringLiteral")
     @Test
-    public void Given_KnownString_Then_ValidHash() throws Exception
+    public void Given_KnownString_Then_ValidHash()
     {
         Assert.assertThat("MD5 hash of known string should be as expected.",
                 Request.hash("hello.world"),
