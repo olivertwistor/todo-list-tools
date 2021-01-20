@@ -11,7 +11,7 @@ import java.net.URL;
 /**
  * Unit tests for the {@link CheckToken} class.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 public final class CheckTokenTest
 {
@@ -21,9 +21,9 @@ public final class CheckTokenTest
      * Sets up the foundation for all the tests in this class. A config file
      * containing a valid authentication token is loaded.
      *
-     * @throws Exception if anything goes wrong
+     * @throws Exception if anything went wrong.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @BeforeClass
     public static void setUp() throws Exception
@@ -36,9 +36,9 @@ public final class CheckTokenTest
      * Asserts that when a valid authentication is given, {@link CheckToken}
      * returns success.
      *
-     * @throws Exception if something goes wrong
+     * @throws Exception if anything went wrong.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @Test
     public void When_ValidTokenIsGiven_Then_CheckTokenReturnsSuccess()
@@ -57,11 +57,10 @@ public final class CheckTokenTest
      * Asserts that when an invalid authentication is given, {@link CheckToken}
      * returns failure.
      *
-     * @throws Exception if something goes wrong
+     * @throws Exception if anything went wrong.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("HardCodedStringLiteral")
     @Test
     public void When_InvalidTokenIsGiven_Then_CheckTokenReturnsFail()
             throws Exception

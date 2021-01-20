@@ -27,15 +27,14 @@ import java.util.TreeMap;
  * List. When all desired parameters have been added, call {@link #toUri()} or
  * {@link #toUrl()} to construct the request as a URI/URL string.
  *
- * @since  0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public abstract class Request
 {
     /**
      * URL parameter name for API key.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @NonNls
     public static final String PARAM_API_KEY = "api_key";
@@ -43,7 +42,7 @@ public abstract class Request
     /**
      * URL parameter name for API signature.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @NonNls
     protected static final String PARAM_API_SIGNATURE = "api_sig";
@@ -51,7 +50,7 @@ public abstract class Request
     /**
      * URL parameter name for the authentication token.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @NonNls
     public static final String PARAM_AUTH_TOKEN = "auth_token";
@@ -59,7 +58,7 @@ public abstract class Request
     /**
      * URL parameter name for FROB.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @NonNls
     public static final String PARAM_FROB = "frob";
@@ -67,14 +66,14 @@ public abstract class Request
     /**
      * The Config object containing API key etc.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     private final Config config;
 
     /**
      * List of URL parameters in key/value pairs.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     protected final List<Pair<String, String>> parameters;
 
@@ -84,7 +83,7 @@ public abstract class Request
      * @param config     Config object for access to API key etc.
      * @param parameters a list of additional parameters
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     protected Request(final Config config,
                       final List<Pair<String, String>> parameters)
@@ -98,7 +97,7 @@ public abstract class Request
      *
      * @param config Config object for access to API key etc.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     protected Request(final Config config)
     {
@@ -111,7 +110,7 @@ public abstract class Request
      * @param key   the parameter key
      * @param value the parameter value
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public final void addParameter(final String key, final String value)
     {
@@ -124,14 +123,11 @@ public abstract class Request
      *
      * @return URI object needed for making the request.
      *
-     * @throws URISyntaxException       if the resulting URI is malformed.
-     * @throws NoSuchAlgorithmException if the hashing algorith used by
-     *                                  {@link #hash(String)} doesn't exist
+     * @throws URISyntaxException if the constructed URI would be malformed.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    protected abstract URI toUri()
-            throws URISyntaxException, NoSuchAlgorithmException;
+    protected abstract URI toUri() throws URISyntaxException;
 
     /**
      * Creates a URL object based on an endpoint, added parameters (sorted
@@ -140,27 +136,24 @@ public abstract class Request
      *
      * @return URL object needed for making the request.
      *
-     * @throws MalformedURLException    if the resulting URL is malformed.
-     * @throws NoSuchAlgorithmException if the hashing algorith used by
-     *                                  {@link #hash(String)} doesn't exist
+     * @throws MalformedURLException if the constructed URL would be malformed.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    public final URL toUrl()
-            throws MalformedURLException, NoSuchAlgorithmException
+    public final URL toUrl() throws MalformedURLException
     {
+        final URI uri;
         try
         {
-            final URI uri = this.toUri();
-            final URL url = uri.toURL();
-
-            return url;
+            uri = this.toUri();
         }
         catch (final URISyntaxException e)
         {
-            final String message = e.getMessage();
-            throw new MalformedURLException(message);
+            throw new MalformedURLException(e.getMessage());
         }
+        final URL url = uri.toURL();
+
+        return url;
     }
 
     /**
@@ -171,9 +164,9 @@ public abstract class Request
      * @return The message, hashed using MD5.
      *
      * @throws NoSuchAlgorithmException if the MD5 hashing algorithm couldn't
-     *                                  be found
+     *                                  be found.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     static String hash(final String message) throws NoSuchAlgorithmException
     {
@@ -195,13 +188,9 @@ public abstract class Request
      *
      * @return An API signature.
      *
-     * @throws NoSuchAlgorithmException if the hashing algorith used by
-     *                                  {@link #hash(String)} doesn't exist
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("NestedMethodCall")
-    protected final String generateSignature() throws NoSuchAlgorithmException
+    protected final String generateSignature()
     {
         // Put all parameters into a SortedMap to have them sorted (temporarily
         // for this method only).
@@ -214,14 +203,24 @@ public abstract class Request
         sortedParameters.forEach((String key, String value) ->
                 beforeHash.append(key).append(value));
 
-        return Request.hash(beforeHash.toString());
+        try
+        {
+            final String hash = Request.hash(beforeHash.toString());
+            return hash;
+        }
+        catch (final NoSuchAlgorithmException e)
+        {
+            throw new RequestSignatureException(
+                    "Failed to hash the signature.", e);
+        }
     }
 
-    @SuppressWarnings("DesignForExtension")
     @Override
-    public @NonNls String toString()
+    public String toString()
     {
-        return "RestRequest{config=" + this.config +
-                ", parameters=" + this.parameters + '}';
+        return "Request{" +
+                "config=" + this.config +
+                ", parameters=" + this.parameters +
+                '}';
     }
 }

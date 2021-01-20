@@ -1,7 +1,6 @@
 package nu.olivertwistor.todolisttools.util;
 
 import org.ini4j.Ini;
-import org.ini4j.InvalidFileFormatException;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
@@ -13,9 +12,8 @@ import java.net.URL;
 /**
  * Configuration values from config files are read via this class.
  *
- * @since  0.1.0
+ * @since  1.0.0
  */
-@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class Config
 {
     @NonNls
@@ -39,18 +37,23 @@ public final class Config
      *
      * @param url URL pointing to configuration
      *
-     * @throws InvalidFileFormatException if the configuration isn't formatted
-     *                                    correctly
-     * @throws IOException                if the given URL couldn't be found or
-     *                                    read
+     * @throws IOException if a configuration object couldn't be created from
+     *                     the provided URL
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("JavaDoc")
-    public Config(final URL url)
-            throws InvalidFileFormatException, IOException, URISyntaxException
+    public Config(final URL url) throws IOException
     {
-        final URI uri = url.toURI();
+        final URI uri;
+        try
+        {
+            uri = url.toURI();
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new IOException(e);
+        }
+
         this.file = new File(uri);
         this.ini = new Ini(url);
     }
@@ -60,7 +63,7 @@ public final class Config
      *
      * @return The API key; or null if the config file key couldn't be found.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getApiKey()
     {
@@ -73,7 +76,7 @@ public final class Config
      * @return The shared secret; or null if the config file key couldn't be
      *         found.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getSharedSecret()
     {
@@ -86,7 +89,7 @@ public final class Config
      * @return The authentication token; or null if the config file key
      *         couldn't be found.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getToken()
     {
@@ -98,9 +101,7 @@ public final class Config
      *
      * @param token the authentication token
      *
-     * @throws IOException if the config file couldn't be written to
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public void setToken(final String token) throws IOException
     {
@@ -109,7 +110,7 @@ public final class Config
     }
 
     @Override
-    public @NonNls String toString()
+    public String toString()
     {
         return "Config{" +
                 "file=" + this.file +

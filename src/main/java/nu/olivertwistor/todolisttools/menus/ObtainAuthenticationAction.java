@@ -1,16 +1,13 @@
 package nu.olivertwistor.todolisttools.menus;
 
 import nu.olivertwistor.java.tui.Terminal;
-import nu.olivertwistor.todolisttools.util.Session;
 import nu.olivertwistor.todolisttools.rtmapi.auth.CheckToken;
 import nu.olivertwistor.todolisttools.util.Config;
-import org.dom4j.DocumentException;
+import nu.olivertwistor.todolisttools.util.Session;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-import java.util.NoSuchElementException;
 
 /**
  * Asks the user to go to the provided URL to give this application the
@@ -22,12 +19,12 @@ import java.util.NoSuchElementException;
  * determined. If there is an existing and valid authentication token, no
  * further authentication will be done.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"PublicMethodWithoutLogging", "HardCodedStringLiteral", "ConstantExpression", "StringConcatenation", "ClassWithoutLogger", "MultiCatchCanBeSplit"})
+@SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"})
 public final class ObtainAuthenticationAction implements MenuAction
 {
-    private static final String VAL_WRITE_PERMISSIONS = "write";
+    private static final @NonNls String VAL_WRITE_PERMISSIONS = "write";
 
     @Override
     public boolean execute(final Config config, final Session session)
@@ -36,10 +33,10 @@ public final class ObtainAuthenticationAction implements MenuAction
         {
             ObtainAuthenticationAction.checkExistingToken(config);
         }
-        catch (final DocumentException | NoSuchAlgorithmException |
-                IOException e)
+        catch (final IOException e)
         {
-            System.out.println("Failed to check for existing token.");
+            System.out.println("Failed to determine whether there already " +
+                    "exists a valid token.");
             return false;
         }
 
@@ -61,10 +58,9 @@ public final class ObtainAuthenticationAction implements MenuAction
             final String urlString = authUrl.toExternalForm();
             System.out.println(urlString);
         }
-        catch (final NoSuchElementException | DocumentException |
-                NoSuchAlgorithmException | IOException e)
+        catch (final IOException e)
         {
-            System.out.println("Failed to generate an authentication request.");
+            System.out.println("Failed to generate an authentication URL.");
             return false;
         }
 
@@ -72,29 +68,19 @@ public final class ObtainAuthenticationAction implements MenuAction
         {
             Terminal.readString("Please confirm that you have visited the " +
                     "URL (any character will do): ");
-        }
-        catch (final IOException e)
-        {
-            System.err.println("Failed to read user input.");
-            return false;
-        }
 
-        // Now when we have obtained authentication and the user have confirmed
-        // that, we can retrieve the token we will use for any subsequent calls
-        // to the API.
-        try
-        {
+            // Now when we have obtained authentication and the user have
+            // confirmed that, we can retrieve the token we will use for any
+            // subsequent calls to the API.
             final String token = authentication.obtainToken(config);
 
             // Store the retrieved token to the config file.
             config.setToken(token);
             System.out.println("Obtained an authentication token.");
         }
-        catch (final DocumentException | NoSuchAlgorithmException |
-                IOException e)
+        catch (final IOException e)
         {
-            System.out.println("Failed to either obtain an authentication " +
-                    "token or store it in the config file.");
+            System.out.println("Failed to read user input.");
             return false;
         }
 
@@ -105,19 +91,20 @@ public final class ObtainAuthenticationAction implements MenuAction
      * Determines whether there is an existing authentication token and whether
      * it is valid.
      *
+     * @param config Config object containing the API key etc.
+     *
      * @return True if the authentication token exists and is valid; false
      *         otherwise.
      *
-     * @since 0.1.0
+     * @throws IOException if connection to Remember The Milk failed.
+     *
+     * @since 1.0.0
      */
-    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
     private static boolean checkExistingToken(final Config config)
-            throws DocumentException, NoSuchAlgorithmException,
-            MalformedURLException, IOException
+            throws IOException
     {
         final String existingToken = config.getToken();
-        final CheckToken checkToken =
-                new CheckToken(config, existingToken);
+        final CheckToken checkToken = new CheckToken(config, existingToken);
 
         if (checkToken.isResponseSuccess())
         {

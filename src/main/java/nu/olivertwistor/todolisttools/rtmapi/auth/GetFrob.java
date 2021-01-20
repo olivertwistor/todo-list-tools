@@ -3,22 +3,17 @@ package nu.olivertwistor.todolisttools.rtmapi.auth;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.rest.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.security.NoSuchAlgorithmException;
-import java.util.NoSuchElementException;
 
 /**
  * This class handles the generation of a request for a FROB string and also
  * handles the response from Remember The Milk.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class GetFrob
 {
     @NonNls
@@ -27,7 +22,6 @@ public final class GetFrob
     @NonNls
     private static final String TAG_FROB = "frob";
 
-    private final Request request;
     private final AuthResponse response;
 
     /**
@@ -36,22 +30,19 @@ public final class GetFrob
      *
      * @param config Config object for access to API key etc.
      *
-     * @throws DocumentException
-     * @throws NoSuchAlgorithmException
-     * @throws IOException
-     * @throws MalformedURLException
+     * @throws IOException if connection to Remember The Milk failed.
+     *
+     * @since 0.1.0
      */
-    @SuppressWarnings("JavaDoc")
-    public GetFrob(final Config config)
-            throws DocumentException, NoSuchAlgorithmException, IOException,
-            MalformedURLException
+    public GetFrob(final Config config) throws IOException
     {
         final String apiKey = config.getApiKey();
 
-        this.request = new RestRequest(config, GetFrob.METHOD_GET_FROB);
-        this.request.addParameter(Request.PARAM_API_KEY, apiKey);
+        final Request request = new RestRequest(
+                config, GetFrob.METHOD_GET_FROB);
+        request.addParameter(Request.PARAM_API_KEY, apiKey);
 
-        this.response = AuthResponse.createAuthResponse(this.request);
+        this.response = AuthResponse.createAuthResponse(request);
     }
 
     /**
@@ -59,10 +50,7 @@ public final class GetFrob
      *
      * @return The FROB string.
      *
-     * @throws NoSuchElementException if the FROB couldn't be found in the
-     *                                response.
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String getFrob()
     {
@@ -72,9 +60,10 @@ public final class GetFrob
     }
 
     @Override
-    public @NonNls String toString()
+    public String toString()
     {
-        return "GetFrob{request=" + this.request + ", response=" +
-                this.response + '}';
+        return "GetFrob{" +
+                "response=" + this.response +
+                '}';
     }
 }

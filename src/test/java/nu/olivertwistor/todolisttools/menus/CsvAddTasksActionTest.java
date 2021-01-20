@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Unit tests for the {@link CsvAddTasksAction} class.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 public final class CsvAddTasksActionTest
 {
@@ -21,7 +21,7 @@ public final class CsvAddTasksActionTest
      *
      * @throws Exception if anything goes wrong
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @Test
     public void When_CsvFileIsRead_Then_CorrespondingTaskListIsReturned()

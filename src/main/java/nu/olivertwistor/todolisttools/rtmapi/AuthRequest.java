@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NonNls;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,15 +15,13 @@ import java.util.List;
  * The Milk's authentication service. See the base class for further
  * information.
  *
- * @author Johan Nilsson
- * @since  0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class AuthRequest extends Request
 {
     private static final String ENDPOINT_AUTH =
             "https://www.rememberthemilk.com/services/auth/";
-    private static final String PARAM_PERMISSIONS = "perms";
+    private static final @NonNls String PARAM_PERMISSIONS = "perms";
 
     /**
      * Creates an authentication request.
@@ -34,7 +31,7 @@ public final class AuthRequest extends Request
      * @param frob        FROB used for this authentication
      * @param parameters  a sorted map of additional parameters
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     private AuthRequest(final Config config,
                         final String permissions,
@@ -57,7 +54,7 @@ public final class AuthRequest extends Request
      * @param permissions which permissions this app should get
      * @param frob        FROB used for this authentication
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public AuthRequest(final Config config,
                        final String permissions,
@@ -72,15 +69,10 @@ public final class AuthRequest extends Request
      *
      * @return URI object needed for making the request.
      *
-     * @throws URISyntaxException       if the resulting URI is malformed.
-     * @throws NoSuchAlgorithmException if the hashing algorith used doesn't
-     *                                  exist
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("NestedMethodCall")
     @Override
-    public URI toUri() throws URISyntaxException, NoSuchAlgorithmException
+    public URI toUri() throws URISyntaxException
     {
         final URIBuilder builder = new URIBuilder(AuthRequest.ENDPOINT_AUTH);
         this.parameters.forEach((Pair<String, String> item) ->
@@ -89,11 +81,5 @@ public final class AuthRequest extends Request
                 Request.PARAM_API_SIGNATURE, this.generateSignature());
 
         return builder.build();
-    }
-
-    @Override
-    public @NonNls String toString()
-    {
-        return "AuthRequest{super=" + super.toString() + '}';
     }
 }

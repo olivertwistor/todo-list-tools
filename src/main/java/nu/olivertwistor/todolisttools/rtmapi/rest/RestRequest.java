@@ -4,10 +4,10 @@ import ch.rfin.util.Pair;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.apache.http.client.utils.URIBuilder;
+import org.jetbrains.annotations.NonNls;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,15 +15,13 @@ import java.util.List;
  * This is a specialized version of {@link Request} for requests to Remember
  * The Milk's REST service. See the base class for further information.
  *
- * @author Johan Nilsson
- * @since  0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public class RestRequest extends Request
 {
     private static final String ENDPOINT_REST =
             "https://api.rememberthemilk.com/services/rest/";
-    private static final String PARAM_METHOD = "method";
+    private static final @NonNls String PARAM_METHOD = "method";
 
     /**
      * Creates a REST request.
@@ -32,7 +30,7 @@ public class RestRequest extends Request
      * @param methodName name of the method to call
      * @param parameters a list of additional parameters
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     private RestRequest(final Config config,
                         final String methodName,
@@ -48,7 +46,7 @@ public class RestRequest extends Request
      * @param config     Config object for access to API key etc.
      * @param methodName name of the method to call
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public RestRequest(final Config config, final String methodName)
     {
@@ -61,16 +59,10 @@ public class RestRequest extends Request
      *
      * @return URI object needed for making the request.
      *
-     * @throws URISyntaxException       if the resulting URI is malformed.
-     * @throws NoSuchAlgorithmException if the hashing algorith used doesn't
-     *                                  exist
-     *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("NestedMethodCall")
     @Override
-    public final URI toUri()
-            throws URISyntaxException, NoSuchAlgorithmException
+    public final URI toUri() throws URISyntaxException
     {
         final URIBuilder builder = new URIBuilder(RestRequest.ENDPOINT_REST);
         this.parameters.forEach((Pair<String, String> item) ->
@@ -79,12 +71,5 @@ public class RestRequest extends Request
                 this.generateSignature());
 
         return builder.build();
-    }
-
-    @SuppressWarnings("DesignForExtension")
-    @Override
-    public String toString()
-    {
-        return "RestRequest{super=" + super.toString() + '}';
     }
 }

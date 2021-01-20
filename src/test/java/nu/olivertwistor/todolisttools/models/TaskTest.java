@@ -8,25 +8,19 @@ import org.junit.Test;
 /**
  * Unit tests for the {@link Task} class.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"StringConcatenation", "HardcodedFileSeparator"})
 public final class TaskTest
 {
     /**
      * Asserts that when creating a task setting all class members, the correct
      * smart add string is constructed.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings({"HardCodedStringLiteral", "HardcodedFileSeparator"})
     @Test
     public void When_SmartAddTasksUsingAllSetters_Then_CorrectStringIsReturned()
     {
-        // We need to create two targets, each with a permutation of the tags
-        // because the SmartAddBuilder uses a Set for tags, and Sets are
-        // unordered.
-
         final Task task = new Task("Buy milk");
         task.setUrl("https://grocerystore.com");
         task.setStart("Tomorrow");
@@ -40,6 +34,9 @@ public final class TaskTest
         task.setTimeEstimate("30 minutes");
         task.setComments("Pick low fat if available.");
 
+        // We need to create two targets, each with a permutation of the tags
+        // because the SmartAddBuilder uses a Set for tags, and Sets are
+        // unordered.
         final String[] targets = {
                 "Buy milk https://grocerystore.com ~Tomorrow ^Saturday " +
                         "*After 1 week @Work !2 #Household #car #money " +
@@ -60,7 +57,7 @@ public final class TaskTest
      * Asserts that when creating a task setting some class members, the
      * correct smart add string is constructed.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @Test
     public void When_SmartAddTasksUsingSomeSetters_Then_CorrectStringIsReturned()

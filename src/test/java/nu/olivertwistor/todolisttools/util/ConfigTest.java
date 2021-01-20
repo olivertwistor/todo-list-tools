@@ -10,10 +10,8 @@ import java.net.URL;
 /**
  * Unit tests of the {@link Config} class.
  *
- * @author Johan Nilsson
- * @since  0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings("StringConcatenation")
 public final class ConfigTest
 {
     private static Config config;
@@ -22,9 +20,9 @@ public final class ConfigTest
      * Sets up the foundation for all the tests in this class. A config file
      * containing an API key property is loaded.
      *
-     * @throws Exception if anything goes wrong
+     * @throws Exception if anything went wrong.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     @BeforeClass
     public static void setUp() throws Exception
@@ -37,9 +35,8 @@ public final class ConfigTest
      * Asserts that an instantiated Config class can read the API key
      * property.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings({"HardCodedStringLiteral", "MultiCatchCanBeSplit"})
     @Test
     public void getApiKey()
     {

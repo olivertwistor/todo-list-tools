@@ -1,7 +1,6 @@
 package nu.olivertwistor.todolisttools.models;
 
 import ch.rfin.util.Pair;
-import org.jetbrains.annotations.NonNls;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,9 +15,8 @@ import java.util.regex.Pattern;
  * add string representing this task. For example "Buy milk ^Tomorrow" for a
  * task with name "Buy milk" and due date "Tomorrow".
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"NonFinalFieldReferenceInEquals", "NonFinalFieldReferencedInHashCode", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class Task
 {
     private static final Pattern REMOVE_EXTRA_SPACES = Pattern.compile("  +");
@@ -40,7 +38,7 @@ public final class Task
      *
      * @param name task name, for example "Buy milk"
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public Task(final String name)
     {
@@ -89,7 +87,7 @@ public final class Task
      *
      * @param tag tag
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     void addTag(final String tag)
     {
@@ -101,9 +99,8 @@ public final class Task
      *
      * @param tag the tag to remove
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    @SuppressWarnings("unused")
     public void removeTag(final String tag)
     {
         this.tags.remove(Pair.of(SmartAddPrefixes.TAG.getPrefix(), tag));
@@ -133,7 +130,7 @@ public final class Task
      *
      * @return A smart add string.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     public String toSmartAdd()
     {
@@ -160,24 +157,6 @@ public final class Task
         final String afterReplace = extraSpaces.replaceAll(" ");
 
         return afterReplace;
-    }
-
-    @Override
-    public @NonNls String toString()
-    {
-        return "Task{" +
-                "name=" + this.name +
-                ", url=" + this.url +
-                ", start=" + this.start +
-                ", due=" + this.due +
-                ", repeat=" + this.repeat +
-                ", location=" + this.location +
-                ", priority=" + this.priority +
-                ", list=" + this.list +
-                ", tags=" + this.tags +
-                ", timeEstimate=" + this.timeEstimate +
-                ", comments=" + this.comments +
-                '}';
     }
 
     @SuppressWarnings("OverlyComplexMethod")
@@ -212,5 +191,23 @@ public final class Task
         return Objects.hash(this.name, this.url, this.start, this.due,
                 this.repeat, this.location, this.priority, this.list,
                 this.tags, this.timeEstimate, this.comments);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Task{" +
+                "name=" + this.name +
+                ", url=" + this.url +
+                ", start=" + this.start +
+                ", due=" + this.due +
+                ", repeat=" + this.repeat +
+                ", location=" + this.location +
+                ", priority=" + this.priority +
+                ", list=" + this.list +
+                ", tags=" + this.tags +
+                ", timeEstimate=" + this.timeEstimate +
+                ", comments=" + this.comments +
+                '}';
     }
 }

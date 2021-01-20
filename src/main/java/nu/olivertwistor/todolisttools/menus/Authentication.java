@@ -4,14 +4,9 @@ import nu.olivertwistor.todolisttools.rtmapi.AuthRequest;
 import nu.olivertwistor.todolisttools.rtmapi.auth.GetFrob;
 import nu.olivertwistor.todolisttools.rtmapi.auth.GetToken;
 import nu.olivertwistor.todolisttools.util.Config;
-import org.dom4j.DocumentException;
-import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -23,10 +18,8 @@ import java.util.Objects;
  * be called to obtain a token, with which all subsequent API calls to the RTM
  * service will be made.
  *
- * @author Johan Nilsson
- * @since  0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"ClassWithoutLogger", "PublicMethodWithoutLogging", "ConstantExpression"})
 final class Authentication
 {
     private AuthRequest authRequest;
@@ -42,17 +35,13 @@ final class Authentication
      * @return The URL the user need to visit to give this application the
      *         necessary permissions.
      *
-     * @throws NoSuchElementException
-     * @throws DocumentException
-     * @throws NoSuchAlgorithmException
-     * @throws MalformedURLException
-     * @throws IOException
+     * @throws IOException if the FROB necessary for authentication couldn't be
+     *                     retrieved from Remember The Milk.
+     *
+     * @since 1.0.0
      */
-    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
-    public URL generateAuthRequest(final Config config,
-                                   final String permission)
-            throws DocumentException, NoSuchAlgorithmException,
-            MalformedURLException, IOException
+    URL generateAuthRequest(final Config config, final String permission)
+            throws IOException
     {
         // First, retrieve a FROB.
         final GetFrob getFrob = new GetFrob(config);
@@ -73,19 +62,11 @@ final class Authentication
      *
      * @return The authentication token.
      *
-     * @throws UnsupportedOperationException if {@link #generateAuthRequest(Config, String)}
-     *                                       hasn't been called prior to
-     *                                       calling this method
-     * @throws NoSuchElementException
-     * @throws DocumentException
-     * @throws NoSuchAlgorithmException
-     * @throws MalformedURLException
-     * @throws IOException
+     * @throws IOException if connection to Remember The Milk failed.
+     *
+     * @since 1.0.0
      */
-    @SuppressWarnings({"JavaDoc", "MethodWithTooExceptionsDeclared"})
-    public String obtainToken(final Config config)
-            throws DocumentException, NoSuchAlgorithmException,
-            MalformedURLException, IOException
+    String obtainToken(final Config config) throws IOException
     {
         Objects.requireNonNull(this.authRequest, "Authentication has not " +
                 "yet been obtained. Please call #generateAuthRequest() " +
@@ -96,9 +77,11 @@ final class Authentication
     }
 
     @Override
-    public @NonNls String toString()
+    public String toString()
     {
-        return "Authentication{authRequest=" + this.authRequest +
-                ", frobString=" + this.frobString + '}';
+        return "Authentication{" +
+                "authRequest=" + this.authRequest +
+                ", frobString='" + this.frobString + '\'' +
+                '}';
     }
 }

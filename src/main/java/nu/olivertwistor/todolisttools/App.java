@@ -3,59 +3,27 @@ package nu.olivertwistor.todolisttools;
 import nu.olivertwistor.todolisttools.menus.MainMenu;
 import nu.olivertwistor.todolisttools.util.Config;
 import nu.olivertwistor.todolisttools.util.Session;
-import org.ini4j.InvalidFileFormatException;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
  * Main class for this app. Contains the main method.
  *
- * @author Johan Nilsson
- * @since  0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"CallToPrintStackTrace", "UseOfSystemOutOrSystemErr", "HardCodedStringLiteral", "ClassWithoutLogger", "UtilityClassCanBeEnum", "PublicMethodWithoutLogging", "ClassUnconnectedToPackage"})
+@SuppressWarnings({"HardCodedStringLiteral", "ClassUnconnectedToPackage"})
 final class App
 {
     /**
-     * Prints a short privacy policy and then creates the main menu. Loops
-     * indefinitely. Thereby, it's very important that at least one of the main
-     * menu items calls {@link System#exit(int)}.
+     * Prints a short privacy policy and then creates the main menu.
      *
      * @param args unused
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
-    public static void main(final String... args)
+    public static void main(final String[] args)
     {
-        // We must first see whether we can load the config. Also, start a new
-        // session for this run of the application.
-        Config config = null;
-        Session session = null;
-        try
-        {
-            final URL configPath = App.class.getResource("/app.cfg");
-            config = new Config(configPath);
-            session = new Session(config);
-        }
-        catch (final InvalidFileFormatException e)
-        {
-            System.err.println("Failed to parse configuration format: ");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        catch (final IOException e)
-        {
-            System.err.println("Failed to open URL to the configuration: ");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        catch (final URISyntaxException e)
-        {
-            e.printStackTrace();
-        }
-
         System.out.println("Todo List Tool");
         System.out.println("==============");
         System.out.println();
@@ -69,6 +37,21 @@ final class App
                 "This product uses the Remember The Milk API but is not ",
                 "endorsed or certified by Remember The Milk."));
         System.out.println();
+
+        // Load the config. Also, start a new session for this run of the
+        // application.
+        final Config config;
+        try
+        {
+            final URL configPath = App.class.getResource("/app.cfg");
+            config = new Config(configPath);
+        }
+        catch (final IOException e)
+        {
+            System.out.println("Failed to load configuration.");
+            return;
+        }
+        final Session session = new Session(config);
 
         final MainMenu mainMenu = new MainMenu(config, session);
         boolean exit;
@@ -84,7 +67,7 @@ final class App
      * Empty constructor. This class doesn't need to be instantiated, because
      * it's the entry point for this app.
      *
-     * @since 0.1.0
+     * @since 1.0.0
      */
     private App() { }
 }

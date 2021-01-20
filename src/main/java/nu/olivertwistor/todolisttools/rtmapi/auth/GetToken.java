@@ -3,26 +3,21 @@ package nu.olivertwistor.todolisttools.rtmapi.auth;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.rest.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
-import org.dom4j.DocumentException;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * This class handles the generation of a request for an authentication token
  * and also handles the response from Remember The Milk.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
-@SuppressWarnings({"MethodWithTooExceptionsDeclared", "ClassWithoutLogger", "PublicMethodWithoutLogging"})
 public final class GetToken
 {
     @NonNls
     private static final String METHOD_GET_TOKEN = "rtm.auth.getToken";
 
-    private final Request request;
     private final AuthResponse response;
 
     /**
@@ -30,24 +25,22 @@ public final class GetToken
      * sends that request to Remember The Milk and retrieves a response.
      *
      * @param config Config object for access to API key etc.
+     * @param frob   the FROB necessary to retrieve the authentication token
      *
-     * @throws DocumentException
-     * @throws NoSuchAlgorithmException
-     * @throws IOException
-     * @throws MalformedURLException
+     * @throws IOException if connection to Remember The Milk failed.
+     *
+     * @since 0.1.0
      */
-    @SuppressWarnings("JavaDoc")
-    public GetToken(final Config config, final String frob)
-            throws DocumentException, NoSuchAlgorithmException, IOException,
-            MalformedURLException
+    public GetToken(final Config config, final String frob) throws IOException
     {
         final String apiKey = config.getApiKey();
 
-        this.request = new RestRequest(config, GetToken.METHOD_GET_TOKEN);
-        this.request.addParameter(Request.PARAM_API_KEY, apiKey);
-        this.request.addParameter(Request.PARAM_FROB, frob);
+        final Request request = new RestRequest(
+                config, GetToken.METHOD_GET_TOKEN);
+        request.addParameter(Request.PARAM_API_KEY, apiKey);
+        request.addParameter(Request.PARAM_FROB, frob);
 
-        this.response = AuthResponse.createAuthResponse(this.request);
+        this.response = AuthResponse.createAuthResponse(request);
     }
 
     public String getToken()
@@ -61,10 +54,9 @@ public final class GetToken
     }
 
     @Override
-    public @NonNls String toString()
+    public String toString()
     {
         return "GetToken{" +
-                "request=" + this.request + ", " +
                 "response=" + this.response +
                 '}';
     }
