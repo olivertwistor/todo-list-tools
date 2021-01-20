@@ -32,16 +32,19 @@ More information will be available as soon as the first version is released.
 
 ## Licensing
 This project is licensed under an Apache License 2.0. For detailed terms, 
-please read [LICENSE][3]. 
+please read [LICENSE][3].
 
 ### Third-party
-| Library | Author(s) | License
-| :-- | :-- | :--
-| [Dom4j][7] | MetaStuff Ltd. and Dom4j contributors | Custom
-| [Ini4j][8] | Ivan Szkiba | APL 2.0
-| [Java Tui][10] | Johan Nilsson | MIT
-| [JUnit 4][9] | JUnit team | EPL 1.0
-| Pair | [Christoffer Fink][4] | MIT
+
+| Library                     | Author(s)                             | License |
+| --------------------------- | ------------------------------------- | ------- |
+| [Apache HttpClient][12]     | The Apache Software Foundation        | APL 2.0 |
+| [Dom4J][7]                  | MetaStuff Ltd. and Dom4j contributors | Custom  |
+| [Ini4J][8]                  | Ivan Szkiba                           | APL 2.0 |
+| [Java TUI][10]              | Johan Nilsson                         | MIT     |
+| [JetBrains Annotations][11] | JetBrains                             | APL 1.0 |
+| [JUnit 4][9]                | JUnit team                            | EPL 1.0 |
+| Pair                        | [Christoffer Fink][4]                 | MIT     |
 
 For all third-party licenses, please refer to [3rd-party-licenses.txt][6] 
 for full license terms.
@@ -57,3 +60,5 @@ for full license terms.
 [8]: http://ini4j.sourceforge.net/index.html
 [9]: https://junit.org/junit4/
 [10]: https://github.com/olivertwistor/java-tui
+[11]: https://github.com/JetBrains/java-annotations
+[12]: https://hc.apache.org/httpcomponents-client-ga/index.html
