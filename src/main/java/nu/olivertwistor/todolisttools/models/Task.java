@@ -1,7 +1,6 @@
 package nu.olivertwistor.todolisttools.models;
 
 import ch.rfin.util.Pair;
-import org.jetbrains.annotations.NonNls;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -160,6 +159,7 @@ public final class Task
         return afterReplace;
     }
 
+    @SuppressWarnings("OverlyComplexMethod")
     @Override
     public boolean equals(final Object obj)
     {
@@ -191,5 +191,23 @@ public final class Task
         return Objects.hash(this.name, this.url, this.start, this.due,
                 this.repeat, this.location, this.priority, this.list,
                 this.tags, this.timeEstimate, this.comments);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Task{" +
+                "name=" + this.name +
+                ", url=" + this.url +
+                ", start=" + this.start +
+                ", due=" + this.due +
+                ", repeat=" + this.repeat +
+                ", location=" + this.location +
+                ", priority=" + this.priority +
+                ", list=" + this.list +
+                ", tags=" + this.tags +
+                ", timeEstimate=" + this.timeEstimate +
+                ", comments=" + this.comments +
+                '}';
     }
 }

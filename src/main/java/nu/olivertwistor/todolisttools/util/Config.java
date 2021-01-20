@@ -1,7 +1,6 @@
 package nu.olivertwistor.todolisttools.util;
 
 import org.ini4j.Ini;
-import org.ini4j.InvalidFileFormatException;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
@@ -38,11 +37,23 @@ public final class Config
      *
      * @param url URL pointing to configuration
      *
+     * @throws IOException if a configuration object couldn't be created from
+     *                     the provided URL
+     *
      * @since 1.0.0
      */
-    public Config(final URL url)
+    public Config(final URL url) throws IOException
     {
-        final URI uri = url.toURI();
+        final URI uri;
+        try
+        {
+            uri = url.toURI();
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new IOException(e);
+        }
+
         this.file = new File(uri);
         this.ini = new Ini(url);
     }
@@ -96,5 +107,14 @@ public final class Config
     {
         this.ini.put(Config.GROUP_API, Config.PROP_AUTH_TOKEN, token);
         this.ini.store(this.file);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Config{" +
+                "file=" + this.file +
+                ", ini=" + this.ini +
+                '}';
     }
 }

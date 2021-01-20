@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NonNls;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public final class AuthRequest extends Request
 {
     private static final String ENDPOINT_AUTH =
             "https://www.rememberthemilk.com/services/auth/";
-    private static final String PARAM_PERMISSIONS = "perms";
+    private static final @NonNls String PARAM_PERMISSIONS = "perms";
 
     /**
      * Creates an authentication request.
@@ -73,7 +72,7 @@ public final class AuthRequest extends Request
      * @since 1.0.0
      */
     @Override
-    public URI toUri() throws URISyntaxException, NoSuchAlgorithmException
+    public URI toUri() throws URISyntaxException
     {
         final URIBuilder builder = new URIBuilder(AuthRequest.ENDPOINT_AUTH);
         this.parameters.forEach((Pair<String, String> item) ->

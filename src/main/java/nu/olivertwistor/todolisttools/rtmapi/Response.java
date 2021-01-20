@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.NoSuchAlgorithmException;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -24,6 +23,7 @@ import java.util.Objects;
  *
  * @since 1.0.0
  */
+@SuppressWarnings("StringConcatenation")
 public class Response
 {
     @NonNls
@@ -51,13 +51,22 @@ public class Response
      *
      * @param contentStream an InputStream with the XML response to parse
      *
+     * @throws IOException if communication with Remember The Milk failed.
+     *
      * @since 1.0.0
      */
-    protected Response(final InputStream contentStream)
+    protected Response(final InputStream contentStream) throws IOException
     {
-        final SAXReader reader = new SAXReader();
-        this.document = reader.read(contentStream);
-        this.rootElement = this.document.getRootElement();
+        try
+        {
+            final SAXReader reader = new SAXReader();
+            this.document = reader.read(contentStream);
+            this.rootElement = this.document.getRootElement();
+        }
+        catch (final DocumentException e)
+        {
+            throw new IOException(e);
+        }
     }
 
     /**
@@ -67,13 +76,22 @@ public class Response
      *
      * @param file a file containing the XML response to parse
      *
+     * @throws IOException if communication with Remember The Milk failed.
+     *
      * @since 1.0.0
      */
-    Response(final File file)
+    Response(final File file) throws IOException
     {
-        final SAXReader reader = new SAXReader();
-        this.document = reader.read(file);
-        this.rootElement = this.document.getRootElement();
+        try
+        {
+            final SAXReader reader = new SAXReader();
+            this.document = reader.read(file);
+            this.rootElement = this.document.getRootElement();
+        }
+        catch (final DocumentException e)
+        {
+            throw new IOException(e);
+        }
     }
 
     /**
@@ -85,12 +103,23 @@ public class Response
      *
      * @return The created Response object.
      *
+     * @throws IOException if communication with Remember The Milk failed.
+     *
      * @since 1.0.0
      */
     public static Response createResponse(final Request request)
+            throws IOException
     {
         // Make an HTTP request to get the response.
-        final URL url = request.toUrl();
+        final URL url;
+        try
+        {
+            url = request.toUrl();
+        }
+        catch (final MalformedURLException e)
+        {
+            throw new IOException(e);
+        }
         final URLConnection connection = url.openConnection();
         final InputStream contentStream = connection.getInputStream();
 
@@ -228,12 +257,18 @@ public class Response
      *
      * @return The element identified by the desired tag.
      *
+     * @throws NoSuchElementException if no element identified by the desired
+     *                                tag couldn't be found.
+     *
      * @since 1.0.0
      */
     public final Element getElement(final String tag)
     {
         final Element element = this.rootElement.element(tag);
-        Objects.requireNonNull(element, () -> tag + " does not exist.");
+        if (element == null)
+        {
+            throw new NoSuchElementException("Failed to find " + tag);
+        }
 
         return element;
     }
@@ -248,5 +283,14 @@ public class Response
     public final String toXmlString()
     {
         return this.document.asXML();
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Response{" +
+                "rootElement=" + this.rootElement +
+                ", document=" + this.document +
+                '}';
     }
 }

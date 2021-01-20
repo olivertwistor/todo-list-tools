@@ -2,17 +2,13 @@ package nu.olivertwistor.todolisttools.rtmapi.auth;
 
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.Response;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.NoSuchAlgorithmException;
-import java.util.NoSuchElementException;
 
 /**
  * This is a specialized version of {@link Response} for responses from
@@ -35,10 +31,11 @@ public final class AuthResponse extends Response
      *
      * @param contentStream an InputStream with the XML response to parse
      *
+     * @throws IOException if connection to Remember The Milk failed.
+     *
      * @since 1.0.0
      */
-    private AuthResponse(final InputStream contentStream)
-            throws DocumentException
+    private AuthResponse(final InputStream contentStream) throws IOException
     {
         super(contentStream);
     }
@@ -52,9 +49,12 @@ public final class AuthResponse extends Response
      *
      * @return An authentication response object.
      *
+     * @throws IOException if connection to Remember The Milk failed.
+     *
      * @since 1.0.0
      */
     static AuthResponse createAuthResponse(final Request request)
+            throws IOException
     {
         // Make an HTTP request to get the response.
         final URL url = request.toUrl();

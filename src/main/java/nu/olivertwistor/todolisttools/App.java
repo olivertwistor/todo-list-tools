@@ -3,10 +3,8 @@ package nu.olivertwistor.todolisttools;
 import nu.olivertwistor.todolisttools.menus.MainMenu;
 import nu.olivertwistor.todolisttools.util.Config;
 import nu.olivertwistor.todolisttools.util.Session;
-import org.ini4j.InvalidFileFormatException;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -14,6 +12,7 @@ import java.net.URL;
  *
  * @since 1.0.0
  */
+@SuppressWarnings({"HardCodedStringLiteral", "ClassUnconnectedToPackage"})
 final class App
 {
     /**
@@ -25,14 +24,6 @@ final class App
      */
     public static void main(final String[] args)
     {
-        // Load the config. Also, start a new session for this run of the
-        // application.
-        Config config = null;
-        Session session = null;
-        final URL configPath = App.class.getResource("/app.cfg");
-        config = new Config(configPath);
-        session = new Session(config);
-
         System.out.println("Todo List Tool");
         System.out.println("==============");
         System.out.println();
@@ -46,6 +37,21 @@ final class App
                 "This product uses the Remember The Milk API but is not ",
                 "endorsed or certified by Remember The Milk."));
         System.out.println();
+
+        // Load the config. Also, start a new session for this run of the
+        // application.
+        final Config config;
+        try
+        {
+            final URL configPath = App.class.getResource("/app.cfg");
+            config = new Config(configPath);
+        }
+        catch (final IOException e)
+        {
+            System.out.println("Failed to load configuration.");
+            return;
+        }
+        final Session session = new Session(config);
 
         final MainMenu mainMenu = new MainMenu(config, session);
         boolean exit;

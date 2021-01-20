@@ -21,10 +21,12 @@ public final class CheckTokenTest
      * Sets up the foundation for all the tests in this class. A config file
      * containing a valid authentication token is loaded.
      *
+     * @throws Exception if anything went wrong.
+     *
      * @since 1.0.0
      */
     @BeforeClass
-    public static void setUp()
+    public static void setUp() throws Exception
     {
         final URL url = CheckTokenTest.class.getResource("/app.cfg");
         CheckTokenTest.config = new Config(url);
@@ -34,10 +36,13 @@ public final class CheckTokenTest
      * Asserts that when a valid authentication is given, {@link CheckToken}
      * returns success.
      *
+     * @throws Exception if anything went wrong.
+     *
      * @since 1.0.0
      */
     @Test
     public void When_ValidTokenIsGiven_Then_CheckTokenReturnsSuccess()
+            throws Exception
     {
         final CheckToken checkToken = new CheckToken(
                 CheckTokenTest.config, CheckTokenTest.config.getToken());
@@ -52,10 +57,13 @@ public final class CheckTokenTest
      * Asserts that when an invalid authentication is given, {@link CheckToken}
      * returns failure.
      *
+     * @throws Exception if anything went wrong.
+     *
      * @since 1.0.0
      */
     @Test
     public void When_InvalidTokenIsGiven_Then_CheckTokenReturnsFail()
+            throws Exception
     {
         final CheckToken checkToken = new CheckToken(
                 CheckTokenTest.config, "foobar");

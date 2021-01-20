@@ -123,9 +123,11 @@ public abstract class Request
      *
      * @return URI object needed for making the request.
      *
+     * @throws URISyntaxException if the constructed URI would be malformed.
+     *
      * @since 1.0.0
      */
-    protected abstract URI toUri();
+    protected abstract URI toUri() throws URISyntaxException;
 
     /**
      * Creates a URL object based on an endpoint, added parameters (sorted
@@ -134,11 +136,21 @@ public abstract class Request
      *
      * @return URL object needed for making the request.
      *
+     * @throws MalformedURLException if the constructed URL would be malformed.
+     *
      * @since 1.0.0
      */
-    public final URL toUrl()
+    public final URL toUrl() throws MalformedURLException
     {
-        final URI uri = this.toUri();
+        final URI uri;
+        try
+        {
+            uri = this.toUri();
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new MalformedURLException(e.getMessage());
+        }
         final URL url = uri.toURL();
 
         return url;
@@ -151,9 +163,12 @@ public abstract class Request
      *
      * @return The message, hashed using MD5.
      *
+     * @throws NoSuchAlgorithmException if the MD5 hashing algorithm couldn't
+     *                                  be found.
+     *
      * @since 1.0.0
      */
-    static String hash(final String message)
+    static String hash(final String message) throws NoSuchAlgorithmException
     {
         final Charset charset = StandardCharsets.UTF_8;
 
@@ -188,6 +203,24 @@ public abstract class Request
         sortedParameters.forEach((String key, String value) ->
                 beforeHash.append(key).append(value));
 
-        return Request.hash(beforeHash.toString());
+        try
+        {
+            final String hash = Request.hash(beforeHash.toString());
+            return hash;
+        }
+        catch (final NoSuchAlgorithmException e)
+        {
+            throw new RequestSignatureException(
+                    "Failed to hash the signature.", e);
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Request{" +
+                "config=" + this.config +
+                ", parameters=" + this.parameters +
+                '}';
     }
 }

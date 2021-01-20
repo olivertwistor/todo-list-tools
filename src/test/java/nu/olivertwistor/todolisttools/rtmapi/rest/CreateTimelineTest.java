@@ -22,10 +22,12 @@ public final class CreateTimelineTest
      * Sets up the foundation for all the tests in this class. A config file
      * containing a valid authentication token is loaded.
      *
+     * @throws Exception if anything went wrong.
+     *
      * @since 1.0.0
      */
     @BeforeClass
-    public static void setUp()
+    public static void setUp() throws Exception
     {
         final URL url = CreateTimelineTest.class.getResource("/app.cfg");
         CreateTimelineTest.config = new Config(url);
@@ -35,10 +37,13 @@ public final class CreateTimelineTest
      * Asserts that when a timeline is created, {@link CreateTimeline} returns
      * success.
      *
+     * @throws Exception if anything went wrong.
+     *
      * @since 1.0.0
      */
     @Test
     public void When_TimelineIsCreated_Then_CreateTimelineReturnsSuccess()
+            throws Exception
     {
         final CreateTimeline createTimeline =
                 new CreateTimeline(CreateTimelineTest.config);

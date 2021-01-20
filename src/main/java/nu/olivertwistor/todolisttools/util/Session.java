@@ -1,7 +1,5 @@
 package nu.olivertwistor.todolisttools.util;
 
-import org.jetbrains.annotations.NonNls;
-
 /**
  * A session holds the current timeline. The timeline is a bookmark of sorts,
  * after which some actions may be undone. Actions made before the timeline may
@@ -11,7 +9,6 @@ import org.jetbrains.annotations.NonNls;
  */
 public final class Session
 {
-    private final Config config;
     private String timeline;
 
     /**
@@ -23,7 +20,6 @@ public final class Session
      */
     public Session(final Config config)
     {
-        this.config = config;
         this.timeline = "";
     }
 
@@ -47,5 +43,13 @@ public final class Session
     public void setTimeline(final String timeline)
     {
         this.timeline = timeline;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Session{" +
+                "timeline='" + this.timeline + '\'' +
+                '}';
     }
 }

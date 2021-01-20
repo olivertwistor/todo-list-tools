@@ -2,14 +2,11 @@ package nu.olivertwistor.todolisttools.rtmapi.rest;
 
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.Response;
-import nu.olivertwistor.todolisttools.util.Session;
 import nu.olivertwistor.todolisttools.util.Config;
-import org.dom4j.DocumentException;
+import nu.olivertwistor.todolisttools.util.Session;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * This class handles adding tasks to Remember The Milk.
@@ -30,7 +27,6 @@ public final class AddTask
     @NonNls
     private static final String PARAM_PARSE = "parse";
 
-    private final Request request;
     private final Response response;
 
     /**
@@ -41,24 +37,27 @@ public final class AddTask
      * @param session  Session containing the timeline for this app run
      * @param smartAdd Smart Add string representing the task to add
      *
+     * @throws IOException if connection to Remember The Milk failed.
+     *
      * @since 1.0.0
      */
     public AddTask(final Config config,
                    final Session session,
-                   final String smartAdd)
+                   final String smartAdd) throws IOException
     {
         final String apiKey = config.getApiKey();
         final String token = config.getToken();
 
-        this.request = new RestRequest(config, AddTask.METHOD_ADD_TASK);
-        this.request.addParameter(Request.PARAM_API_KEY, apiKey);
-        this.request.addParameter(
+        final Request request = new RestRequest(
+                config, AddTask.METHOD_ADD_TASK);
+        request.addParameter(Request.PARAM_API_KEY, apiKey);
+        request.addParameter(
                 AddTask.PARAM_TIMELINE, session.getTimeline());
-        this.request.addParameter(AddTask.PARAM_NAME, smartAdd);
-        this.request.addParameter(AddTask.PARAM_PARSE, "1");
-        this.request.addParameter(Request.PARAM_AUTH_TOKEN, token);
+        request.addParameter(AddTask.PARAM_NAME, smartAdd);
+        request.addParameter(AddTask.PARAM_PARSE, "1"); //NON-NLS
+        request.addParameter(Request.PARAM_AUTH_TOKEN, token);
 
-        this.response = Response.createResponse(this.request);
+        this.response = Response.createResponse(request);
     }
 
     public boolean isResponseSuccess()
@@ -69,5 +68,13 @@ public final class AddTask
     public Response getResponse()
     {
         return this.response;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "AddTask{" +
+                "response=" + this.response +
+                '}';
     }
 }

@@ -96,7 +96,7 @@ public enum SmartAddPrefixes
      *
      * @since 1.0.0
      */
-    SmartAddPrefixes(final String prefix)
+    SmartAddPrefixes(final @NonNls String prefix)
     {
         this.prefix = prefix;
     }
@@ -104,5 +104,13 @@ public enum SmartAddPrefixes
     public String getPrefix()
     {
         return this.prefix;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "SmartAddPrefixes{" +
+                "prefix='" + this.prefix + '\'' +
+                '}';
     }
 }

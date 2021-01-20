@@ -8,6 +8,7 @@ import nu.olivertwistor.todolisttools.util.Config;
  *
  * @since 1.0.0
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public final class QuitAction implements MenuAction
 {
     @Override

@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.io.File;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 
 /**
  * Unit tests for the {@link Response} class.
@@ -21,10 +20,12 @@ public final class ResponseTest
      * Loads the resource file "response.xml" and creates a Response object
      * based off that.
      *
+     * @throws Exception if anything went wrong.
+     *
      * @since 1.0.0
      */
     @BeforeClass
-    public static void setUp()
+    public static void setUp() throws Exception
     {
         final ClassLoader classLoader = ResponseTest.class.getClassLoader();
         final File file = new File(

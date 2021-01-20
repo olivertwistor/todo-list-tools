@@ -20,10 +20,12 @@ public final class ConfigTest
      * Sets up the foundation for all the tests in this class. A config file
      * containing an API key property is loaded.
      *
+     * @throws Exception if anything went wrong.
+     *
      * @since 1.0.0
      */
     @BeforeClass
-    public static void setUp()
+    public static void setUp() throws Exception
     {
         final URL url = ConfigTest.class.getResource("/app.cfg");
         ConfigTest.config = new Config(url);

@@ -4,10 +4,10 @@ import ch.rfin.util.Pair;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.apache.http.client.utils.URIBuilder;
+import org.jetbrains.annotations.NonNls;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class RestRequest extends Request
 {
     private static final String ENDPOINT_REST =
             "https://api.rememberthemilk.com/services/rest/";
-    private static final String PARAM_METHOD = "method";
+    private static final @NonNls String PARAM_METHOD = "method";
 
     /**
      * Creates a REST request.
@@ -62,7 +62,7 @@ public class RestRequest extends Request
      * @since 1.0.0
      */
     @Override
-    public final URI toUri()
+    public final URI toUri() throws URISyntaxException
     {
         final URIBuilder builder = new URIBuilder(RestRequest.ENDPOINT_REST);
         this.parameters.forEach((Pair<String, String> item) ->

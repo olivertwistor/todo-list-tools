@@ -1,24 +1,19 @@
 package nu.olivertwistor.todolisttools.menus;
 
 import nu.olivertwistor.java.tui.Terminal;
-import nu.olivertwistor.todolisttools.rtmapi.rest.CreateTimeline;
-import nu.olivertwistor.todolisttools.util.Session;
 import nu.olivertwistor.todolisttools.models.Task;
 import nu.olivertwistor.todolisttools.rtmapi.rest.AddTask;
+import nu.olivertwistor.todolisttools.rtmapi.rest.CreateTimeline;
 import nu.olivertwistor.todolisttools.util.Config;
-import org.dom4j.DocumentException;
+import nu.olivertwistor.todolisttools.util.Session;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,27 +23,62 @@ import java.util.Objects;
  *
  * @since 1.0.0
  */
+@SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"})
 public final class CsvAddTasksAction implements MenuAction
 {
-    private static final int SECONDS_PER_REQUEST = 1_500;
+    private static final int MILLISECONDS_PER_REQUEST = 1_500;
 
     @Override
     public boolean execute(final Config config, final Session session)
     {
-        CsvAddTasksAction.createTimeline(config, session);
+        try
+        {
+            CsvAddTasksAction.createTimeline(config, session);
+        }
+        catch (final IOException e)
+        {
+            System.out.println("Communication with Remember The Milk failed.");
+            return false;
+        }
 
         final String[] csvUserInput;
-        csvUserInput = CsvAddTasksAction.readCsvUserInput();
+        try
+        {
+            csvUserInput = CsvAddTasksAction.readCsvUserInput();
+        }
+        catch (final IOException e)
+        {
+            System.out.println("Failed to read user input.");
+            return false;
+        }
 
-        List<Task> parsedFile = null;
         final Path filePath = Paths.get(csvUserInput[0]);
         final File file = filePath.toFile();
-        parsedFile = CsvAddTasksAction.parseCsvFile(file, csvUserInput[1]);
+        final List<Task> parsedFile;
+        try
+        {
+            parsedFile = CsvAddTasksAction.parseCsvFile(file, csvUserInput[1]);
+        }
+        catch (final IOException e)
+        {
+            System.out.println("Failed to parse CSV file.");
+            return false;
+        }
 
         for (final Task task : parsedFile)
         {
             final String smartAdd = task.toSmartAdd();
-            final AddTask addTask = new AddTask(config, session, smartAdd);
+            final AddTask addTask;
+            try
+            {
+                addTask = new AddTask(config, session, smartAdd);
+            }
+            catch (final IOException e)
+            {
+                System.out.println("Communication with Remember The Milk " +
+                        "failed.");
+                return false;
+            }
             if (addTask.isResponseSuccess())
             {
                 System.out.println("Added task to RTM: " + smartAdd);
@@ -63,7 +93,7 @@ public final class CsvAddTasksAction implements MenuAction
             {
                 // Wait a moment until adding the next task to make sure we
                 // adhere to the API rate limit.
-                Thread.sleep(CsvAddTasksAction.SECONDS_PER_REQUEST);
+                Thread.sleep(CsvAddTasksAction.MILLISECONDS_PER_REQUEST);
             }
             catch (final InterruptedException e)
             {
@@ -81,6 +111,8 @@ public final class CsvAddTasksAction implements MenuAction
      * @param delimiter the delimiting character between columns in the file
      *
      * @return A list of Task objects.
+     *
+     * @throws IOException if the CSV file couldn't be opened.
      *
      * @since 1.0.0
      */
@@ -118,15 +150,18 @@ public final class CsvAddTasksAction implements MenuAction
 
     /**
      * Creates a new timeline by requesting one from the Remember The Milk API,
-     * and stores it within this session object.
+     * and stores it within this session object. If there already exists a
+     * timeline, this method does nothing.
      *
-     * Note that this action will invalidate the last timeline, making all
-     * actions made before calling this method undoable.
+     * @param config  Config object containing the API key etc.
+     * @param session active session where the timeline is stored
+     *
+     * @throws IOException if connection to Remember The Milk failed.
      *
      * @since 1.0.0
      */
     private static void createTimeline(final Config config,
-                                       final Session session)
+                                       final Session session) throws IOException
     {
         if (!session.hasTimeline())
         {
@@ -143,9 +178,11 @@ public final class CsvAddTasksAction implements MenuAction
      * @return The path to a CSV file and the delimiter between columns,
      *         together in an array.
      *
+     * @throws IOException if reading from standard input failed.
+     *
      * @since 1.0.0
      */
-    private static String[] readCsvUserInput()
+    private static String[] readCsvUserInput() throws IOException
     {
         System.out.println(String.join(System.lineSeparator(),
                 "Here, you can specify a CSV file containing tasks to add to ",

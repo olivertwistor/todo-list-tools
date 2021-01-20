@@ -15,10 +15,12 @@ public final class RequestTest
      * Asserts that the following statement is true: "Given a known string, its
      * hash value is the MD5 hash."
      *
+     * @throws Exception if anything went wrong
+     *
      * @since 1.0.0
      */
     @Test
-    public void Given_KnownString_Then_ValidHash()
+    public void Given_KnownString_Then_ValidHash() throws Exception
     {
         Assert.assertThat("MD5 hash of known string should be as expected.",
                 Request.hash("hello.world"),

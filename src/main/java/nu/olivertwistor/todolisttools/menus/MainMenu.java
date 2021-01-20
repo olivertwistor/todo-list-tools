@@ -18,8 +18,9 @@ import java.util.TreeMap;
  * constructor. Call {@link #show()} to print the menu. Call {@link #act()} to
  * ask for user input and do different things depending on the chosen menu item.
  *
- * @since  1.0.0
+ * @since 1.0.0
  */
+@SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"})
 public final class MainMenu
 {
     private final Config config;
@@ -139,5 +140,15 @@ public final class MainMenu
         }
 
         return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "MainMenu{" +
+                "config=" + this.config +
+                ", session=" + this.session +
+                ", menuItems=" + this.menuItems +
+                '}';
     }
 }
