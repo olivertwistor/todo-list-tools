@@ -39,6 +39,7 @@ please read [LICENSE][3].
 | Library                     | Author(s)                             | License |
 | --------------------------- | ------------------------------------- | ------- |
 | [Apache HttpClient][12]     | The Apache Software Foundation        | APL 2.0 |
+| [Apache Log4J2][13]         | The Apache Software Foundation        | APL 2.0 |
 | [Dom4J][7]                  | MetaStuff Ltd. and Dom4j contributors | Custom  |
 | [Ini4J][8]                  | Ivan Szkiba                           | APL 2.0 |
 | [Java TUI][10]              | Johan Nilsson                         | MIT     |
@@ -62,3 +63,4 @@ for full license terms.
 [10]: https://github.com/olivertwistor/java-tui
 [11]: https://github.com/JetBrains/java-annotations
 [12]: https://hc.apache.org/httpcomponents-client-ga/index.html
+[13]: http://logging.apache.org/log4j/2.x/index.html
