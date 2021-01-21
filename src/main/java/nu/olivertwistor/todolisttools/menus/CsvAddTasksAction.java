@@ -5,7 +5,10 @@ import nu.olivertwistor.todolisttools.models.Task;
 import nu.olivertwistor.todolisttools.rtmapi.rest.AddTask;
 import nu.olivertwistor.todolisttools.rtmapi.rest.CreateTimeline;
 import nu.olivertwistor.todolisttools.util.Config;
+import nu.olivertwistor.todolisttools.util.ErrorMessage;
 import nu.olivertwistor.todolisttools.util.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,8 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Adds tasks to Remember The Milk based on a user supplied CSV file.
@@ -26,47 +29,67 @@ import java.util.Objects;
 @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"})
 public final class CsvAddTasksAction implements MenuAction
 {
+    private static final Logger LOG = LogManager.getLogger(
+            CsvAddTasksAction.class);
+
     private static final int MILLISECONDS_PER_REQUEST = 1_500;
 
     @Override
     public boolean execute(final Config config, final Session session)
     {
+        LOG.trace("Entering execute(Config, Session)...");
+
         try
         {
-            CsvAddTasksAction.createTimeline(config, session);
+            createTimeline(config, session);
         }
         catch (final IOException e)
         {
-            System.out.println("Communication with Remember The Milk failed.");
+            ErrorMessage.printAndLogError(
+                    LOG,
+                    ErrorMessage.FAILED_TO_COMMUNICATE_WITH_REMEMBER_THE_MILK,
+                    e);
             return false;
         }
 
         final String[] csvUserInput;
         try
         {
-            csvUserInput = CsvAddTasksAction.readCsvUserInput();
+            csvUserInput = readCsvUserInput();
         }
         catch (final IOException e)
         {
-            System.out.println("Failed to read user input.");
+            ErrorMessage.printAndLogError(
+                    LOG, ErrorMessage.FAILED_TO_READ_USER_INPUT, e);
             return false;
         }
 
         final Path filePath = Paths.get(csvUserInput[0]);
         final File file = filePath.toFile();
         final List<Task> parsedFile;
+        final int nParsedTasks;
         try
         {
-            parsedFile = CsvAddTasksAction.parseCsvFile(file, csvUserInput[1]);
+            parsedFile = parseCsvFile(file, csvUserInput[1]);
+            nParsedTasks = parsedFile.size();
+            LOG.info("Parsed {} tasks from {}.",
+                    nParsedTasks, file.getAbsolutePath());
         }
         catch (final IOException e)
         {
-            System.out.println("Failed to parse CSV file.");
+            ErrorMessage.printAndLogError(
+                    LOG, ErrorMessage.FAILED_TO_READ_USER_INPUT, e);
             return false;
         }
 
+        LOG.debug("Looping through list of tasks: {}", parsedFile);
+        int nAddedTasks = 0;
+        int currentTaskId = 0;
         for (final Task task : parsedFile)
         {
+            currentTaskId++;
+            LOG.debug("Looking at: {}", task);
+
             final String smartAdd = task.toSmartAdd();
             final AddTask addTask;
             try
@@ -75,18 +98,24 @@ public final class CsvAddTasksAction implements MenuAction
             }
             catch (final IOException e)
             {
-                System.out.println("Communication with Remember The Milk " +
-                        "failed.");
+                ErrorMessage.printAndLogError(
+                        LOG,
+                        ErrorMessage.FAILED_TO_COMMUNICATE_WITH_REMEMBER_THE_MILK,
+                        e);
                 return false;
             }
             if (addTask.isResponseSuccess())
             {
-                System.out.println("Added task to RTM: " + smartAdd);
+                nAddedTasks++;
+                System.out.println("Added task " + currentTaskId + '/' +
+                        nParsedTasks + '.');
+                LOG.debug("Added {}.", task);
             }
             else
             {
-                System.out.println(
-                        "Failed to add task tag to RTM: " + smartAdd);
+                System.out.println("Failed to add task " + currentTaskId +
+                        '/' + nParsedTasks + '.');
+                LOG.error("Failed to add {}.", task);
             }
 
             try
@@ -97,9 +126,14 @@ public final class CsvAddTasksAction implements MenuAction
             }
             catch (final InterruptedException e)
             {
-                System.out.println("Current thread was interrupted.");
+                LOG.warn(e);
             }
         }
+
+        System.out.println("Successfully added " + nAddedTasks + " tasks " +
+                "out of " + nParsedTasks + '.');
+        LOG.info("Finished looping through list of tasks. Added: {}; " +
+                "failed: {}.", nAddedTasks, nParsedTasks - nAddedTasks);
 
         return false;
     }
@@ -119,6 +153,8 @@ public final class CsvAddTasksAction implements MenuAction
     static List<Task> parseCsvFile(final File file, final String delimiter)
             throws IOException
     {
+        LOG.trace("Entering parseCsvFile(File, String)...");
+
         // Read the file line by line and split each line into columns.
         final Path filePath = file.toPath();
         try (final BufferedReader br = Files.newBufferedReader(
@@ -130,20 +166,26 @@ public final class CsvAddTasksAction implements MenuAction
             final List<Task> tasks = new ArrayList<>();
             if (skippedLine != null)
             {
-                System.out.println("Skipped line: " + skippedLine);
+                LOG.debug("Skipped the first line of the CSV file: {}.",
+                        skippedLine);
 
                 for (String line = br.readLine(); line != null;
                      line = br.readLine())
                 {
                     nReadLines++;
+                    LOG.debug("Reading line {}.", nReadLines + 1);
 
                     final String[] columns = line.split(delimiter, -1);
+                    LOG.debug("Columns: {}", Arrays.toString(columns));
+
                     final Task task = new Task(columns[0]);
                     tasks.add(task);
+                    LOG.debug("Added {} to the list.", task);
                 }
             }
 
-            System.out.println("Read " + nReadLines + " lines.");
+            LOG.info("Read {} lines after the first line.", nReadLines);
+
             return tasks;
         }
     }
@@ -163,12 +205,21 @@ public final class CsvAddTasksAction implements MenuAction
     private static void createTimeline(final Config config,
                                        final Session session) throws IOException
     {
-        if (!session.hasTimeline())
+        LOG.trace("Entering createTimeline(Config, Session)...");
+
+        if (session.hasTimeline())
         {
-            final CreateTimeline createTimeline = new CreateTimeline(config);
-            final String timeline = createTimeline.getTimeline();
-            session.setTimeline(timeline);
+            LOG.debug("Session already has a timeline.");
+            return;
         }
+
+        LOG.debug("Session has no timeline.");
+
+        final CreateTimeline createTimeline = new CreateTimeline(config);
+        final String timeline = createTimeline.getTimeline();
+        session.setTimeline(timeline);
+
+        LOG.info("Created new timeline: {}", timeline);
     }
 
     /**
@@ -184,6 +235,8 @@ public final class CsvAddTasksAction implements MenuAction
      */
     private static String[] readCsvUserInput() throws IOException
     {
+        LOG.trace("Entering reaCsvUserInput()...");
+
         System.out.println(String.join(System.lineSeparator(),
                 "Here, you can specify a CSV file containing tasks to add to ",
                 "Remember The Milk. Please note that the first row is ",
@@ -198,9 +251,6 @@ public final class CsvAddTasksAction implements MenuAction
                 "Path to the CSV file to load: ");
         final String csvDelimiter = Terminal.readString(
                 "By which character is the columns separated? ");
-
-        Objects.requireNonNull(csvFileInput,
-                () -> "Failed to find file: " + csvFileInput);
 
         return new String[] { csvFileInput, csvDelimiter };
     }

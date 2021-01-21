@@ -2,8 +2,11 @@ package nu.olivertwistor.todolisttools.menus;
 
 import ch.rfin.util.Pair;
 import nu.olivertwistor.java.tui.UnclosableInputStream;
-import nu.olivertwistor.todolisttools.util.Session;
 import nu.olivertwistor.todolisttools.util.Config;
+import nu.olivertwistor.todolisttools.util.ErrorMessage;
+import nu.olivertwistor.todolisttools.util.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,9 +23,11 @@ import java.util.TreeMap;
  *
  * @since 1.0.0
  */
-@SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"})
+@SuppressWarnings("HardCodedStringLiteral")
 public final class MainMenu
 {
+    private static final Logger LOG = LogManager.getLogger(MainMenu.class);
+
     private final Config config;
     private final Session session;
     private final SortedMap<String, Pair<String, MenuAction>> menuItems;
@@ -45,6 +50,8 @@ public final class MainMenu
      */
     public MainMenu(final Config config, final Session session)
     {
+        LOG.trace("Entering MainMenu(Config, Session)...");
+
         this.config = config;
         this.session = session;
 
@@ -58,12 +65,14 @@ public final class MainMenu
     }
 
     /**
-     * Prints out the main menu to stdout.
+     * Prints out the main menu to System.out.
      *
      * @since 1.0.0
      */
     public void show()
     {
+        LOG.trace("Entering show()...");
+
         System.out.println("Main menu");
         System.out.println("---------");
         for (final Pair<String, MenuAction> pair :
@@ -87,6 +96,8 @@ public final class MainMenu
      */
     public boolean act()
     {
+        LOG.trace("Entering act()...");
+
         // Temporarily set the system InputStream to our own InputStream that
         // doesn't close.
         System.setIn(new UnclosableInputStream(System.in));
@@ -130,8 +141,9 @@ public final class MainMenu
         }
         catch (final IOException e)
         {
-            System.err.println(
-                    "Failed to read user input: " + e.getLocalizedMessage());
+            final ErrorMessage msg = ErrorMessage.FAILED_TO_READ_USER_INPUT;
+            System.out.println(msg.getMessage());
+            LOG.error(msg, e);
         }
         finally
         {

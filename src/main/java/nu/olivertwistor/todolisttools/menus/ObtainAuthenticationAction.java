@@ -3,7 +3,10 @@ package nu.olivertwistor.todolisttools.menus;
 import nu.olivertwistor.java.tui.Terminal;
 import nu.olivertwistor.todolisttools.rtmapi.auth.CheckToken;
 import nu.olivertwistor.todolisttools.util.Config;
+import nu.olivertwistor.todolisttools.util.ErrorMessage;
 import nu.olivertwistor.todolisttools.util.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
@@ -24,19 +27,26 @@ import java.net.URL;
 @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"})
 public final class ObtainAuthenticationAction implements MenuAction
 {
+    private static final Logger LOG = LogManager.getLogger(
+            ObtainAuthenticationAction.class);
+
     private static final @NonNls String VAL_WRITE_PERMISSIONS = "write";
 
     @Override
     public boolean execute(final Config config, final Session session)
     {
+        LOG.trace("Entering execute(Config, Session)...");
+
         try
         {
-            ObtainAuthenticationAction.checkExistingToken(config);
+            checkExistingToken(config);
         }
         catch (final IOException e)
         {
-            System.out.println("Failed to determine whether there already " +
-                    "exists a valid token.");
+            ErrorMessage.printAndLogError(
+                    LOG,
+                    ErrorMessage.FAILED_TO_COMMUNICATE_WITH_REMEMBER_THE_MILK,
+                    e);
             return false;
         }
 
@@ -54,34 +64,52 @@ public final class ObtainAuthenticationAction implements MenuAction
         try
         {
             final URL authUrl = authentication.generateAuthRequest(
-                    config, ObtainAuthenticationAction.VAL_WRITE_PERMISSIONS);
+                    config, VAL_WRITE_PERMISSIONS);
             final String urlString = authUrl.toExternalForm();
             System.out.println(urlString);
         }
         catch (final IOException e)
         {
-            System.out.println("Failed to generate an authentication URL.");
-            return false;
+            final String msg = "Failed to generate an authentication URL.";
+            System.out.println(msg);
+            LOG.fatal(msg, e);
+            return true;
         }
 
         try
         {
             Terminal.readString("Please confirm that you have visited the " +
                     "URL (any character will do): ");
+        }
+        catch (final IOException e)
+        {
+            final ErrorMessage msg = ErrorMessage.FAILED_TO_READ_USER_INPUT;
+            System.out.println(msg.getMessage());
+            LOG.fatal(msg, e);
+            return true;
+        }
 
+        try
+        {
             // Now when we have obtained authentication and the user have
             // confirmed that, we can retrieve the token we will use for any
             // subsequent calls to the API.
             final String token = authentication.obtainToken(config);
+        }
+        catch (final IOException e)
+        {
 
+        }
+
+        try
+        {
             // Store the retrieved token to the config file.
             config.setToken(token);
             System.out.println("Obtained an authentication token.");
         }
         catch (final IOException e)
         {
-            System.out.println("Failed to read user input.");
-            return false;
+
         }
 
         return false;

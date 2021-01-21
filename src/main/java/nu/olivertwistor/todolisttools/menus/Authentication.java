@@ -4,6 +4,9 @@ import nu.olivertwistor.todolisttools.rtmapi.AuthRequest;
 import nu.olivertwistor.todolisttools.rtmapi.auth.GetFrob;
 import nu.olivertwistor.todolisttools.rtmapi.auth.GetToken;
 import nu.olivertwistor.todolisttools.util.Config;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +25,9 @@ import java.util.Objects;
  */
 final class Authentication
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            Authentication.class);
+
     private AuthRequest authRequest;
     private String frobString;
 
@@ -43,14 +49,20 @@ final class Authentication
     URL generateAuthRequest(final Config config, final String permission)
             throws IOException
     {
+        LOG.trace("Entering generateAuthRequest(Config, String)...");
+
         // First, retrieve a FROB.
         final GetFrob getFrob = new GetFrob(config);
         this.frobString = getFrob.getFrob();
+        LOG.debug("Retrieved FROB: {}", this.frobString);
 
         // Then, construct an AuthRequest object and store it in this class.
         // Return the URL.
         this.authRequest = new AuthRequest(config, permission, this.frobString);
-        return this.authRequest.toUrl();
+        final URL url = this.authRequest.toUrl();
+        LOG.info("Generated authentication URL.");
+
+        return url;
     }
 
     /**
@@ -68,12 +80,17 @@ final class Authentication
      */
     String obtainToken(final Config config) throws IOException
     {
+        LOG.trace("Entering obtainToken(Config)...");
+
         Objects.requireNonNull(this.authRequest, "Authentication has not " +
                 "yet been obtained. Please call #generateAuthRequest() " +
                 "before calling this method.");
 
         final GetToken getToken = new GetToken(config, this.frobString);
-        return getToken.getToken();
+        final String token = getToken.getToken();
+        LOG.info("Retrieved token: {}", token);
+
+        return token;
     }
 
     @Override
