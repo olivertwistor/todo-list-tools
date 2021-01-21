@@ -2,6 +2,8 @@ package nu.olivertwistor.todolisttools.rtmapi.auth;
 
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Element;
 import org.jetbrains.annotations.NonNls;
 
@@ -19,6 +21,9 @@ import java.net.URLConnection;
  */
 public final class AuthResponse extends Response
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            AuthResponse.class);
+
     @NonNls
     private static final String TAG_AUTH = "auth";
 
@@ -38,6 +43,8 @@ public final class AuthResponse extends Response
     private AuthResponse(final InputStream contentStream) throws IOException
     {
         super(contentStream);
+
+        LOG.trace("Entering AuthResponse(InputStream)...");
     }
 
     /**
@@ -56,8 +63,12 @@ public final class AuthResponse extends Response
     static AuthResponse createAuthResponse(final Request request)
             throws IOException
     {
-        // Make an HTTP request to get the response.
+        LOG.trace("Entering createAuthResponse(Request)...");
+
         final URL url = request.toUrl();
+        LOG.debug("Trying to connecting to {}.", url.toExternalForm());
+
+        // Make an HTTP request to get the response.
         final URLConnection connection = url.openConnection();
         final InputStream contentStream = connection.getInputStream();
 
@@ -73,9 +84,13 @@ public final class AuthResponse extends Response
      */
     public String getToken()
     {
+        LOG.trace("Entering getToken()...");
+
         final Element tokenElement = this.getElement(
                 AuthResponse.TAG_AUTH, AuthResponse.TAG_TOKEN);
 
-        return tokenElement.getText();
+        final String token = tokenElement.getText();
+        LOG.debug("Found token: {}", token);
+        return token;
     }
 }

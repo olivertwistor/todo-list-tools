@@ -1,5 +1,7 @@
 package nu.olivertwistor.todolisttools.rtmapi;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -26,6 +28,9 @@ import java.util.Objects;
 @SuppressWarnings("StringConcatenation")
 public class Response
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            Response.class);
+
     @NonNls
     private static final String ATTRIB_STATUS = "stat";
 
@@ -57,14 +62,19 @@ public class Response
      */
     protected Response(final InputStream contentStream) throws IOException
     {
+        LOG.trace("Entering Response(InputStream)...");
+
         try
         {
             final SAXReader reader = new SAXReader();
             this.document = reader.read(contentStream);
             this.rootElement = this.document.getRootElement();
+
+            LOG.debug("Loaded XML document: {}", this.document.asXML());
         }
         catch (final DocumentException e)
         {
+            LOG.error("Failed to load XML document.", e);
             throw new IOException(e);
         }
     }
@@ -82,14 +92,19 @@ public class Response
      */
     Response(final File file) throws IOException
     {
+        LOG.trace("Entering Response(File)...");
+
         try
         {
             final SAXReader reader = new SAXReader();
             this.document = reader.read(file);
             this.rootElement = this.document.getRootElement();
+
+            LOG.debug("Loaded XML document: {}", this.document.asXML());
         }
         catch (final DocumentException e)
         {
+            LOG.error("Failed to load XML document.", e);
             throw new IOException(e);
         }
     }
@@ -110,6 +125,8 @@ public class Response
     public static Response createResponse(final Request request)
             throws IOException
     {
+        LOG.trace("Entering createResponse(Request)...");
+
         // Make an HTTP request to get the response.
         final URL url;
         try
@@ -118,8 +135,10 @@ public class Response
         }
         catch (final MalformedURLException e)
         {
+            LOG.error("Failed to form a URL out of the Request.", e);
             throw new IOException(e);
         }
+
         final URLConnection connection = url.openConnection();
         final InputStream contentStream = connection.getInputStream();
 
@@ -131,16 +150,20 @@ public class Response
      *
      * @return True if successful; false otherwise.
      *
+     * @throws NullPointerException if the response doesn't include a status
+     *                              attribute.
+     *
      * @since 1.0.0
      */
     public final boolean isResponseSuccess()
     {
-        final String status = this.rootElement.attributeValue(
-                Response.ATTRIB_STATUS);
+        LOG.trace("Entering isResponseSuccess()...");
+
+        final String status = this.rootElement.attributeValue(ATTRIB_STATUS);
         Objects.requireNonNull(status,
                 "Failed to find a status attribute on the root element.");
 
-        return Response.VAL_STATUS_SUCCESS.equals(status);
+        return VAL_STATUS_SUCCESS.equals(status);
     }
 
     /**
@@ -148,16 +171,20 @@ public class Response
      *
      * @return True if a failure; false otherwise.
      *
+     * @throws NullPointerException if the response doesn't include a status
+     *                              attribute.
+     *
      * @since 1.0.0
      */
     public final boolean isResponseFailure()
     {
-        final String status = this.rootElement.attributeValue(
-                Response.ATTRIB_STATUS);
+        LOG.trace("Entering isResponseFailure()...");
+
+        final String status = this.rootElement.attributeValue(ATTRIB_STATUS);
         Objects.requireNonNull(status,
                 "Failed to find a status attribute on the root element.");
 
-        return Response.VAL_STATUS_FAILURE.equals(status);
+        return VAL_STATUS_FAILURE.equals(status);
     }
 
     /**
@@ -176,15 +203,19 @@ public class Response
      */
     private Element getElement(final Element base, final Deque<String> tags)
     {
+        LOG.trace("Entering getElement(Element, Deque<String>)...");
+
         // Take a look at the first tag in the list. We also remove it from the
         // list, to prepare for the recursion further on.
         final String firstTag = tags.pop();
         final Element element = base.element(firstTag);
+        LOG.debug("Found intermediate element: {}", element);
 
         // If the remaining list is empty, it means that we have reached our
         // final level in the hierarchy and can stop the recursion.
         if (tags.isEmpty())
         {
+            LOG.debug("Found the target element: {}", element);
             return element;
         }
 
@@ -209,7 +240,11 @@ public class Response
      */
     private Element getElement(final String base, final Deque<String> tags)
     {
+        LOG.trace("Entering getElement(String, Deque<String>)...");
+
         final Element element = this.rootElement.element(base);
+        LOG.debug("Found intermediate element: {}", element);
+
         return this.getElement(element, tags);
     }
 
@@ -226,6 +261,8 @@ public class Response
      */
     protected final Element getElement(final String base, final String tag)
     {
+        LOG.trace("Entering getElement(String, String)...");
+
         final Deque<String> tags = new LinkedList<>();
         tags.add(tag);
 
@@ -247,6 +284,8 @@ public class Response
      */
     final Element getElement(final Deque<String> tags)
     {
+        LOG.trace("Entering getElement(Deque<String>)...");
+
         return this.getElement(this.rootElement, tags);
     }
 
@@ -264,12 +303,15 @@ public class Response
      */
     public final Element getElement(final String tag)
     {
+        LOG.trace("Entering getElement(String)...");
+
         final Element element = this.rootElement.element(tag);
         if (element == null)
         {
             throw new NoSuchElementException("Failed to find " + tag);
         }
 
+        LOG.debug("Found element: {}", element);
         return element;
     }
 
@@ -282,7 +324,11 @@ public class Response
      */
     public final String toXmlString()
     {
-        return this.document.asXML();
+        LOG.trace("Entering toXmlString()...");
+
+        final String xml = this.document.asXML();
+        LOG.debug("Response XML: {}", xml);
+        return xml;
     }
 
     @Override

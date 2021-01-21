@@ -141,9 +141,8 @@ public final class MainMenu
         }
         catch (final IOException e)
         {
-            final ErrorMessage msg = ErrorMessage.FAILED_TO_READ_USER_INPUT;
-            System.out.println(msg.getMessage());
-            LOG.error(msg, e);
+            ErrorMessage.printAndLogError(
+                    LOG, ErrorMessage.FAILED_TO_READ_USER_INPUT, e);
         }
         finally
         {

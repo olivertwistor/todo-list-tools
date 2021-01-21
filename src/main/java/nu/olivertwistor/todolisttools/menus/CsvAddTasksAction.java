@@ -46,9 +46,7 @@ public final class CsvAddTasksAction implements MenuAction
         catch (final IOException e)
         {
             ErrorMessage.printAndLogError(
-                    LOG,
-                    ErrorMessage.FAILED_TO_COMMUNICATE_WITH_REMEMBER_THE_MILK,
-                    e);
+                    LOG, ErrorMessage.COMMUNICATE_WITH_RTM, e);
             return false;
         }
 
@@ -99,9 +97,7 @@ public final class CsvAddTasksAction implements MenuAction
             catch (final IOException e)
             {
                 ErrorMessage.printAndLogError(
-                        LOG,
-                        ErrorMessage.FAILED_TO_COMMUNICATE_WITH_REMEMBER_THE_MILK,
-                        e);
+                        LOG, ErrorMessage.COMMUNICATE_WITH_RTM, e);
                 return false;
             }
             if (addTask.isResponseSuccess())

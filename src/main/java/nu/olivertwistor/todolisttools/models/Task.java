@@ -1,6 +1,9 @@
 package nu.olivertwistor.todolisttools.models;
 
 import ch.rfin.util.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -19,6 +22,8 @@ import java.util.regex.Pattern;
  */
 public final class Task
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(Task.class);
+
     private static final Pattern REMOVE_EXTRA_SPACES = Pattern.compile("  +");
 
     private final Pair<String, String> name;
@@ -42,43 +47,59 @@ public final class Task
      */
     public Task(final String name)
     {
+        LOG.trace("Entering Task(String)...");
+
         this.name = Pair.of(SmartAddPrefixes.NAME.getPrefix(), name);
     }
 
     void setUrl(final String url)
     {
+        LOG.trace("Entering setUrl(String)...");
+
         this.url = Pair.of(SmartAddPrefixes.URL.getPrefix(), url);
     }
 
     void setStart(final String start)
     {
+        LOG.trace("Entering setStart(String)...");
+
         this.start = Pair.of(SmartAddPrefixes.START.getPrefix(), start);
     }
 
     void setDue(final String due)
     {
+        LOG.trace("Entering setDue(String)...");
+
         this.due = Pair.of(SmartAddPrefixes.DUE.getPrefix(), due);
     }
 
     void setRepeat(final String repeat)
     {
+        LOG.trace("Entering setRepeat(String)...");
+
         this.repeat = Pair.of(SmartAddPrefixes.REPEAT.getPrefix(), repeat);
     }
 
     void setLocation(final String location)
     {
+        LOG.trace("Entering setLocation(String)...");
+
         this.location = Pair.of(
                 SmartAddPrefixes.LOCATION.getPrefix(), location);
     }
 
     void setPriority(final String priority)
     {
+        LOG.trace("Entering setPriority(String)...");
+
         this.priority = Pair.of(
                 SmartAddPrefixes.PRIORITY.getPrefix(), priority);
     }
 
     public void setList(final String list)
     {
+        LOG.trace("Entering setList(String)...");
+
         this.list = Pair.of(SmartAddPrefixes.LIST.getPrefix(), list);
     }
 
@@ -91,29 +112,23 @@ public final class Task
      */
     void addTag(final String tag)
     {
-        this.tags.add(Pair.of(SmartAddPrefixes.TAG.getPrefix(), tag));
-    }
+        LOG.trace("Entering addTag(String)...");
 
-    /**
-     * Removes a tag.
-     *
-     * @param tag the tag to remove
-     *
-     * @since 1.0.0
-     */
-    public void removeTag(final String tag)
-    {
-        this.tags.remove(Pair.of(SmartAddPrefixes.TAG.getPrefix(), tag));
+        this.tags.add(Pair.of(SmartAddPrefixes.TAG.getPrefix(), tag));
     }
 
     void setTimeEstimate(final String timeEstimate)
     {
+        LOG.trace("Entering setTimeEstimate(String)...");
+
         this.timeEstimate = Pair.of(
                 SmartAddPrefixes.TIME_ESTIMATE.getPrefix(), timeEstimate);
     }
 
     void setComments(final String comments)
     {
+        LOG.trace("Entering setComments(String)...");
+
         this.comments = Pair.of(
                 SmartAddPrefixes.COMMENTS.getPrefix(), comments);
     }
@@ -134,6 +149,8 @@ public final class Task
      */
     public String toSmartAdd()
     {
+        LOG.trace("Entering toSmartAdd()...");
+
         final StringBuilder stringBuilder = new StringBuilder()
                 .append(this.name._1).append(this.name._2).append(' ')
                 .append(this.url._1).append(this.url._2).append(' ')
@@ -155,6 +172,8 @@ public final class Task
         final String afterTrim = beforeTrim.trim();
         final Matcher extraSpaces = Task.REMOVE_EXTRA_SPACES.matcher(afterTrim);
         final String afterReplace = extraSpaces.replaceAll(" ");
+
+        LOG.debug("Smart add: {}", afterReplace);
 
         return afterReplace;
     }

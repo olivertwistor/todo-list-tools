@@ -3,6 +3,8 @@ package nu.olivertwistor.todolisttools.rtmapi.auth;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.rest.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Element;
 import org.jetbrains.annotations.NonNls;
 
@@ -16,6 +18,9 @@ import java.io.IOException;
  */
 public final class GetFrob
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            GetFrob.class);
+
     @NonNls
     private static final String METHOD_GET_FROB = "rtm.auth.getFrob";
 
@@ -36,6 +41,8 @@ public final class GetFrob
      */
     public GetFrob(final Config config) throws IOException
     {
+        LOG.trace("Entering GetFrob(Config)...");
+
         final String apiKey = config.getApiKey();
 
         final Request request = new RestRequest(
@@ -54,9 +61,13 @@ public final class GetFrob
      */
     public String getFrob()
     {
+        LOG.trace("Entering getFrob()...");
+
         final Element frobElement = this.response.getElement(GetFrob.TAG_FROB);
 
-        return frobElement.getText();
+        final String frob = frobElement.getText();
+        LOG.debug("Found FROB: {}", frob);
+        return frob;
     }
 
     @Override

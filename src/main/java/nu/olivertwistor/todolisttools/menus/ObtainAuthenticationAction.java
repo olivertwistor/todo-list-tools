@@ -44,9 +44,7 @@ public final class ObtainAuthenticationAction implements MenuAction
         catch (final IOException e)
         {
             ErrorMessage.printAndLogError(
-                    LOG,
-                    ErrorMessage.FAILED_TO_COMMUNICATE_WITH_REMEMBER_THE_MILK,
-                    e);
+                    LOG, ErrorMessage.COMMUNICATE_WITH_RTM, e);
             return false;
         }
 
@@ -70,9 +68,8 @@ public final class ObtainAuthenticationAction implements MenuAction
         }
         catch (final IOException e)
         {
-            final String msg = "Failed to generate an authentication URL.";
-            System.out.println(msg);
-            LOG.fatal(msg, e);
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.GENERATE_AUTH_URL, e);
             return true;
         }
 
@@ -83,22 +80,25 @@ public final class ObtainAuthenticationAction implements MenuAction
         }
         catch (final IOException e)
         {
-            final ErrorMessage msg = ErrorMessage.FAILED_TO_READ_USER_INPUT;
-            System.out.println(msg.getMessage());
-            LOG.fatal(msg, e);
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.FAILED_TO_READ_USER_INPUT, e);
             return true;
         }
 
+        final String token;
         try
         {
             // Now when we have obtained authentication and the user have
             // confirmed that, we can retrieve the token we will use for any
             // subsequent calls to the API.
-            final String token = authentication.obtainToken(config);
+            token = authentication.obtainToken(config);
+            LOG.info("Token received: {}", token);
         }
         catch (final IOException e)
         {
-
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.COMMUNICATE_WITH_RTM, e);
+            return true;
         }
 
         try
@@ -109,7 +109,9 @@ public final class ObtainAuthenticationAction implements MenuAction
         }
         catch (final IOException e)
         {
-
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.WRITE_TO_CONFIG_FILE, e);
+            return true;
         }
 
         return false;
@@ -131,6 +133,8 @@ public final class ObtainAuthenticationAction implements MenuAction
     private static boolean checkExistingToken(final Config config)
             throws IOException
     {
+        LOG.trace("Entering checkExistingToken(Config)...");
+
         final String existingToken = config.getToken();
         final CheckToken checkToken = new CheckToken(config, existingToken);
 
@@ -138,9 +142,11 @@ public final class ObtainAuthenticationAction implements MenuAction
         {
             System.out.println("You have already authenticated this " +
                     "application.");
+            LOG.info("Authentication token is valid: {}", existingToken);
             return true;
         }
 
+        LOG.info("Authentication token is invalid: {}", existingToken);
         return false;
     }
 }

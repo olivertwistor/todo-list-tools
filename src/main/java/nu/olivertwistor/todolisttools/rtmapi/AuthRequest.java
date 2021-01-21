@@ -3,6 +3,8 @@ package nu.olivertwistor.todolisttools.rtmapi;
 import ch.rfin.util.Pair;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NonNls;
 
 import java.net.URI;
@@ -19,6 +21,9 @@ import java.util.List;
  */
 public final class AuthRequest extends Request
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            AuthRequest.class);
+
     private static final String ENDPOINT_AUTH =
             "https://www.rememberthemilk.com/services/auth/";
     private static final @NonNls String PARAM_PERMISSIONS = "perms";
@@ -39,6 +44,8 @@ public final class AuthRequest extends Request
                         final List<Pair<String, String>> parameters)
     {
         super(config, parameters);
+        LOG.trace("Entering AuthRequest(Config, String, String, " +
+                "List<Pair<String, String>>)...");
 
         final String apiKey = config.getApiKey();
         this.parameters.add(Pair.of(Request.PARAM_API_KEY, apiKey));
@@ -61,6 +68,7 @@ public final class AuthRequest extends Request
                        final String frob)
     {
         this(config, permissions, frob, new LinkedList<>());
+        LOG.trace("Entering AuthRequest(Config, String, String)...");
     }
 
     /**
@@ -74,6 +82,8 @@ public final class AuthRequest extends Request
     @Override
     public URI toUri() throws URISyntaxException
     {
+        LOG.trace("Entering toUri()...");
+
         final URIBuilder builder = new URIBuilder(AuthRequest.ENDPOINT_AUTH);
         this.parameters.forEach((Pair<String, String> item) ->
                 builder.addParameter(item._1, item._2));

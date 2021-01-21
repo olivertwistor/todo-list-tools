@@ -3,22 +3,86 @@ package nu.olivertwistor.todolisttools.util;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NonNls;
 
+/**
+ * This enum holds various error messages used throughout this application.
+ * From each enum item, a translatable string meant for printing to the UI, and
+ * a non-translatable string meant for logging can be extracted.
+ *
+ * There are also methods for logging
+ * {@link #printAndLogError(Logger, ErrorMessage, Throwable) error} and
+ * {@link #printAndLogFatal(Logger, ErrorMessage, Throwable) fatal} messages.
+ *
+ * @since 1.0.0
+ */
+@SuppressWarnings("HardCodedStringLiteral")
 public enum ErrorMessage
 {
-    FAILED_TO_READ_USER_INPUT("Failed to read user input."),
-    FAILED_TO_COMMUNICATE_WITH_REMEMBER_THE_MILK("Failed to communicate with " +
-            "Remember The Milk.");
+    /**
+     * When failing to read user input.
+     *
+     * @since 1.0.0
+     */
+    FAILED_TO_READ_USER_INPUT(
+            "Failed to read user input.", "Failed to read user input."),
 
-    private final String message;
+    /**
+     * When failing to communicate with Remember The Milk.
+     *
+     * @since 1.0.0
+     */
+    COMMUNICATE_WITH_RTM(
+            "Failed to communicate with Remember The Milk.",
+            "Failed to communicate with Remember The Milk."),
 
-    ErrorMessage(final @NonNls String message)
+    /**
+     * When failing to generate an authentication URL.
+     *
+     * @since 1.0.0
+     */
+    GENERATE_AUTH_URL(
+            "Failed to generate an authentication URL.",
+            "Failed to generate an authentication URL."),
+
+    /**
+     * When failing to write to a config file.
+     *
+     * @since 1.0.0
+     */
+    WRITE_TO_CONFIG_FILE(
+            "Failed to write to config file.",
+            "Failed to write to config file."),
+
+    /**
+     * When failing to load a configuration file.
+     *
+     * @since 1.0.0
+     */
+    LOAD_CONFIG_FILE(
+            "Failed to load the configuration file.",
+            "Failed to load the configuration file.");
+
+    private final String printMessage;
+    private final String logMessage;
+
+    /**
+     * Creates a new enum item with a message meant for the UI, and a message
+     * meant for logging.
+     *
+     * @param printMessage message meant to be printed to the UI (should be a
+     *                     translatable string)
+     * @param logMessage   message meant to be logged (should be in English)
+     *
+     * @since 1.0.0
+     */
+    ErrorMessage(final String printMessage, final @NonNls String logMessage)
     {
-        this.message = message;
+        this.printMessage = printMessage;
+        this.logMessage = logMessage;
     }
 
-    public String getMessage()
+    public String getPrintMessage()
     {
-        return this.message;
+        return this.printMessage;
     }
 
     /**
@@ -35,15 +99,34 @@ public enum ErrorMessage
                                         final ErrorMessage message,
                                         final Throwable throwable)
     {
-        System.out.println(message.getMessage());
+        System.out.println(message.getPrintMessage());
         logger.error(message, throwable);
+    }
+
+    /**
+     * Prints a message to System.out and logs the same message (and a
+     * throwable) at the FATAL level.
+     *
+     * @param logger    the Logger object on which to log
+     * @param message   the error message to print and log
+     * @param throwable a throwable to log
+     *
+     * @since 1.0.0
+     */
+    public static void printAndLogFatal(final Logger logger,
+                                        final ErrorMessage message,
+                                        final Throwable throwable)
+    {
+        System.out.println(message.getPrintMessage());
+        logger.fatal(message, throwable);
     }
 
     @Override
     public String toString()
     {
         return "ErrorMessage{" +
-                "message='" + message + '\'' +
+                "printMessage='" + this.printMessage + '\'' +
+                ", logMessage='" + this.logMessage + '\'' +
                 '}';
     }
 }

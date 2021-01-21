@@ -1,5 +1,7 @@
 package nu.olivertwistor.todolisttools.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.ini4j.Ini;
 import org.jetbrains.annotations.NonNls;
 
@@ -16,6 +18,9 @@ import java.net.URL;
  */
 public final class Config
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            Config.class);
+
     @NonNls
     private static final String GROUP_API = "api";
 
@@ -44,6 +49,8 @@ public final class Config
      */
     public Config(final URL url) throws IOException
     {
+        LOG.trace("Entering Config(URL)...");
+
         final URI uri;
         try
         {
@@ -67,6 +74,8 @@ public final class Config
      */
     public String getApiKey()
     {
+        LOG.trace("Entering getApiKey()...");
+
         return this.ini.get(Config.GROUP_API, Config.PROP_KEY);
     }
 
@@ -80,6 +89,8 @@ public final class Config
      */
     public String getSharedSecret()
     {
+        LOG.trace("Entering getSharedSecret()...");
+
         return this.ini.get(Config.GROUP_API, Config.PROP_SHARED_SECRET);
     }
 
@@ -93,6 +104,8 @@ public final class Config
      */
     public String getToken()
     {
+        LOG.trace("Entering getToken()...");
+
         return this.ini.get(Config.GROUP_API, Config.PROP_AUTH_TOKEN);
     }
 
@@ -101,10 +114,15 @@ public final class Config
      *
      * @param token the authentication token
      *
+     * @throws IOException if the token value couldn't be written to the config
+     *                     file.
+     *
      * @since 1.0.0
      */
     public void setToken(final String token) throws IOException
     {
+        LOG.trace("Entering setToken(String)...");
+
         this.ini.put(Config.GROUP_API, Config.PROP_AUTH_TOKEN, token);
         this.ini.store(this.file);
     }
