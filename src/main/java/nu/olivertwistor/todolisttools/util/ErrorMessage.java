@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NonNls;
  *
  * @since 1.0.0
  */
-@SuppressWarnings("HardCodedStringLiteral")
+@SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation", "ClassUnconnectedToPackage"})
 public enum ErrorMessage
 {
     /**

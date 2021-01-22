@@ -19,7 +19,7 @@ import java.net.URLConnection;
  *
  * @since  1.0.0
  */
-public final class AuthResponse extends Response
+final class AuthResponse extends Response
 {
     private static final @NonNls Logger LOG = LogManager.getLogger(
             AuthResponse.class);

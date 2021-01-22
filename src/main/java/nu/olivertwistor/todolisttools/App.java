@@ -16,7 +16,7 @@ import java.net.URL;
  *
  * @since 1.0.0
  */
-@SuppressWarnings({"HardCodedStringLiteral", "ClassUnconnectedToPackage"})
+@SuppressWarnings({"HardCodedStringLiteral", "ClassUnconnectedToPackage", "StringConcatenation"})
 final class App
 {
     private static final @NonNls Logger LOG = LogManager.getLogger(App.class);

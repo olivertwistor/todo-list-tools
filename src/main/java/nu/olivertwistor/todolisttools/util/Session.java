@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NonNls;
  *
  * @since 1.0.0
  */
+@SuppressWarnings("ClassUnconnectedToPackage")
 public final class Session
 {
     private static final @NonNls Logger LOG = LogManager.getLogger(

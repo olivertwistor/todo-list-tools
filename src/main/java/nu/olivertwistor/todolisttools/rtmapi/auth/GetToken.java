@@ -57,13 +57,6 @@ public final class GetToken
         return this.response.getToken();
     }
 
-    public AuthResponse getResponse()
-    {
-        LOG.trace("Entering getResponse()...");
-
-        return this.response;
-    }
-
     @Override
     public String toString()
     {
