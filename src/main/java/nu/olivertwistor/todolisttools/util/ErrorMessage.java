@@ -88,11 +88,6 @@ public enum ErrorMessage
         this.logMessage = logMessage;
     }
 
-    public String getPrintMessage()
-    {
-        return this.printMessage;
-    }
-
     /**
      * Prints a message to System.out and logs the same message (and a
      * throwable) at the ERROR level.
