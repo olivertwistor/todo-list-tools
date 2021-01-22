@@ -29,7 +29,7 @@ public final class CheckTokenTest
     public static void setUp() throws Exception
     {
         final URL url = CheckTokenTest.class.getResource("/app.cfg");
-        CheckTokenTest.config = new Config(url);
+        config = new Config(url);
     }
 
     /**
@@ -44,8 +44,7 @@ public final class CheckTokenTest
     public void When_ValidTokenIsGiven_Then_CheckTokenReturnsSuccess()
             throws Exception
     {
-        final CheckToken checkToken = new CheckToken(
-                CheckTokenTest.config, CheckTokenTest.config.getToken());
+        final CheckToken checkToken = new CheckToken(config, config.getToken());
 
         final boolean successResponse = checkToken.isResponseSuccess();
 
@@ -65,8 +64,7 @@ public final class CheckTokenTest
     public void When_InvalidTokenIsGiven_Then_CheckTokenReturnsFail()
             throws Exception
     {
-        final CheckToken checkToken = new CheckToken(
-                CheckTokenTest.config, "foobar");
+        final CheckToken checkToken = new CheckToken(config, "foobar");
 
         final boolean failResponse =
                 checkToken.isResponseFailure();
