@@ -49,12 +49,18 @@ final class App
 
         // Load the config. Also, start a new session for this run of the
         // application.
+        final URL configPath = App.class.getResource("/app.cfg");
+        if (configPath == null)
+        {
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.CONFIG_FILE_NOT_FOUND, null);
+            return;
+        }
         final Config config;
         try
         {
-            final URL configPath = App.class.getResource("/app.cfg");
             config = new Config(configPath);
-            LOG.info("Loaded a config from {}.", configPath.toExternalForm());
+            LOG.info("Loaded config: {}", configPath.toExternalForm());
         }
         catch (final IOException e)
         {
@@ -77,6 +83,7 @@ final class App
                 LOG.info("Shared secret overwritten.");
 
                 System.out.println("Credentials written to config file.");
+                System.out.println();
             }
             catch (final IOException e)
             {
@@ -89,6 +96,7 @@ final class App
             System.out.println("Too few command-line parameters (must be " +
                     "2). Ignoring the parameter, and proceeding to use " +
                     "previously stored credentials instead.");
+            System.out.println();
             LOG.warn("User supplied too few command-line parameters. " +
                     "Ignoring.");
         }

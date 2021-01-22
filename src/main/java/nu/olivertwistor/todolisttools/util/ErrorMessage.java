@@ -61,13 +61,22 @@ public enum ErrorMessage
             "Failed to load the configuration file."),
 
     /**
-     * When a specified file does not exist.
+     * When the config file does not exist.
      *
      * @since 1.0.0
      */
-    FILE_NOT_FOUND(
-            "Failed to find the specified file.",
-            "Failed to find the specified file.");
+    CONFIG_FILE_NOT_FOUND(
+            "Failed to find the config file.",
+            "Failed to find the config file."),
+
+    /**
+     * When a CSV file does not exist.
+     *
+     * @since 1.0.0
+     */
+    CSV_FILE_NOT_FOUND(
+            "Failed to find the specified CSV file.",
+            "Failed to find the specified CSV file.");
 
     private final String printMessage;
     private final String logMessage;
@@ -102,7 +111,7 @@ public enum ErrorMessage
                                         final ErrorMessage message,
                                         final Throwable throwable)
     {
-        System.out.println(message.printMessage);
+        System.out.println("ERROR: " + message.printMessage);
         logger.error(message.logMessage, throwable);
     }
 
@@ -120,7 +129,7 @@ public enum ErrorMessage
                                         final ErrorMessage message,
                                         final Throwable throwable)
     {
-        System.out.println(message.printMessage);
+        System.out.println("FATAL: " + message.printMessage);
         logger.fatal(message.logMessage, throwable);
     }
 
