@@ -2,6 +2,8 @@ package nu.olivertwistor.todolisttools.rtmapi;
 
 import ch.rfin.util.Pair;
 import nu.olivertwistor.todolisttools.util.Config;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NonNls;
 
 import javax.xml.bind.DatatypeConverter;
@@ -31,6 +33,9 @@ import java.util.TreeMap;
  */
 public abstract class Request
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            Request.class);
+
     /**
      * URL parameter name for API key.
      *
@@ -88,6 +93,8 @@ public abstract class Request
     protected Request(final Config config,
                       final List<Pair<String, String>> parameters)
     {
+        LOG.trace("Entering Request(Config, List<Pair<String, String>>)...");
+
         this.config = config;
         this.parameters = new LinkedList<>(parameters);
     }
@@ -102,6 +109,7 @@ public abstract class Request
     protected Request(final Config config)
     {
         this(config, new LinkedList<>());
+        LOG.trace("Entering Request(Config)...");
     }
 
     /**
@@ -114,6 +122,8 @@ public abstract class Request
      */
     public final void addParameter(final String key, final String value)
     {
+        LOG.trace("Entering addParameter(String, String)...");
+
         this.parameters.add(Pair.of(key, value));
     }
 
@@ -142,6 +152,8 @@ public abstract class Request
      */
     public final URL toUrl() throws MalformedURLException
     {
+        LOG.trace("Entering toUrl()...");
+
         final URI uri;
         try
         {
@@ -170,6 +182,8 @@ public abstract class Request
      */
     static String hash(final String message) throws NoSuchAlgorithmException
     {
+        LOG.trace("Entering hash(message)...");
+
         final Charset charset = StandardCharsets.UTF_8;
 
         final MessageDigest md = MessageDigest.getInstance("MD5");
@@ -192,6 +206,8 @@ public abstract class Request
      */
     protected final String generateSignature()
     {
+        LOG.trace("Entering generateSignature()...");
+
         // Put all parameters into a SortedMap to have them sorted (temporarily
         // for this method only).
         final SortedMap<String, String> sortedParameters = new TreeMap<>();

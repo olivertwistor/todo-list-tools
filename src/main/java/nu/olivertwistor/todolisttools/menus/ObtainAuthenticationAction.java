@@ -3,7 +3,10 @@ package nu.olivertwistor.todolisttools.menus;
 import nu.olivertwistor.java.tui.Terminal;
 import nu.olivertwistor.todolisttools.rtmapi.auth.CheckToken;
 import nu.olivertwistor.todolisttools.util.Config;
+import nu.olivertwistor.todolisttools.util.ErrorMessage;
 import nu.olivertwistor.todolisttools.util.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
@@ -24,19 +27,24 @@ import java.net.URL;
 @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"})
 public final class ObtainAuthenticationAction implements MenuAction
 {
+    private static final Logger LOG = LogManager.getLogger(
+            ObtainAuthenticationAction.class);
+
     private static final @NonNls String VAL_WRITE_PERMISSIONS = "write";
 
     @Override
     public boolean execute(final Config config, final Session session)
     {
+        LOG.trace("Entering execute(Config, Session)...");
+
         try
         {
-            ObtainAuthenticationAction.checkExistingToken(config);
+            checkExistingToken(config);
         }
         catch (final IOException e)
         {
-            System.out.println("Failed to determine whether there already " +
-                    "exists a valid token.");
+            ErrorMessage.printAndLogError(
+                    LOG, ErrorMessage.COMMUNICATE_WITH_RTM, e);
             return false;
         }
 
@@ -54,34 +62,56 @@ public final class ObtainAuthenticationAction implements MenuAction
         try
         {
             final URL authUrl = authentication.generateAuthRequest(
-                    config, ObtainAuthenticationAction.VAL_WRITE_PERMISSIONS);
+                    config, VAL_WRITE_PERMISSIONS);
             final String urlString = authUrl.toExternalForm();
             System.out.println(urlString);
         }
         catch (final IOException e)
         {
-            System.out.println("Failed to generate an authentication URL.");
-            return false;
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.GENERATE_AUTH_URL, e);
+            return true;
         }
 
         try
         {
             Terminal.readString("Please confirm that you have visited the " +
                     "URL (any character will do): ");
+        }
+        catch (final IOException e)
+        {
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.READ_USER_INPUT, e);
+            return true;
+        }
 
+        final String token;
+        try
+        {
             // Now when we have obtained authentication and the user have
             // confirmed that, we can retrieve the token we will use for any
             // subsequent calls to the API.
-            final String token = authentication.obtainToken(config);
+            token = authentication.obtainToken(config);
+            LOG.info("Token received: {}", token);
+        }
+        catch (final IOException e)
+        {
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.COMMUNICATE_WITH_RTM, e);
+            return true;
+        }
 
+        try
+        {
             // Store the retrieved token to the config file.
             config.setToken(token);
             System.out.println("Obtained an authentication token.");
         }
         catch (final IOException e)
         {
-            System.out.println("Failed to read user input.");
-            return false;
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.WRITE_TO_CONFIG_FILE, e);
+            return true;
         }
 
         return false;
@@ -103,6 +133,8 @@ public final class ObtainAuthenticationAction implements MenuAction
     private static boolean checkExistingToken(final Config config)
             throws IOException
     {
+        LOG.trace("Entering checkExistingToken(Config)...");
+
         final String existingToken = config.getToken();
         final CheckToken checkToken = new CheckToken(config, existingToken);
 
@@ -110,9 +142,11 @@ public final class ObtainAuthenticationAction implements MenuAction
         {
             System.out.println("You have already authenticated this " +
                     "application.");
+            LOG.info("Authentication token is valid: {}", existingToken);
             return true;
         }
 
+        LOG.info("Authentication token is invalid: {}", existingToken);
         return false;
     }
 }

@@ -4,6 +4,8 @@ import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.Response;
 import nu.olivertwistor.todolisttools.util.Config;
 import nu.olivertwistor.todolisttools.util.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
@@ -15,6 +17,9 @@ import java.io.IOException;
  */
 public final class AddTask
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            AddTask.class);
+
     @NonNls
     private static final String METHOD_ADD_TASK = "rtm.tasks.add";
 
@@ -45,6 +50,8 @@ public final class AddTask
                    final Session session,
                    final String smartAdd) throws IOException
     {
+        LOG.trace("Entering AddTask(Config, Session, String)...");
+
         final String apiKey = config.getApiKey();
         final String token = config.getToken();
 
@@ -62,11 +69,15 @@ public final class AddTask
 
     public boolean isResponseSuccess()
     {
+        LOG.trace("Entering isResponseSuccess()...");
+
         return this.response.isResponseSuccess();
     }
 
     public Response getResponse()
     {
+        LOG.trace("Entering getResponse()...");
+
         return this.response;
     }
 

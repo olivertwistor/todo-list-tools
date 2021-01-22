@@ -3,6 +3,8 @@ package nu.olivertwistor.todolisttools.rtmapi.auth;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.rest.RestRequest;
 import nu.olivertwistor.todolisttools.util.Config;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
@@ -15,6 +17,9 @@ import java.io.IOException;
  */
 public final class GetToken
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            GetToken.class);
+
     @NonNls
     private static final String METHOD_GET_TOKEN = "rtm.auth.getToken";
 
@@ -33,6 +38,8 @@ public final class GetToken
      */
     public GetToken(final Config config, final String frob) throws IOException
     {
+        LOG.trace("Entering GetToken(Config, String)...");
+
         final String apiKey = config.getApiKey();
 
         final Request request = new RestRequest(
@@ -45,11 +52,15 @@ public final class GetToken
 
     public String getToken()
     {
+        LOG.trace("Entering getToken()...");
+
         return this.response.getToken();
     }
 
     public AuthResponse getResponse()
     {
+        LOG.trace("Entering getResponse()...");
+
         return this.response;
     }
 

@@ -4,6 +4,8 @@ import ch.rfin.util.Pair;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.util.Config;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NonNls;
 
 import java.net.URI;
@@ -19,6 +21,9 @@ import java.util.List;
  */
 public class RestRequest extends Request
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            RestRequest.class);
+
     private static final String ENDPOINT_REST =
             "https://api.rememberthemilk.com/services/rest/";
     private static final @NonNls String PARAM_METHOD = "method";
@@ -37,6 +42,9 @@ public class RestRequest extends Request
                         final List<Pair<String, String>> parameters)
     {
         super(config, parameters);
+        LOG.trace("Entering RestRequest(Config, String, List<Pair<String, " +
+                "String>>)...");
+
         this.parameters.add(Pair.of(RestRequest.PARAM_METHOD, methodName));
     }
 
@@ -51,6 +59,7 @@ public class RestRequest extends Request
     public RestRequest(final Config config, final String methodName)
     {
         this(config, methodName, new LinkedList<>());
+        LOG.trace("Entering RestRequest(Config, String)...");
     }
 
     /**
@@ -64,6 +73,8 @@ public class RestRequest extends Request
     @Override
     public final URI toUri() throws URISyntaxException
     {
+        LOG.trace("Entering toUri()...");
+
         final URIBuilder builder = new URIBuilder(RestRequest.ENDPOINT_REST);
         this.parameters.forEach((Pair<String, String> item) ->
                 builder.addParameter(item._1, item._2));

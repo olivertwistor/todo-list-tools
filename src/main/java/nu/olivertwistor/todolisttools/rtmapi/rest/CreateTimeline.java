@@ -3,6 +3,8 @@ package nu.olivertwistor.todolisttools.rtmapi.rest;
 import nu.olivertwistor.todolisttools.rtmapi.Request;
 import nu.olivertwistor.todolisttools.rtmapi.Response;
 import nu.olivertwistor.todolisttools.util.Config;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Element;
 import org.jetbrains.annotations.NonNls;
 
@@ -17,6 +19,9 @@ import java.io.IOException;
  */
 public final class CreateTimeline
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            CreateTimeline.class);
+
     @NonNls
     private static final String METHOD_CREATE_TIMELINE = "rtm.timelines.create";
 
@@ -37,6 +42,8 @@ public final class CreateTimeline
      */
     public CreateTimeline(final Config config) throws IOException
     {
+        LOG.trace("Entering CreateTimeline(Config)...");
+
         final String apiKey = config.getApiKey();
         final String token = config.getToken();
 
@@ -57,19 +64,27 @@ public final class CreateTimeline
      */
     public String getTimeline()
     {
+        LOG.trace("Entering getTimeline()...");
+
         final Element timelineElement = this.response.getElement(
                 CreateTimeline.TAG_TIMELINE);
 
-        return timelineElement.getText();
+        final String timeline = timelineElement.getText();
+        LOG.debug("Found timeline: {}", timeline);
+        return timeline;
     }
 
     boolean isResponseSuccess()
     {
+        LOG.trace("Entering isResponseSuccess()...");
+
         return this.response.isResponseSuccess();
     }
 
     public Response getResponse()
     {
+        LOG.trace("Entering getResponse()...");
+
         return this.response;
     }
 

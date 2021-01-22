@@ -2,7 +2,11 @@ package nu.olivertwistor.todolisttools;
 
 import nu.olivertwistor.todolisttools.menus.MainMenu;
 import nu.olivertwistor.todolisttools.util.Config;
+import nu.olivertwistor.todolisttools.util.ErrorMessage;
 import nu.olivertwistor.todolisttools.util.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +19,8 @@ import java.net.URL;
 @SuppressWarnings({"HardCodedStringLiteral", "ClassUnconnectedToPackage"})
 final class App
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(App.class);
+
     /**
      * Prints a short privacy policy and then creates the main menu.
      *
@@ -24,6 +30,9 @@ final class App
      */
     public static void main(final String[] args)
     {
+        LOG.trace("Entering main(String[])...");
+
+        System.out.println("==============");
         System.out.println("Todo List Tool");
         System.out.println("==============");
         System.out.println();
@@ -45,13 +54,15 @@ final class App
         {
             final URL configPath = App.class.getResource("/app.cfg");
             config = new Config(configPath);
+            LOG.info("Loaded a config from {}.", configPath.toExternalForm());
         }
         catch (final IOException e)
         {
-            System.out.println("Failed to load configuration.");
+            ErrorMessage.printAndLogFatal(
+                    LOG, ErrorMessage.LOAD_CONFIG_FILE, e);
             return;
         }
-        final Session session = new Session(config);
+        final Session session = new Session();
 
         final MainMenu mainMenu = new MainMenu(config, session);
         boolean exit;
@@ -69,5 +80,8 @@ final class App
      *
      * @since 1.0.0
      */
-    private App() { }
+    private App()
+    {
+        LOG.trace("Entering App()...");
+    }
 }

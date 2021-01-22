@@ -1,5 +1,9 @@
 package nu.olivertwistor.todolisttools.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NonNls;
+
 /**
  * A session holds the current timeline. The timeline is a bookmark of sorts,
  * after which some actions may be undone. Actions made before the timeline may
@@ -9,22 +13,27 @@ package nu.olivertwistor.todolisttools.util;
  */
 public final class Session
 {
+    private static final @NonNls Logger LOG = LogManager.getLogger(
+            Session.class);
+
     private String timeline;
 
     /**
      * Creates a new session object with no timeline set.
      *
-     * @param config Config object for access to API key etc.
-     *
      * @since 1.0.0
      */
-    public Session(final Config config)
+    public Session()
     {
+        LOG.trace("Entering Session()...");
+
         this.timeline = "";
     }
 
     public String getTimeline()
     {
+        LOG.trace("Entering getTimeline()...");
+
         return this.timeline;
     }
 
@@ -37,11 +46,15 @@ public final class Session
      */
     public boolean hasTimeline()
     {
+        LOG.trace("Entering hasTimeline()...");
+
         return !this.timeline.isEmpty();
     }
 
     public void setTimeline(final String timeline)
     {
+        LOG.trace("Entering setTimeline(String)...");
+
         this.timeline = timeline;
     }
 
