@@ -40,7 +40,7 @@ final class App
                 "This program is collecting data from your Remember the Milk ",
                 "account, in order to present aggregations and calculations ",
                 "on lists and smartlists. For more information, please read ",
-                "the file \"privacy-policy.md\" located in the root folder."));
+                "the file 'privacy-policy.md' located in the root folder."));
         System.out.println();
         System.out.println(String.join(System.lineSeparator(),
                 "This product uses the Remember The Milk API but is not ",
@@ -63,6 +63,35 @@ final class App
             return;
         }
         final Session session = new Session();
+
+        // Read the command-line parameters, and if present, store them in the
+        // config file.
+        if (args.length >= 2)
+        {
+            try
+            {
+                config.setApiKey(args[0]);
+                LOG.info("API key overwritten.");
+
+                config.setSharedSecret(args[1]);
+                LOG.info("Shared secret overwritten.");
+
+                System.out.println("Credentials written to config file.");
+            }
+            catch (final IOException e)
+            {
+                ErrorMessage.printAndLogError(
+                        LOG, ErrorMessage.WRITE_TO_CONFIG_FILE, e);
+            }
+        }
+        else if (args.length == 1)
+        {
+            System.out.println("Too few command-line parameters (must be " +
+                    "2). Ignoring the parameter, and proceeding to use " +
+                    "previously stored credentials instead.");
+            LOG.warn("User supplied too few command-line parameters. " +
+                    "Ignoring.");
+        }
 
         final MainMenu mainMenu = new MainMenu(config, session);
         boolean exit;
