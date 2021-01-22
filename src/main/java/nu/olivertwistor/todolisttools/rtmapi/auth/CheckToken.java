@@ -66,13 +66,6 @@ public final class CheckToken
         return this.response.isResponseFailure();
     }
 
-    public AuthResponse getResponse()
-    {
-        LOG.trace("Entering getResponse()...");
-
-        return this.response;
-    }
-
     @Override
     public String toString()
     {

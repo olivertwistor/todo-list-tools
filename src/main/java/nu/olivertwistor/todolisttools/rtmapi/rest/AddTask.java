@@ -74,13 +74,6 @@ public final class AddTask
         return this.response.isResponseSuccess();
     }
 
-    public Response getResponse()
-    {
-        LOG.trace("Entering getResponse()...");
-
-        return this.response;
-    }
-
     @Override
     public String toString()
     {

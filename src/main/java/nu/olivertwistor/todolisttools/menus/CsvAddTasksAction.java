@@ -76,7 +76,7 @@ public final class CsvAddTasksAction implements MenuAction
         catch (final IOException e)
         {
             ErrorMessage.printAndLogError(
-                    LOG, ErrorMessage.FILE_NOT_FOUND, e);
+                    LOG, ErrorMessage.CSV_FILE_NOT_FOUND, e);
             return false;
         }
 

@@ -100,19 +100,6 @@ public abstract class Request
     }
 
     /**
-     * Creates a request.
-     *
-     * @param config Config object for access to API key etc.
-     *
-     * @since 1.0.0
-     */
-    protected Request(final Config config)
-    {
-        this(config, new LinkedList<>());
-        LOG.trace("Entering Request(Config)...");
-    }
-
-    /**
      * Adds a URL parameter.
      *
      * @param key   the parameter key
