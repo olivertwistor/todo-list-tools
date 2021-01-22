@@ -81,7 +81,7 @@ public final class ObtainAuthenticationAction implements MenuAction
         catch (final IOException e)
         {
             ErrorMessage.printAndLogFatal(
-                    LOG, ErrorMessage.FAILED_TO_READ_USER_INPUT, e);
+                    LOG, ErrorMessage.READ_USER_INPUT, e);
             return true;
         }
 

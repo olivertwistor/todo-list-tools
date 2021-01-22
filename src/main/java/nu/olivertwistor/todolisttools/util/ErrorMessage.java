@@ -22,8 +22,7 @@ public enum ErrorMessage
      *
      * @since 1.0.0
      */
-    FAILED_TO_READ_USER_INPUT(
-            "Failed to read user input.", "Failed to read user input."),
+    READ_USER_INPUT("Failed to read user input.", "Failed to read user input."),
 
     /**
      * When failing to communicate with Remember The Milk.
@@ -59,7 +58,16 @@ public enum ErrorMessage
      */
     LOAD_CONFIG_FILE(
             "Failed to load the configuration file.",
-            "Failed to load the configuration file.");
+            "Failed to load the configuration file."),
+
+    /**
+     * When a specified file does not exist.
+     *
+     * @since 1.0.0
+     */
+    FILE_NOT_FOUND(
+            "Failed to find the specified file.",
+            "Failed to find the specified file.");
 
     private final String printMessage;
     private final String logMessage;
@@ -99,8 +107,8 @@ public enum ErrorMessage
                                         final ErrorMessage message,
                                         final Throwable throwable)
     {
-        System.out.println(message.getPrintMessage());
-        logger.error(message, throwable);
+        System.out.println(message.printMessage);
+        logger.error(message.logMessage, throwable);
     }
 
     /**
@@ -117,8 +125,8 @@ public enum ErrorMessage
                                         final ErrorMessage message,
                                         final Throwable throwable)
     {
-        System.out.println(message.getPrintMessage());
-        logger.fatal(message, throwable);
+        System.out.println(message.printMessage);
+        logger.fatal(message.logMessage, throwable);
     }
 
     @Override

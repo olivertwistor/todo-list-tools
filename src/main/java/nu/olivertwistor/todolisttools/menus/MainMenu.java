@@ -142,7 +142,7 @@ public final class MainMenu
         catch (final IOException e)
         {
             ErrorMessage.printAndLogError(
-                    LOG, ErrorMessage.FAILED_TO_READ_USER_INPUT, e);
+                    LOG, ErrorMessage.READ_USER_INPUT, e);
         }
         finally
         {

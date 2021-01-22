@@ -58,7 +58,7 @@ public final class CsvAddTasksAction implements MenuAction
         catch (final IOException e)
         {
             ErrorMessage.printAndLogError(
-                    LOG, ErrorMessage.FAILED_TO_READ_USER_INPUT, e);
+                    LOG, ErrorMessage.READ_USER_INPUT, e);
             return false;
         }
 
@@ -76,7 +76,7 @@ public final class CsvAddTasksAction implements MenuAction
         catch (final IOException e)
         {
             ErrorMessage.printAndLogError(
-                    LOG, ErrorMessage.FAILED_TO_READ_USER_INPUT, e);
+                    LOG, ErrorMessage.FILE_NOT_FOUND, e);
             return false;
         }
 

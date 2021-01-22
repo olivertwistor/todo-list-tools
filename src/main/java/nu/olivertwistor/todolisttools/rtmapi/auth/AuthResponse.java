@@ -66,7 +66,6 @@ public final class AuthResponse extends Response
         LOG.trace("Entering createAuthResponse(Request)...");
 
         final URL url = request.toUrl();
-        LOG.debug("Trying to connecting to {}.", url.toExternalForm());
 
         // Make an HTTP request to get the response.
         final URLConnection connection = url.openConnection();
