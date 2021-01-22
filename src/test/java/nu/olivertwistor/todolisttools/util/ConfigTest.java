@@ -28,7 +28,7 @@ public final class ConfigTest
     public static void setUp() throws Exception
     {
         final URL url = ConfigTest.class.getResource("/app.cfg");
-        ConfigTest.config = new Config(url);
+        config = new Config(url);
     }
 
     /**
@@ -38,11 +38,24 @@ public final class ConfigTest
      * @since 1.0.0
      */
     @Test
-    public void getApiKey()
+    public void When_ReadingApiKey_Then_NullIsNotReturned()
     {
-        final String apiKey = ConfigTest.config.getApiKey();
+        final String apiKey = config.getApiKey();
 
         Assert.assertThat("The API key property should be readable from the " +
                 "config file.", apiKey, CoreMatchers.notNullValue());
+    }
+
+    /**
+     * Assert that writing a new config value, no exception is thrown.
+     *
+     * @throws Exception if anything went wrong.
+     *
+     * @since 1.0.0
+     */
+    @Test
+    public void When_WritingToken_Then_NoExceptionIsThrown() throws Exception
+    {
+        config.setToken("test");
     }
 }
