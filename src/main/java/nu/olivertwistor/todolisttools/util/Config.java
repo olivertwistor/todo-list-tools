@@ -6,16 +6,15 @@ import org.ini4j.Ini;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * Configuration values from config files are read via this class.
  *
  * @since  1.0.0
  */
+@SuppressWarnings({"StringConcatenationMissingWhitespace", "ClassUnconnectedToPackage"})
 public final class Config
 {
     private static final @NonNls Logger LOG = LogManager.getLogger(
@@ -37,32 +36,27 @@ public final class Config
     private final Ini ini;
 
     /**
-     * Creating a new instance of this object based on a certain URL pointing
-     * to configuration.
+     * Creating a new instance of this object based on a config file.
      *
-     * @param url URL pointing to configuration
+     * @param file a file containing configuration properties in key/value pairs
      *
-     * @throws IOException if a configuration object couldn't be created from
-     *                     the provided URL
+     * @throws FileNotFoundException if the provided file doesn't exist
+     * @throws IOException           if a configuration object couldn't be
+     *                               created from the provided file
      *
      * @since 1.0.0
      */
-    public Config(final URL url) throws IOException
+    public Config(final File file) throws FileNotFoundException, IOException
     {
-        LOG.trace("Entering Config(URL)...");
+        LOG.trace("Entering Config(File)...");
 
-        final URI uri;
-        try
+        if (!file.exists())
         {
-            uri = url.toURI();
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new IOException(e);
+            throw new FileNotFoundException(file + "does not exist.");
         }
 
-        this.file = new File(uri);
-        this.ini = new Ini(url);
+        this.file = file;
+        this.ini = new Ini(file);
     }
 
     /**
