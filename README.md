@@ -35,17 +35,17 @@ Prerequisites for downloaded JAR:
 1. Download or [clone][14] this repository.
 1. Unzip the downloaded file, if applicable. 
 1. Open a terminal at the root directory of the repository.
-1. If you're using Maven, execute `mvn package`. You will get four JAR files under the *target* subdirectory: `todo-list-tools-{version}.jar` (contains the runnable app), `todo-list-tools-{version}-javadoc.jar` (contains the Javadoc), `todo-list-tools-{version}-sources.jar` (contains source files) and `todo-list-tools-{version}-tests.jar` (contains test source files). If you're using some other build tool, please refer to the file `pom.xml` as a guide on what you should do.
+1. If you're using Maven, execute `mvn package`. You will get three JAR files under the *target* subdirectory: `todo-list-tools-{version}.jar` (contains the runnable app), `todo-list-tools-{version}-javadoc.jar` (contains the Javadoc) and `todo-list-tools-{version}-sources.jar` (contains source files). If you're using some other build tool, please refer to the file `pom.xml` as a guide on what you should do.
 
 ### Download a release
 
 1. Choose a [release][15]. Click on the version number of your choice. The latest release is on top.
-1. Under the release notes, you will see four different JAR files. For the runnable application, download `todo-list-tools-{version}.jar`.
+1. Under the release notes, you will see three different JAR files. For the runnable application, download `todo-list-tools-{version}.jar`.
 1. Move the downloaded file to your desired directory.
 
 ## Usage
 
-#### Before you start
+### Before you start
 
 1. Make sure you have an [account on Remember The Milk][16].
 1. Make sure you have an API key and a shared secret. Apply for those [here][17].
@@ -53,7 +53,7 @@ Prerequisites for downloaded JAR:
 1. Build or download a runnable JAR file of this application.
 1. Open a terminal and execute the following command: `java -jar {path/to/jar-file} {path/to/config-file}`.
 
-#### Main menu
+### Main menu
 
 When the application starts, you will be greeted with a disclaimer and privacy policy. After that, the main menu appears. From here, you can do the following things:
 
