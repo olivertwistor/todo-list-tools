@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NonNls;
 
 /**
  * This enum holds the various smart add prefixes, such as ^ for due date and
- * @ for location.
+ * ! for priority.
  *
  * @since 1.0.0
  */

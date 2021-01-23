@@ -8,21 +8,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NonNls;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Main class for this app. Contains the main method.
  *
  * @since 1.0.0
  */
-@SuppressWarnings({"HardCodedStringLiteral", "ClassUnconnectedToPackage", "StringConcatenation"})
+@SuppressWarnings({"HardCodedStringLiteral", "ClassUnconnectedToPackage"})
 final class App
 {
     private static final @NonNls Logger LOG = LogManager.getLogger(App.class);
 
     /**
-     * Prints a short privacy policy and then creates the main menu.
+     * Prints a short privacy policy, loads configuration and then creates the
+     * main menu.
      *
      * @param args unused
      *
@@ -47,20 +48,18 @@ final class App
                 "endorsed or certified by Remember The Milk."));
         System.out.println();
 
-        // Load the config. Also, start a new session for this run of the
-        // application.
-        final URL configPath = App.class.getResource("/app.cfg");
-        if (configPath == null)
+        // Load a config file from command-line arguments.
+        if (args.length < 1)
         {
-            ErrorMessage.printAndLogFatal(
-                    LOG, ErrorMessage.CONFIG_FILE_NOT_FOUND, null);
+            System.out.println("Missing argument: path to config file");
             return;
         }
         final Config config;
         try
         {
-            config = new Config(configPath);
-            LOG.info("Loaded config: {}", configPath.toExternalForm());
+            final File file = new File(args[0]);
+            config = new Config(file);
+            LOG.info("Loaded config: {}", file.getAbsolutePath());
         }
         catch (final IOException e)
         {
@@ -69,37 +68,6 @@ final class App
             return;
         }
         final Session session = new Session();
-
-        // Read the command-line parameters, and if present, store them in the
-        // config file.
-        if (args.length >= 2)
-        {
-            try
-            {
-                config.setApiKey(args[0]);
-                LOG.info("API key overwritten.");
-
-                config.setSharedSecret(args[1]);
-                LOG.info("Shared secret overwritten.");
-
-                System.out.println("Credentials written to config file.");
-                System.out.println();
-            }
-            catch (final IOException e)
-            {
-                ErrorMessage.printAndLogError(
-                        LOG, ErrorMessage.WRITE_TO_CONFIG_FILE, e);
-            }
-        }
-        else if (args.length == 1)
-        {
-            System.out.println("Too few command-line parameters (must be " +
-                    "2). Ignoring the parameter, and proceeding to use " +
-                    "previously stored credentials instead.");
-            System.out.println();
-            LOG.warn("User supplied too few command-line parameters. " +
-                    "Ignoring.");
-        }
 
         final MainMenu mainMenu = new MainMenu(config, session);
         boolean exit;

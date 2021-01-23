@@ -34,9 +34,9 @@ public final class CsvAddTasksActionTest
         final List<Task> actual = CsvAddTasksAction.parseCsvFile(file, ";");
 
         final List<Task> expected = new ArrayList<>();
-        expected.add(new Task("Buy milk")); //NON-NLS
-        expected.add(new Task("Play guitar")); //NON-NLS
-        expected.add(new Task("Call my boss")); //NON-NLS
+        expected.add(new Task("Buy milk"));
+        expected.add(new Task("Play guitar"));
+        expected.add(new Task("Call my boss"));
 
         Assert.assertThat("Task list not parsed correctly from file.",
                 actual, CoreMatchers.equalTo(expected));

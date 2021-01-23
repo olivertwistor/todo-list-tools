@@ -61,15 +61,6 @@ public enum ErrorMessage
             "Failed to load the configuration file."),
 
     /**
-     * When the config file does not exist.
-     *
-     * @since 1.0.0
-     */
-    CONFIG_FILE_NOT_FOUND(
-            "Failed to find the config file.",
-            "Failed to find the config file."),
-
-    /**
      * When a CSV file does not exist.
      *
      * @since 1.0.0
