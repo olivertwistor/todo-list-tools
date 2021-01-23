@@ -291,22 +291,6 @@ public class Response
         return element;
     }
 
-    /**
-     * Returns this response's entire XML tree.
-     *
-     * @return The XML tree as a string.
-     *
-     * @since 1.0.0
-     */
-    public final String toXmlString()
-    {
-        LOG.trace("Entering toXmlString()...");
-
-        final String xml = this.document.asXML();
-        LOG.debug("Response XML: {}", xml);
-        return xml;
-    }
-
     @Override
     public String toString()
     {

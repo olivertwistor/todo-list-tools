@@ -1,38 +1,70 @@
 # Todo List Tools
-[Remember the Milk][1] is a service for creating to-do lists. It provides 
-advanced ways to filter and sort items on those to-do lists. I have used the 
-service for many years, and I can highly recommend it. Despite all the praise 
-I have for the service, it lacks some features. That is where this project 
-comes in.
+[Remember the Milk][1] is a service for creating to-do lists. It provides advanced ways to filter and sort items on those to-do lists. I have used the service for many years, and I can highly recommend it. Despite all the praise I have for the service, it lacks some features. That is where this project comes in.
 
 * [Disclaimer](#disclaimer)
 * [Privacy policy](#privacy-policy)
 * [Installation](#installation)
+    * [Build it yourself](#build-it-yourself)
+    * [Download a release](#download-a-release)
 * [Usage](#usage)
+    * [Before you start](#before-you-start)
+    * [Main menu](#main-menu)
 * [Licensing](#licensing)
     * [Third-party](#third-party)
 
 ## Disclaimer
-This product uses the [Remember The Milk API][5] but it's not endorsed or 
-certified by Remember The Milk.
+This product uses the [Remember The Milk API][5] but it's not endorsed or certified by Remember The Milk.
 
 ## Privacy policy
-The Todo List Tools collects and processes data from the user's Remember the 
-Milk account. Please read the [privacy policy][2] for more information.
+The Todo List Tools collects and processes data from the user's Remember the Milk account. Please read the [privacy policy][2] for more information.
 
 ## Installation
-First, make sure you meet the following requirements:
-* a Remember The Milk account
-* Java 8 or newer
+You can choose to either build the app yourself or download a release and run the JAR directly.
 
-More information will be available as soon as the first version is released.
+Prerequisites for building:
+
+* JDK 8 or later.
+* Maven (to use my build file directly) or other build tool
+
+Prerequisites for downloaded JAR:
+
+* JRE 8 or later.
+
+### Build it yourself
+
+1. Download or [clone][14] this repository.
+1. Unzip the downloaded file, if applicable. 
+1. Open a terminal at the root directory of the repository.
+1. If you're using Maven, execute `mvn package`. You will get three JAR files under the *target* subdirectory: `todo-list-tools-{version}.jar` (contains the runnable app), `todo-list-tools-{version}-javadoc.jar` (contains the Javadoc) and `todo-list-tools-{version}-sources.jar` (contains source files). If you're using some other build tool, please refer to the file `pom.xml` as a guide on what you should do.
+
+### Download a release
+
+1. Choose a [release][15]. Click on the version number of your choice. The latest release is on top.
+1. Under the release notes, you will see three different JAR files. For the runnable application, download `todo-list-tools-{version}.jar`.
+1. Move the downloaded file to your desired directory.
 
 ## Usage
-More information will be available as soon as the first version is released.
+
+### Before you start
+
+1. Make sure you have an [account on Remember The Milk][16].
+1. Make sure you have an API key and a shared secret. Apply for those [here][17].
+1. Download or copy the contents of the file *[app.sample.cfg][18]*. Change the property values of `key` and `shared-secret` to the corresponding values you received from Remember The Milk in the previous step.
+1. Build or download a runnable JAR file of this application.
+1. Open a terminal and execute the following command: `java -jar {path/to/jar-file} {path/to/config-file}`.
+
+### Main menu
+
+When the application starts, you will be greeted with a disclaimer and privacy policy. After that, the main menu appears. From here, you can do the following things:
+
+* add Remember The Milk tasks from a CSV file
+* obtain authentication for the application, to allow reading and writing data from and to your Remember The Milk account
+* exit the application
+
+If this is the first time you launch the application, you should obtain authentication first. This will get you an authentication token that will be written to your config file.
 
 ## Licensing
-This project is licensed under an Apache License 2.0. For detailed terms, 
-please read [LICENSE][3].
+This project is licensed under an Apache License 2.0. For detailed terms, please read [LICENSE][3].
 
 ### Third-party
 
@@ -47,8 +79,7 @@ please read [LICENSE][3].
 | [JUnit 4][9]                | JUnit team                            | EPL 1.0 |
 | Pair                        | [Christoffer Fink][4]                 | MIT     |
 
-For all third-party licenses, please refer to [3rd-party-licenses.txt][6] 
-for full license terms.
+For all third-party licenses, please refer to [3rd-party-licenses.txt][6] for full license terms.
 
 
 [1]: https://www.rememberthemilk.com
@@ -64,3 +95,8 @@ for full license terms.
 [11]: https://github.com/JetBrains/java-annotations
 [12]: https://hc.apache.org/httpcomponents-client-ga/index.html
 [13]: http://logging.apache.org/log4j/2.x/index.html
+[14]: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
+[15]: https://github.com/olivertwistor/todo-list-tools/releases
+[16]: https://www.rememberthemilk.com/signup/
+[17]: https://www.rememberthemilk.com/services/api/ "Apply for API access to Remember The Milk."
+[18]: https://github.com/olivertwistor/todo-list-tools/blob/release/1.0.0/app.sample.cfg
