@@ -35,9 +35,6 @@ public class Response
     private static final String ATTRIB_STATUS = "stat";
 
     @NonNls
-    private static final String VAL_STATUS_FAILURE = "fail";
-
-    @NonNls
     private static final String VAL_STATUS_SUCCESS = "ok";
 
     /**
@@ -164,27 +161,6 @@ public class Response
                 "Failed to find a status attribute on the root element.");
 
         return VAL_STATUS_SUCCESS.equals(status);
-    }
-
-    /**
-     * Determines whether this Response returned a failure code.
-     *
-     * @return True if a failure; false otherwise.
-     *
-     * @throws NullPointerException if the response doesn't include a status
-     *                              attribute.
-     *
-     * @since 1.0.0
-     */
-    public final boolean isResponseFailure()
-    {
-        LOG.trace("Entering isResponseFailure()...");
-
-        final String status = this.rootElement.attributeValue(ATTRIB_STATUS);
-        Objects.requireNonNull(status,
-                "Failed to find a status attribute on the root element.");
-
-        return VAL_STATUS_FAILURE.equals(status);
     }
 
     /**

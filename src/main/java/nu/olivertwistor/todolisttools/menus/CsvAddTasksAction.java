@@ -180,7 +180,7 @@ public final class CsvAddTasksAction implements MenuAction
                 }
             }
 
-            LOG.info("Read {} lines after the first line.", nReadLines);
+            LOG.info("Read {} lines.", nReadLines);
 
             return tasks;
         }

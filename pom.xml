@@ -130,7 +130,9 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>nu.olivertwistor.todolisttools.App</mainClass>
+                            <mainClass>
+                                nu.olivertwistor.todolisttools.App
+                            </mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

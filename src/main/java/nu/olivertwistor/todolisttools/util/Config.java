@@ -80,24 +80,6 @@ public final class Config
     }
 
     /**
-     * Sets the API key and writes it to the config file.
-     *
-     * @param apiKey the API key
-     *
-     * @throws IOException if the API key couldn't be written to the config
-     *                     file.
-     *
-     * @since 1.0.0
-     */
-    public void setApiKey(final String apiKey) throws IOException
-    {
-        LOG.trace("Entering setApiKey(String)...");
-
-        this.ini.put(Config.GROUP_API, Config.PROP_KEY, apiKey);
-        this.ini.store(this.file);
-    }
-
-    /**
      * Gets the shared secret from the config file.
      *
      * @return The shared secret; or null if the config file key couldn't be
@@ -110,24 +92,6 @@ public final class Config
         LOG.trace("Entering getSharedSecret()...");
 
         return this.ini.get(Config.GROUP_API, Config.PROP_SHARED_SECRET);
-    }
-
-    /**
-     * Sets the shared secret and writes it to the config file.
-     *
-     * @param sharedSecret the shared secret
-     *
-     * @throws IOException if the shared secret couldn't be written to the
-     *                     config file.
-     *
-     * @since 1.0.0
-     */
-    public void setSharedSecret(final String sharedSecret) throws IOException
-    {
-        LOG.trace("Entering setSharedSecret(String)...");
-
-        this.ini.put(Config.GROUP_API, Config.PROP_SHARED_SECRET, sharedSecret);
-        this.ini.store(this.file);
     }
 
     /**
