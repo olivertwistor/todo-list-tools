@@ -69,6 +69,7 @@ public final class ObtainAuthenticationAction implements MenuAction
                     config, VAL_WRITE_PERMISSIONS);
             final String urlString = authUrl.toExternalForm();
             System.out.println(urlString);
+            System.out.println();
         }
         catch (final IOException e)
         {
