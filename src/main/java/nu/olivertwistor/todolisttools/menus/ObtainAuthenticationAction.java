@@ -39,7 +39,11 @@ public final class ObtainAuthenticationAction implements MenuAction
 
         try
         {
-            checkExistingToken(config);
+            final boolean validTokenExists = checkExistingToken(config);
+            if (validTokenExists)
+            {
+                return false;
+            }
         }
         catch (final IOException e)
         {
