@@ -59,13 +59,6 @@ public final class CheckToken
         return this.response.isResponseSuccess();
     }
 
-    boolean isResponseFailure()
-    {
-        LOG.trace("Entering isResponseFailure()...");
-
-        return this.response.isResponseFailure();
-    }
-
     @Override
     public String toString()
     {

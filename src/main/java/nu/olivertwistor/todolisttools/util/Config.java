@@ -6,16 +6,15 @@ import org.ini4j.Ini;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * Configuration values from config files are read via this class.
  *
  * @since  1.0.0
  */
+@SuppressWarnings({"StringConcatenationMissingWhitespace", "ClassUnconnectedToPackage"})
 public final class Config
 {
     private static final @NonNls Logger LOG = LogManager.getLogger(
@@ -37,32 +36,27 @@ public final class Config
     private final Ini ini;
 
     /**
-     * Creating a new instance of this object based on a certain URL pointing
-     * to configuration.
+     * Creating a new instance of this object based on a config file.
      *
-     * @param url URL pointing to configuration
+     * @param file a file containing configuration properties in key/value pairs
      *
-     * @throws IOException if a configuration object couldn't be created from
-     *                     the provided URL
+     * @throws FileNotFoundException if the provided file doesn't exist
+     * @throws IOException           if a configuration object couldn't be
+     *                               created from the provided file
      *
      * @since 1.0.0
      */
-    public Config(final URL url) throws IOException
+    public Config(final File file) throws FileNotFoundException, IOException
     {
-        LOG.trace("Entering Config(URL)...");
+        LOG.trace("Entering Config(File)...");
 
-        final URI uri;
-        try
+        if (!file.exists())
         {
-            uri = url.toURI();
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new IOException(e);
+            throw new FileNotFoundException(file + "does not exist.");
         }
 
-        this.file = new File(uri);
-        this.ini = new Ini(url);
+        this.file = file;
+        this.ini = new Ini(file);
     }
 
     /**
@@ -80,24 +74,6 @@ public final class Config
     }
 
     /**
-     * Sets the API key and writes it to the config file.
-     *
-     * @param apiKey the API key
-     *
-     * @throws IOException if the API key couldn't be written to the config
-     *                     file.
-     *
-     * @since 1.0.0
-     */
-    public void setApiKey(final String apiKey) throws IOException
-    {
-        LOG.trace("Entering setApiKey(String)...");
-
-        this.ini.put(Config.GROUP_API, Config.PROP_KEY, apiKey);
-        this.ini.store(this.file);
-    }
-
-    /**
      * Gets the shared secret from the config file.
      *
      * @return The shared secret; or null if the config file key couldn't be
@@ -110,24 +86,6 @@ public final class Config
         LOG.trace("Entering getSharedSecret()...");
 
         return this.ini.get(Config.GROUP_API, Config.PROP_SHARED_SECRET);
-    }
-
-    /**
-     * Sets the shared secret and writes it to the config file.
-     *
-     * @param sharedSecret the shared secret
-     *
-     * @throws IOException if the shared secret couldn't be written to the
-     *                     config file.
-     *
-     * @since 1.0.0
-     */
-    public void setSharedSecret(final String sharedSecret) throws IOException
-    {
-        LOG.trace("Entering setSharedSecret(String)...");
-
-        this.ini.put(Config.GROUP_API, Config.PROP_SHARED_SECRET, sharedSecret);
-        this.ini.store(this.file);
     }
 
     /**
