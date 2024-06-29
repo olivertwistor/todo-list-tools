@@ -1,4 +1,7 @@
 # Todo List Tools
+
+**Update 2024-06-29: This repo is archived, since I no longer use Remember the Milk and won't make any more updates to this repo. The *master* branch should be stable, the *release/1.0.0* definitely is, but the *develop* branch is ahead somewhat but I don't think it's stable at all. Please use at your own risk.**
+
 [Remember the Milk][1] is a service for creating to-do lists. It provides advanced ways to filter and sort items on those to-do lists. I have used the service for many years, and I can highly recommend it. Despite all the praise I have for the service, it lacks some features. That is where this project comes in.
 
 * [Disclaimer](#disclaimer)
